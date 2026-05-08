@@ -24,8 +24,8 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { SITE_URL } from '@/config/site'
 
-const SITE_URL = 'https://kassa-cto.ru'
 const PAGE_URL = `${SITE_URL}/integraciya-1c`
 
 export const metadata: Metadata = {

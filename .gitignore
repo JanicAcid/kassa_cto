@@ -29,4 +29,16 @@ download/
 # IDE
 .vscode/
 .idea/
+
+# Deploy archives (не должны быть в репо — вынести в GitHub Releases)
+*.zip
+
+# Pre-built static export with API (пересобирать при деплое)
+out-with-api/
+
+# PHP API proxy config (содержит секреты)
+api-proxy/api/config.php
+
+# Chat data (runtime)
+api-proxy/api/chat-data/
  

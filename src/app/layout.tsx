@@ -19,7 +19,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-const SITE_URL = 'https://kassa-cto.ru'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

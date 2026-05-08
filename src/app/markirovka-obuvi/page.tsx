@@ -17,8 +17,8 @@ import {
   GraduationCap,
 } from 'lucide-react'
 import { OpenChatButton } from '@/components/OpenChatButton'
+import { SITE_URL } from '@/config/site'
 
-const SITE_URL = 'https://kassa-cto.ru'
 const PAGE_URL = `${SITE_URL}/markirovka-obuvi`
 
 export const metadata: Metadata = {

@@ -23,8 +23,8 @@ import {
   Zap,
   Settings,
 } from 'lucide-react'
+import { SITE_URL } from '@/config/site'
 
-const SITE_URL = 'https://kassa-cto.ru'
 const PAGE_URL = `${SITE_URL}/kakuyu-kassu-dlya-markirovki`
 
 export const metadata: Metadata = {

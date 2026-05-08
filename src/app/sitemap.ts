@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next'
+import { SITE_URL } from '@/config/site'
 
 export const dynamic = 'force-static'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.kassa-cto.ru'
+  const baseUrl = SITE_URL
   return [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
     { url: `${baseUrl}/kalkulyatory`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },

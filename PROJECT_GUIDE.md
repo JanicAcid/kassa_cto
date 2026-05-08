@@ -9,10 +9,12 @@
 Сайт ООО **«Теллур-Интех»** — Центр технического обслуживания кассового оборудования (СПб, с 1995 года).
 Основная функция — **онлайн-калькулятор стоимости подключения маркировки товаров** (Честный ЗНАК, ЭДО, ТС ПИоТ, ФНС, ОФД).
 
-- **Продакшен URL**: https://tellurmarkirovka.vercel.app/
-- **GitHub (рабочий)**: `JanicAcid/ddddddddddddd` (публичный)
+- **Продакшен URL**: https://kassa-cto.ru
+- **GitHub (рабочий)**: `JanicAcid/kassa_cto` (приватный)
 - **GitHub (архив)**: `JanicAcid/tellur-markirovka-backup` (приватный, НЕ РЕДАКТИРОВАТЬ)
-- **Деплой**: Vercel auto-deploy из `origin/main` → `tellurmarkirovka.vercel.app`
+- **Хостинг**: Beget shared hosting, IP: 87.236.16.235
+- **Деплой**: ручной (static export + загрузка на Beget через файловый менеджер)
+- **API**: PHP proxy (api/index.php) на том же хостинге
 - **Телефон**: +7 (812) 465-94-57 (основной)
 - **Email**: push@tellur.spb.ru
 
@@ -22,226 +24,181 @@
 
 | Технология | Версия |
 |---|---|
-| Next.js (App Router) | 15.5.x |
+| Next.js (App Router, static export) | 15.5.x |
 | React | 19.x |
 | TypeScript | 5.x |
 | Tailwind CSS | 4.x (via @tailwindcss/postcss) |
 | shadcn/ui | Radix UI primitives |
 | Аналитика | Yandex Metrika (ID: 108406091) |
+| API Backend | PHP 8 (Beget shared hosting) |
+| Чат | Telegram Bot (@spbmarkirovka_bot) |
 
 ---
 
-## 3. Структура проекта
+## 3. Архитектура деплоя
+
+**ВНИМАНИЕ**: `output: 'export'` в next.config.ts означает:
+- Это **полностью статический сайт** — никакого SSR
+- Next.js middleware **НЕ работает** — админка защищена только клиентскими проверками
+- API routes **НЕ работают** — все `/api/*` запросы идут к PHP proxy на Beget
+- Security headers (CSP, HSTS) — настраиваются в `.htaccess`, НЕ в next.config.ts
+- `redirects()` и `headers()` из next.config.ts **не применяются** — нужны в .htaccess
+
+---
+
+## 4. Структура проекта
 
 ```
 src/
-├── app/
-│   ├── page.tsx                          # Главная — калькулятор маркировки
-│   ├── layout.tsx                        # Root layout (мета, шрифты, виджеты)
-│   ├── globals.css                       # Глобальные стили Tailwind
-│   ├── sitemap.ts                        # Динамический sitemap.xml
+├── app/                                   # Next.js App Router страницы
+│   ├── page.tsx                           # Главная
+│   ├── layout.tsx                         # Root layout
+│   ├── sitemap.ts                         # sitemap.xml
+│   ├── globals.css                        # Tailwind
 │   │
-│   ├── nastroyka-kassy-markirovka/       # SEO-лендинг: настройка кассы
-│   │   └── page.tsx
-│   ├── podklyuchenie-chestnyy-znak/      # SEO-лендинг: подключение Честный ЗНАК
-│   │   └── page.tsx
-│   ├── integraciya-1c/                   # SEO-лендинг: интеграция 1С
-│   │   └── page.tsx
+│   ├── kalkulyatory/                      # Калькуляторы
+│   ├── instructions/                      # Инструкции
+│   ├── diagnostika/                       # Диагностика
+│   ├── admin/                             # Админ-кабинет
+│   ├── faq/                               # FAQ
+│   ├── services/                          # Услуги
+│   ├── about/                             # О компании
+│   ├── contacts/                          # Контакты
 │   │
-│   ├── instructions/                     # Инструкции (динамические)
-│   │   ├── page.tsx                      # Список инструкций
-│   │   ├── layout.tsx                    # Layout инструкций
-│   │   └── [slug]/page.tsx               # Отдельная инструкция
-│   │
-│   ├── faq/page.tsx                      # FAQ
-│   ├── services/page.tsx                 # Услуги
-│   ├── about/page.tsx                    # О компании
-│   ├── contacts/page.tsx                 # Контакты + карта филиалов
-│   │
-│   └── api/
-│       ├── chat/send/route.ts            # Отправка сообщения в Telegram
-│       ├── chat/poll/route.ts            # Long-poll чата
-│       ├── chat/file/[fileId]/route.ts   # Файлы чата
-│       ├── send-order/route.ts           # Отправка заказа (Google Sheets + email)
-│       └── log-order/route.ts            # Логирование заказа
+│   └── markirovka-*/                      # SEO-лендинги
+│       nastroyka-kassy-markirovka/
+│       podklyuchenie-chestnyy-znak/
+│       integraciya-1c/
+│       kakuyu-kassu-dlya-markirovki/
 │
-├── components/
-│   ├── Navbar.tsx                        # Навигация (grid 3-колоночный layout)
-│   ├── SiteFooter.tsx                    # Подвал сайта
-│   ├── ChatWidget.tsx                    # Telegram чат-виджет
-│   ├── FaqWidget.tsx                     # FAQ плавающий виджет
-│   ├── ScrollToTopButton.tsx             # Кнопка наверх
-│   ├── YandexMetrika.tsx                 # Счётчик Я.Метрики
-│   ├── JsonLd.tsx                        # Структурированные данные (Organization + LocalBusiness)
-│   ├── SeoContent.tsx                    # SEO-текстовый блок на главной
-│   ├── SeoContentInner.tsx               # FAQ-аккордеон + филиалы на главной
-│   │
-│   ├── calculator/                       # Шаги калькулятора
-│   │   ├── types.ts                      # Типы данных калькулятора
-│   │   ├── StepBrands.tsx                # Шаг 1: выбор бренда кассы
-│   │   ├── StepServices.tsx              # Шаг 2: выбор услуг
-│   │   ├── StepExtra.tsx                 # Шаг 3: доп. услуги (ОФД, ТС ПИоТ)
-│   │   ├── StepSummary.tsx               # Шаг 4: итог + форма заказа
-│   │   ├── DoneScreen.tsx                # Экран завершения
-│   │   └── HintButton.tsx                # Подсказки по услугам
-│   │
-│   ├── instructions/                     # Компоненты инструкций
-│   │   ├── ArticleCard.tsx
-│   │   ├── ArticleJsonLd.tsx
-│   │   └── TableOfContents.tsx
-│   │
-│   └── ui/                               # shadcn/ui компоненты
-│       ├── badge.tsx, button.tsx, card.tsx, checkbox.tsx
-│       ├── input.tsx, label.tsx, radio-group.tsx, separator.tsx
+├── components/                            # React-компоненты
+│   ├── Navbar.tsx, SiteFooter.tsx         # Навигация
+│   ├── ChatWidget.tsx                     # Telegram чат
+│   ├── calculator/                        # Шаги калькулятора
+│   └── ui/                                # shadcn/ui
 │
-├── config/                               # КОНФИГУРАЦИЯ (важно!)
-│   ├── telegram.ts                       # Токен бота и Chat ID (process.env только!)
-│   ├── contacts.ts                       # Телефоны, филиалы, email
-│   ├── services.ts                       # Услуги калькулятора (пошаговые)
-│   ├── services-step2.ts                 # Услуги шага 2
-│   ├── services-step3.ts                 # Услуги шага 3
-│   ├── brands.ts                         # Бренды касс (Меркурий, Атол, и т.д.)
-│   ├── ofd.ts                            # Провайдеры ОФД (ТАКСКОМ, Платформа, и т.д.)
-│   ├── hints.ts                          # Подсказки к услугам
-│   ├── articles.ts                       # Статьи-инструкции
-│   ├── product-cards.ts                  # Карточки товаров
-│   └── google-sheets.ts                  # Google Sheets логирование заказов
+├── config/                                # КОНФИГУРАЦИЯ
+│   ├── site.ts                            # SITE_URL, COMPANY_NAME (Единый конфиг!)
+│   ├── telegram.ts                        # Токен бота (env only!)
+│   ├── admin.ts                           # Админ-доступ (env only!)
+│   ├── contacts.ts                        # Телефоны, филиалы
+│   ├── services.ts, services-step2/3.ts   # Услуги и цены
+│   ├── brands.ts                          # Бренды касс
+│   ├── ofd.ts                             # Провайдеры ОФД
+│   ├── kkt-catalog.ts                     # Реестр ККТ ФНС (58 произв.)
+│   └── google-sheets.ts                   # Google Sheets (Node.js only!)
 │
-└── lib/
-    ├── utils.ts                          # cn() утилита Tailwind
-    └── phone.ts                          # Форматирование телефонов
+├── lib/                                   # Утилиты
+│   ├── utils.ts, phone.ts, jwt.ts
+│
+└── middleware.ts                           # ⚠️ DEAD CODE — не работает с export!
 
-public/
-├── logo.webp, logo@2x.webp               # Логотип
-├── og-image.png                          # Open Graph изображение
-├── favicon.ico, favicon-*.png            # Фавиконки
-├── apple-touch-icon.png
-├── manifest.json                         # PWA манифест
-├── robots.txt                            # Правила для поисковиков
-├── google*.html, yandex_*.html           # Верификация поисковиков
-├── chestnyznak.png                       # Логотип Честного ЗНАКа
-├── engineer-bg.webp                      # Фон секции
-├── soglasiye-atol.pdf                    # Согласие Атол
-├── brands/*.webp                         # Логотипы брендов касс
-├── services/*.webp                       # Иконки услуг
-└── instructions/*.svg                    # SVG для инструкций
+api-proxy/                                 # PHP API (деплоится на Beget)
+├── api/index.php                          # Роутер v7
+├── api/config.php.example                 # Шаблон конфига (секреты!)
+
+public/.htaccess                           # ⚠️ Security headers + API routing
 ```
 
 ---
 
-## 4. Переменные окружения (Vercel)
+## 5. Переменные окружения
 
-Эти переменные установлены **ТОЛЬКО в Vercel Environment Variables**. Нигде в коде нет fallback'ов.
-
-| Переменная | Назначение |
+| Переменная | Где используется |
 |---|---|
-| `TELEGRAM_BOT_TOKEN` | Токен Telegram-бота |
-| `OPERATOR_CHAT_ID` | Chat ID оператора для получения сообщений |
-| `GOOGLE_SHEETS_ID` | ID Google Таблицы для заказов |
-| `GOOGLE_SERVICE_ACCOUNT_KEY` | JSON-ключ сервисного аккаунта Google |
-| `ORDER_EMAIL` | Email для отправки заказов (fallback) |
+| `TELEGRAM_BOT_TOKEN` | PHP proxy (config.php) |
+| `OPERATOR_CHAT_ID` | PHP proxy (config.php) |
+| `ADMIN_LOGIN` | CF Functions (не используется на Beget) |
+| `ADMIN_PASSWORD` | CF Functions (не используется на Beget) |
+| `ADMIN_JWT_SECRET` | CF Functions (не используется на Beget) |
+
+**На Beget** секреты хранятся в `api/config.php` (НЕ в репо!).
 
 **КРИТИЧЕСКИЕ ПРАВИЛА БЕЗОПАСНОСТИ:**
 - **НИКОГДА** не добавлять fallback'ы с реальными значениями в код
-- **НИКОГДА** не коммитить `.env` файлы (в `.gitignore` есть `.env*`)
+- **НИКОГДА** не коммитить `.env` файлы, `config.php`
 - **НИКОГДА** не использовать `NEXT_PUBLIC_` для секретов
 - **НИКОГДА** не логировать токены, chat ID, или другие секреты
 
 ---
 
-## 5. Калькулятор маркировки — логика
+## 6. Калькулятор маркировки — логика
 
 Калькулятор — 4-шаговый wizard:
 
-1. **Шаг 1 — Бренд кассы**: Пользователь выбирает бренд (Меркурий, Атол, Сигма, Эвотор, Штрих-М, Пионер, AQSI). Каждый бренд имеет базовую цену.
-2. **Шаг 2 — Услуги**: В зависимости от бренда показываются доступные услуги (настройка маркировки, перерегистрация ФНС, 2D-сканер, обновление прошивки, и т.д.). **Важно**: если выбрана «полная настройка маркировки» (`marking_setup`), опция «перерегистрация ФНС» (`fns_reregistration`) **скрывается** — она включена в стоимость.
-3. **Шаг 3 — Доп. услуги**: ОФД (выбор провайдера + срок 15/36 мес), ТС ПИоТ, ЭЦП, обучение, договор обслуживания.
-4. **Шаг 4 — Итого + заказ**: Суммарная стоимость + форма для отправки заказа через Telegram-чат или Google Sheets.
+1. **Шаг 1 — Бренд кассы**: 7 брендов + поиск по реестру ККТ ФНС
+2. **Шаг 2 — Услуги**: зависят от бренда. При `marking_setup` скрывается `fns_reregistration`
+3. **Шаг 3 — Доп. услуги**: ОФД, ТС ПИоТ, ЭЦП, обучение
+4. **Шаг 4 — Итого + заказ**: форма → Telegram (HTML-документ)
 
-Цены хранятся в `src/config/services.ts`, `services-step2.ts`, `services-step3.ts`.
-Подсказки — в `src/config/hints.ts`.
-
----
-
-## 6. Telegram-чат виджет
-
-Реализован через API routes (server-side):
-- `/api/chat/send` — отправка сообщения от пользователя → Telegram Bot API
-- `/api/chat/poll` — long-poll для получения ответа от оператора
-- `/api/chat/file/[fileId]` — проксирование файлов из Telegram
-
-Чат привязан к конкретному боту `@spbmarkirovka_bot`. Сообщения уходят в указанный `OPERATOR_CHAT_ID`.
+Цены в `src/config/services*.ts`. Подсказки в `src/config/hints.ts`.
 
 ---
 
-## 7. SEO-структура
+## 7. PHP API Proxy (Beget)
 
-### Страницы и их цели
-| URL | Назначение | Приоритет |
+Единый роутер `api/index.php` обрабатывает:
+- `POST /api/send-order` — заказ → Telegram
+- `POST /api/chat/send` — сообщение чата → Telegram + inline Reply
+- `GET /api/chat/poll` — long-poll ответов оператора
+- `GET /api/chat/clean` — автозачистка старых сессий
+- `GET /api/captcha` — арифметическая капча
+- `POST /api/log-order` — заглушка (нет Google Sheets)
+
+**Хранение сессий чата**: файлы в `chat-data/` (flat file storage)
+
+---
+
+## 8. SEO-структура
+
+| URL | Приоритет | Canonical |
 |---|---|---|
-| `/` | Главная — калькулятор (H1: «Калькулятор маркировки») | 1.0 |
-| `/nastroyka-kassy-markirovka` | Лендинг: настройка кассы под маркировку | 0.9 |
-| `/podklyuchenie-chestnyy-znak` | Лендинг: подключение Честного ЗНАК | 0.9 |
-| `/integraciya-1c` | Лендинг: интеграция с 1С | 0.8 |
-| `/instructions` | Список инструкций | 0.9 |
-| `/instructions/[slug]` | Отдельная инструкция | 0.8 |
-| `/faq` | FAQ | 0.8 |
-| `/services` | Услуги | 0.8 |
-| `/about` | О компании | 0.7 |
-| `/contacts` | Контакты | 0.7 |
+| `/` | 1.0 | `https://kassa-cto.ru` |
+| `/kalkulyatory/markirovka` | 0.9 | `https://kassa-cto.ru/kalkulyatory/markirovka` |
+| `/nastroyka-kassy-markirovka` | 0.9 | ... |
+| Все остальные | 0.6-0.8 | ... |
 
-### Структурированные данные (JSON-LD)
-- `Organization` — данные ООО «Теллур-Интех»
-- `LocalBusiness` — адреса филиалов
-
-### Мета-теги
-- Title: «Калькулятор маркировки: цена под ключ в СПб — Теллур-Интех»
-- Description: содержит «цена от 3 000 ₽», «за 1 день», «СПб»
-- Canonical: `https://tellurmarkirovka.vercel.app`
-
----
-
-## 8. Навигация и верстка
-
-- **Навигация**: `grid grid-cols-[1fr_auto_1fr]` — true centering (не flex!)
-- **Шапка на ПК**: логотип + текст максимально влево (`pl-1 sm:pl-2`)
-- **Филиалы**: 3 офиса (Теллур-Центр, Теллур-Пушкин, Теллур-Гатчина)
-- **Фон**: engineer-bg.webp в секции «Наши филиалы»
+Все canonical URL используют **non-www** (`kassa-cto.ru`), централизованно в `src/config/site.ts`.
 
 ---
 
 ## 9. Известные задачи и TODO
 
-### Выполнено
-- [x] Безопасность: удалены навыки (skills/), убран fallback chat ID
-- [x] Навигация по центру через grid-layout
-- [x] Шапка: лого+текст максимально влево на ПК
-- [x] SEO: 3 лендинга, мета-теги, sitemap, JSON-LD
-- [x] Калькулятор: скрытие перерегистрации при полной маркировке
+### Выполнено (2026-05-08)
+- [x] Убраны hardcoded секреты (admin.ts, telegram.ts)
+- [x] SITE_URL централизован в src/config/site.ts
+- [x] sitemap.ts: исправлен www → non-www
+- [x] Создан .htaccess для Beget (security headers + API routing)
+- [x] Создан config.php.example (шаблон без секретов)
+- [x] .gitignore: добавлены *.zip, out-with-api/, config.php, chat-data/
+- [x] PROJECT_GUIDE.md обновлён
 
 ### В очереди
-- [ ] Телефон: исправить на +7(812)465-94-57 (основной)
-- [ ] Мобильная версия: показать текст в шапке, увеличить иконки 1.5x
-- [ ] GitHub PAT в remote URL (нужна ротация — ручная задача пользователя)
-- [ ] Хранение заказов: перейти на Google Sheets (Telegram заблокирован в РФ)
-- [ ] FAQ-виджет: адаптация под мобильные устройства
-- [ ] Реструктуризация: разделение на страницы с навигацией
+- [ ] Cookie consent banner
+- [ ] FAQPage schema для всех FAQ
+- [ ] OG + Twitter Cards для всех страниц
+- [ ] Мобильная адаптация (шапка + иконки + FAQ-виджет)
+- [ ] Google Sheets через Apps Script Web App
+- [ ] Удалить мёртвый код (middleware.ts, CF Functions)
+- [ ] GTM события конверсий
+- [ ] Политика конфиденциальности
+- [ ] Калькулятор 1С / Расчёт ОФД
 
 ---
 
-## 10. Правила работы с проектом для AI-агентов
+## 10. Правила работы с проектом
 
 1. **ВСЕГДА** читай этот файл перед началом работы
-2. **НЕ** создавай файлы в корне проекта (кроме конфигурации)
+2. `output: 'export'` — это **статический сайт**, middleware/API routes не работают
 3. **НЕ** добавляй fallback'ы с секретами в код
-4. **НЕ** коммить файлы `skills/`, `upload/`, `.env*`
-5. Деплой: `git push origin main` → Vercel автоматически деплоит
-6. Тестируй визуально: `git push origin main` и проверяй на https://tellurmarkirovka.vercel.app/
-7. Все изменения через pull/push — никаких прямых правок в Vercel
-8. При добавлении страниц — обновлять `sitemap.ts`
-9. Сохраняй существующий стиль (Tailwind CSS 4, shadcn/ui)
-10. Контакты и цены — только в `src/config/` (не хардкодить в компонентах)
+4. **НЕ** коммить `*.zip`, `out-with-api/`, `config.php`, `.env*`
+5. Деплой: `npm run build` → загрузка `out/` на Beget вручную
+6. Все URL — **только** из `src/config/site.ts`
+7. При добавлении страниц — обновлять `sitemap.ts`
+8. Контакты и цены — только в `src/config/`
+9. API-эндпоинты — **только** через PHP proxy, не через Next.js API routes
+10. Security headers — **только** в `public/.htaccess`, не в next.config.ts
 
 ---
 
-*Последнее обновление: 2026-04-09*
+*Последнее обновление: 2026-05-08*

@@ -7,8 +7,7 @@ import Link from 'next/link'
 import { Wrench, FileText, ShieldCheck, GraduationCap, Tag, Settings, Phone, Calculator, CheckCircle2, ArrowLeftRight, Cog } from 'lucide-react'
 import { OpenChatButton } from '@/components/OpenChatButton'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
-
-const SITE_URL = 'https://kassa-cto.ru'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Услуги по маркировке товаров и обслуживанию касс — Теллур-Интех',

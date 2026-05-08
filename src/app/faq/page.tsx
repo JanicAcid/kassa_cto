@@ -8,8 +8,7 @@ import { ChevronDown, ChevronRight, Phone, BookOpen } from 'lucide-react'
 import { BRANCHES } from '@/config/contacts'
 import { FaqHashScroller } from '@/components/FaqHashScroller'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
-
-const SITE_URL = 'https://kassa-cto.ru'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Часто задаваемые вопросы о маркировке товаров — Теллур-Интех',

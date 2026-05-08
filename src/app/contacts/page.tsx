@@ -7,8 +7,7 @@ import Link from 'next/link'
 import { MapPin, Phone, Mail, Clock, ExternalLink, MessageCircle, Calculator } from 'lucide-react'
 import { BRANCHES } from '@/config/contacts'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
-
-const SITE_URL = 'https://kassa-cto.ru'
+import { SITE_URL } from '@/config/site'
 
 export const metadata: Metadata = {
   title: 'Контакты — Теллур-Интех | Центр технического обслуживания касс, Санкт-Петербург',

@@ -2,7 +2,7 @@
 // JSON-LD для статьи (Article schema)
 // ============================================================================
 
-const SITE_URL = 'https://kassa-cto.ru'
+import { SITE_URL } from '@/config/site'
 
 interface ArticleJsonLdProps {
   slug: string

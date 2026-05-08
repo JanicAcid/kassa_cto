@@ -15,8 +15,7 @@ import { getAllArticleSlugs, getArticleBySlug, getRelatedArticles } from '@/conf
 import { ArticleCard } from '@/components/instructions/ArticleCard'
 import { TableOfContents } from '@/components/instructions/TableOfContents'
 import { ArticleJsonLd } from '@/components/instructions/ArticleJsonLd'
-
-const SITE_URL = 'https://kassa-cto.ru'
+import { SITE_URL } from '@/config/site'
 
 // ============================================================================
 // Маппинг иконок — используем реальные lucide-react компоненты

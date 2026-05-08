@@ -2,14 +2,14 @@
 // КОНФИГУРАЦИЯ АДМИН-КАБИНЕТА
 // ============================================================================
 
-/** Логин менеджера */
-export const ADMIN_LOGIN = process.env.ADMIN_LOGIN || 'manager'
+/** Логин менеджера — ТОЛЬКО из переменной окружения */
+export const ADMIN_LOGIN = process.env.ADMIN_LOGIN || ''
 
-/** Пароль менеджера */
-export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'TellurIntex2026'
+/** Пароль менеджера — ТОЛЬКО из переменной окружения */
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ''
 
-/** Секрет для подписи JWT-токена сессии */
-export const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'tellur-admin-secret-2025'
+/** Секрет для подписи JWT-токена сессии — ТОЛЬКО из переменной окружения */
+export const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET || ''
 
 /** Время жизни сессии в секундах (по умолчанию 30 дней) */
 export const ADMIN_SESSION_TTL = 30 * 24 * 60 * 60
