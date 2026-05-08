@@ -10,9 +10,9 @@ import { Label } from '@/components/ui/label'
 import {
   CheckCheck, CreditCard, AlertCircle, Printer,
   Phone, MessageSquare, Download, X, ArrowLeft, CheckCircle2, Info,
-  Clock, Zap, ShieldCheck, Headphones, ChevronRight
+  Clock, Zap, ShieldCheck, Headphones, ChevronRight, Send
 } from 'lucide-react'
-import { PHONES } from '@/config/contacts'
+import { PHONES, MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
 import type { DoneScreenProps, GenerateOrderHtmlParams } from './types'
 
 // ============================================================================
@@ -206,15 +206,11 @@ export function DoneScreen({
 
   const [sendStatus, setSendStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
-  // Автоотправка заказа в Telegram при появлении экрана
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       setSendStatus('sending')
       try {
-        const correctionLabel = isCorrection && !isConsultation ? ' ⚡ КОРРЕКТИРОВКА' : ''
-        const consultationLabel = isConsultation ? ' 📋 КОНСУЛЬТАЦИЯ' : ''
-        const subject = `Заказ-наряд №${safeOrderNum} от ${orderDate}${correctionLabel}${consultationLabel} — ${clientData.name || 'клиент'}`
         const engineerHtml = generateOrderHtml({
           effectiveKkmInfo, kkmCondition, kkmType, clientData, totalCalc,
           step2Selections, step3Selections, scannerChecked, fnChecked, productCardCount, serviceContractChecked, evotorRestore, sigmaHelpChecked, unsureFnsRegistration,
@@ -224,16 +220,8 @@ export function DoneScreen({
           correctionTime,
           orderNum: safeOrderNum
         })
-        const res = await fetch('/api/send-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ subject, html: engineerHtml })
-        })
-        if (cancelled) return
-        if (!res.ok) throw new Error('Send failed')
 
-        // Параллельно логируем в Google Sheets (не блокируем отправку)
-        fetch('/api/log-order', {
+        const res = await fetch('/api/log-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -247,9 +235,11 @@ export function DoneScreen({
             total: totalCalc.total,
             isConsultation: isConsultation || undefined,
             comment: clientData.comment || '',
-            orderHtml: engineerHtml,
+            subject: `${isConsultation ? 'Консультация' : isCorrection ? 'Корректировка заказа' : 'Заказ-наряд'} №${safeOrderNum} — ${clientData.name || 'клиент'}`,
           }),
-        }).catch(err => console.error('Google Sheets log error:', err))
+        })
+        if (cancelled) return
+        if (!res.ok) throw new Error('Send failed')
 
         setSendStatus('sent')
       } catch (err) {
@@ -403,9 +393,9 @@ export function DoneScreen({
               <a href="tel:+78124659457" className="flex items-center gap-1.5 text-red-700 font-medium hover:text-red-900 hover:underline">
                 <Phone className="w-3.5 h-3.5" />Позвонить
               </a>
-              <button type="button" onClick={() => window.dispatchEvent(new Event('open-chat'))} className="flex items-center gap-1.5 text-red-700 font-medium hover:text-red-900 hover:underline">
-                <MessageSquare className="w-3.5 h-3.5" />Написать в чат
-              </button>
+              <a href={MAX_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-red-700 font-medium hover:text-red-900 hover:underline">
+                <MessageSquare className="w-3.5 h-3.5" />Написать в Max
+              </a>
             </div>
           </div>
         </div>
@@ -440,13 +430,14 @@ export function DoneScreen({
               <Phone className="w-4 h-4" />
               {PHONES[0].label}
             </a>
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new Event('open-chat'))}
+            <a
+              href={MAX_PROFILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 justify-center py-2 text-[#1e3a5f] font-medium hover:underline">
               <MessageSquare className="w-4 h-4" />
-              Написать в чат
-            </button>
+              Написать в Max
+            </a>
           </div>
         </CardContent>
       </Card>
@@ -472,14 +463,26 @@ export function DoneScreen({
                 <p className="text-white/80 text-sm mt-1">Оставьте заявку и наш специалист настроит маркировку под ключ за 1-3 дня</p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new Event('open-chat'))}
-              className="w-full sm:w-auto bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold px-6 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#e8a817]/30 flex items-center justify-center gap-2"
-            >
-              <MessageSquare className="w-4 h-4" />
-              Получить консультацию
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              <a
+                href={MAX_PROFILE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold px-6 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#e8a817]/30 flex items-center justify-center gap-2"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Написать в Max
+              </a>
+              <a
+                href={TELEGRAM_CHAT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto bg-white/15 hover:bg-white/25 text-white font-bold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+              >
+                <Send className="w-4 h-4" />
+                Telegram
+              </a>
+            </div>
           </div>
 
           {/* 3 benefit badges */}

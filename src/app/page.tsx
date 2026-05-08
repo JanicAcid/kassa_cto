@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import {
-  Calculator, MessageCircle, Phone, ArrowRight, Clock, ShieldCheck,
+  Calculator, Phone, ArrowRight, Clock, ShieldCheck,
   Monitor, Tag, ChevronRight, FileText, HelpCircle,
-  CheckCircle, Star, Building2, Users, Wrench, Footprints, Package, QrCode, Shirt, Store, Settings
+  CheckCircle, Star, Building2, Users, Wrench, Footprints, Package, QrCode, Shirt, Store, Settings, Send, MessageCircle
 } from 'lucide-react'
+import { MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
 
 // ============================================================================
 // ГЛАВНАЯ — Центр поддержки пользователей ККТ
@@ -158,14 +159,15 @@ export default function HomePage() {
               <Calculator className="w-5 h-5" />
               Рассчитать стоимость маркировки
             </Link>
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new Event('open-chat'))}
+            <a
+              href={MAX_PROFILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/15 hover:bg-white/25 text-white text-base sm:text-lg font-medium rounded-xl transition-all border border-white/20 hover:border-white/30"
             >
               <MessageCircle className="w-5 h-5" />
-              Задать вопрос
-            </button>
+              Написать в Max
+            </a>
             <a
               href="tel:+78124659457"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 text-white text-base sm:text-lg font-medium rounded-xl transition-all border border-white/15 hover:border-white/25"
@@ -537,21 +539,31 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new Event('open-chat'))}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-slate-50 text-[#1e3a5f] font-bold rounded-xl transition-colors shadow-md"
-              >
-                <MessageCircle className="w-5 h-5" />
-                Открыть чат
-              </button>
+                <a
+                  href={MAX_PROFILE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-colors shadow-md"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Max
+                </a>
+                <a
+                  href={TELEGRAM_CHAT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl transition-colors shadow-md"
+                >
+                  <Send className="w-5 h-5" />
+                  Telegram
+                </a>
+              </div>
               <a
                 href="mailto:push@tellur.spb.ru"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-white/80 hover:text-white text-sm font-medium transition-colors"
               >
                 push@tellur.spb.ru
               </a>
-            </div>
           </div>
         </div>
       </section>

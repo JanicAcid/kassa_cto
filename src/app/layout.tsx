@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/JsonLd";
 import { YandexMetrika } from "@/components/YandexMetrika";
-import { ChatWidget } from "@/components/ChatWidget";
+
 import { FaqWidget } from "@/components/FaqWidget";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { Navbar } from "@/components/Navbar";
@@ -105,7 +105,7 @@ export default function RootLayout({
           </div>
         </noscript>
         <ScrollToTopButton />
-        <ChatWidget />
+
         <FaqWidget />
         <CookieConsent />
       </body>

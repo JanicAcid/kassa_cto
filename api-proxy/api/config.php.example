@@ -1,16 +1,12 @@
 <?php
 // ============================================================================
-// КОНФИГУРАЦИЯ PHP API PROXY — kassa-cto.ru
+// КОНФИГУРАЦИЯ PHP API PROXY v8 — kassa-cto.ru
 // ============================================================================
 // ВНИМАНИЕ: Этот файл содержит секреты. НЕ коммитить в Git!
 // Скопировать на Beget вручную и заполнить реальными значениями.
 // ============================================================================
 
-// Telegram Bot
-const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
-const OPERATOR_CHAT_ID = 'YOUR_CHAT_ID_HERE';
-
-// Admin (опционально — для будущей авторизации через PHP)
-const ADMIN_LOGIN = '';
-const ADMIN_PASSWORD = '';
-const ADMIN_JWT_SECRET = '';
+// Apps Script Web App URL — сюда отправляются заказы → Google Таблица + email
+// Получить URL: Apps Script → Deploy → New deployment → Web app → Anyone
+// Формат: https://script.google.com/macros/s/XXXXXXXXXX/exec
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';

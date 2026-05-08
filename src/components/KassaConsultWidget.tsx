@@ -93,14 +93,6 @@ export default function KassaConsultWidget() {
     setSending(true)
     try {
       const modelsStr = rec ? rec.models.map(m => `${m.name} (${m.price})`).join(', ') : 'Не определены'
-      await fetch('/api/send-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subject: `Подбор кассы: ${clientName.trim()} | ${clientPhone.trim()}`,
-          html: `ПОДБОР КАССЫ\n${clientName.trim()}\n${clientPhone.trim()}\n\nТип бизнеса: ${bizType}\nФормат: ${kassaFormat}\nБюджет: ${budget}\n\nРекомендации:\n${modelsStr}`,
-        }),
-      })
       await fetch('/api/log-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -113,6 +105,7 @@ export default function KassaConsultWidget() {
           services: ['Консультация по подбору кассы'],
           total: 0,
           comment: `Подбор кассы | Тип: ${bizType} | Формат: ${kassaFormat} | Бюджет: ${budget} | Рекомендация: ${modelsStr}`,
+          subject: `Подбор кассы: ${clientName.trim()} | ${clientPhone.trim()}`,
         }),
       })
       setSendOk(true)

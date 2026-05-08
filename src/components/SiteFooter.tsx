@@ -4,7 +4,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Lock } from 'lucide-react'
+import { Phone, Mail, MapPin, MessageCircle, Send } from 'lucide-react'
+import { MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
 
 const NAV_LINKS = [
   { label: 'Главная', href: '/' },
@@ -80,6 +81,16 @@ export function SiteFooter() {
                 <Phone className="w-4 h-4 shrink-0" />
                 +7 (812) 321-06-06
               </a>
+              <div className="flex items-center gap-3 mt-1">
+                <a href={MAX_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors">
+                  <MessageCircle className="w-4 h-4 shrink-0" />
+                  Max
+                </a>
+                <a href={TELEGRAM_CHAT_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors">
+                  <Send className="w-4 h-4 shrink-0" />
+                  Telegram
+                </a>
+              </div>
               <a href="mailto:push@tellur.spb.ru" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
                 <Mail className="w-4 h-4 shrink-0" />
                 push@tellur.spb.ru
@@ -95,13 +106,7 @@ export function SiteFooter() {
         {/* Нижняя строка */}
         <div className="mt-8 pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
           <p className="order-2 sm:order-1">© {new Date().getFullYear()} ООО «Теллур-Интех». Все права защищены.</p>
-          <div className="flex items-center gap-3 order-1 sm:order-2">
-            <p className="text-center sm:text-right">Центр технического обслуживания кассового оборудования</p>
-            <Link href="/admin/login" className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors" title="Кабинет менеджера">
-              <Lock className="w-3.5 h-3.5" />
-              <span>Кабинет</span>
-            </Link>
-          </div>
+          <p className="order-1 sm:order-2 text-center sm:text-right">Центр технического обслуживания кассового оборудования</p>
         </div>
       </div>
     </footer>

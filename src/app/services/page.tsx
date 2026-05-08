@@ -5,7 +5,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Wrench, FileText, ShieldCheck, GraduationCap, Tag, Settings, Phone, Calculator, CheckCircle2, ArrowLeftRight, Cog } from 'lucide-react'
-import { OpenChatButton } from '@/components/OpenChatButton'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { SITE_URL } from '@/config/site'
 
@@ -135,12 +134,15 @@ export default function ServicesPage() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <OpenChatButton
+          <a
+            href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-colors shadow-md"
             style={{ backgroundColor: '#e8a817' }}
           >
             Оставить заявку
-          </OpenChatButton>
+          </a>
           <Link
             href="/kalkulyatory/markirovka"
             className="text-white/80 hover:text-white text-sm font-medium underline underline-offset-4 transition-colors"

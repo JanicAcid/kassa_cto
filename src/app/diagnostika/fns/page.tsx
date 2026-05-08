@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft, Building2, Clock, ShieldCheck } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
-import { OpenChatButton } from '@/components/OpenChatButton'
 
 // ============================================================================
 // Диагностика ККТ — Проверка регистрации в ФНС (скоро)
@@ -57,12 +56,15 @@ export default function FnsDiagnostikaPage() {
             <ArrowLeft className="w-4 h-4" />
             Все диагностики
           </Link>
-          <OpenChatButton
+          <a
+            href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#e8a817] hover:bg-[#d49a12] text-white text-sm font-bold rounded-xl transition-colors"
           >
             <Clock className="w-4 h-4" />
             Проверить вручную
-          </OpenChatButton>
+          </a>
         </div>
       </div>
     </div>

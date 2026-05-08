@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Phone, Menu, X, ChevronRight, MessageCircle } from 'lucide-react'
+import { Phone, Menu, X, ChevronRight } from 'lucide-react'
 
 const NAV_ITEMS = [
   { label: 'Главная', href: '/' },
@@ -114,15 +114,14 @@ export function Navbar() {
                 <Phone className="w-6 h-6" />
               </a>
 
-              {/* Мобильный: иконка чата */}
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new Event('open-chat'))}
-                className="sm:hidden inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#e8a817] hover:bg-[#d49a12] text-white transition-colors shadow-md"
-                aria-label="Открыть чат"
+              {/* Мобильный: иконка телефона (мобильный) */}
+              <a
+                href="tel:+79219403870"
+                className="sm:hidden inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#1e3a5f] hover:bg-[#2a5080] text-white transition-colors shadow-md"
+                aria-label="Позвонить на мобильный"
               >
-                <MessageCircle className="w-6 h-6" />
-              </button>
+                <Phone className="w-6 h-6" />
+              </a>
 
               {/* Гамбургер (мобильный + планшет) */}
               <button

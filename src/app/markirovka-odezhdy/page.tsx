@@ -16,7 +16,6 @@ import {
   Wifi,
   GraduationCap,
 } from 'lucide-react'
-import { OpenChatButton } from '@/components/OpenChatButton'
 import { SITE_URL } from '@/config/site'
 
 const PAGE_URL = `${SITE_URL}/markirovka-odezhdy`
@@ -131,12 +130,15 @@ export default function MarkirovkaOdezhdyPage() {
               <Calculator className="w-5 h-5" />
               Рассчитать стоимость
             </Link>
-            <OpenChatButton
+            <a
+              href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#1e3a5f]/20 hover:border-[#1e3a5f]/40 text-[#1e3a5f] font-bold rounded-xl transition-colors"
             >
               <MessageCircle className="w-5 h-5" />
               Получить консультацию
-            </OpenChatButton>
+            </a>
           </div>
         </section>
 
@@ -253,12 +255,15 @@ export default function MarkirovkaOdezhdyPage() {
             оптимальное решение под ваш бюджет.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <OpenChatButton
+            <a
+              href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-colors shadow-md"
               style={{ backgroundColor: '#e8a817' }}
             >
               Оставить заявку
-            </OpenChatButton>
+            </a>
             <a
               href="tel:+78124659457"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors"

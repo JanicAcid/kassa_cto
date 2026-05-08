@@ -9,6 +9,7 @@ import {
   Clock, MessageCircle, Loader2, Send, Calculator, RefreshCw
 } from 'lucide-react'
 import { KKT_CATALOG } from '@/config/kkt-catalog'
+import { MAX_PROFILE_URL } from '@/config/contacts'
 
 // ============================================================================
 // ТИПЫ
@@ -492,7 +493,6 @@ export default function DiagnostikaPage() {
     setSendError('')
     try {
       const reportHtml = buildReportHtml()
-      const telegramReport = buildTelegramReport()
       const orderNum = `ДИАГ-${Date.now().toString().slice(-6)}`
 
       const kktMfr = KKT_CATALOG.find(m => m.id === selectedManufacturer)
@@ -517,16 +517,6 @@ export default function DiagnostikaPage() {
           total: 0,
           comment: `Результат: ${summary}${kkmDisplay ? ` | Касса: ${kkmDisplay}` : ''}`,
           orderHtml: reportHtml,
-        }),
-      })
-
-      // Отправляем в Telegram
-      await fetch('/api/send-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subject: `🔍 Диагностика: ${clientName.trim()} | ${clientPhone.trim()}`,
-          html: telegramReport,
         }),
       })
 
@@ -888,15 +878,16 @@ export default function DiagnostikaPage() {
               <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-5">
                 Наши специалисты исправят ошибки маркировки за 1 рабочий день. Без остановки вашей работы.
               </p>
-              <button
-                type="button"
-                onClick={() => window.dispatchEvent(new Event('open-chat'))}
+              <a
+                href={MAX_PROFILE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold transition-all shadow-lg hover:scale-[1.02] active:scale-[0.98]"
                 style={{ background: '#e8a817', color: '#fff' }}
               >
                 <MessageCircle className="w-5 h-5" />
-                Получить настройку под ключ
-              </button>
+                Написать в Max
+              </a>
               <div className="mt-3 text-center">
                 <Link
                   href="/kalkulyatory/markirovka"
