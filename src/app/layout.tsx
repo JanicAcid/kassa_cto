@@ -8,6 +8,7 @@ import { FaqWidget } from "@/components/FaqWidget";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { Navbar } from "@/components/Navbar";
 import { SiteFooter } from "@/components/SiteFooter";
+import { CookieConsent } from "@/components/CookieConsent";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -106,6 +107,7 @@ export default function RootLayout({
         <ScrollToTopButton />
         <ChatWidget />
         <FaqWidget />
+        <CookieConsent />
       </body>
     </html>
   );
