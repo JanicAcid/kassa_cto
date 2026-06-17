@@ -247,14 +247,14 @@ function CalcRecommendations({ results }: { results: LayerResult[] }) {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/kalkulyatory/markirovka"
-            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#e8a817]/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
           >
             <Calculator className="w-5 h-5" />
             Рассчитать стоимость обслуживания
           </Link>
           <Link
             href="/services"
-            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white hover:bg-slate-50 text-[#1e3a5f] font-semibold rounded-xl transition-all border-2 border-[#1e3a5f]/20 hover:border-[#1e3a5f]"
+            className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-white hover:bg-slate-50 text-[#163A5F] font-semibold rounded-xl transition-all border-2 border-[#163A5F]/20 hover:border-[#163A5F]"
           >
             Все услуги
             <ArrowRight className="w-4 h-4" />
@@ -266,13 +266,13 @@ function CalcRecommendations({ results }: { results: LayerResult[] }) {
 
   // Есть проблемы — развёрнутые рекомендации с привязкой к калькулятору
   return (
-    <div className="anim-fade-in mb-6 bg-gradient-to-br from-amber-50 via-white to-orange-50 border-2 border-[#e8a817]/30 rounded-2xl p-5 sm:p-6">
+    <div className="anim-fade-in mb-6 bg-gradient-to-br from-amber-50 via-white to-orange-50 border-2 border-[#F59E0B]/30 rounded-2xl p-5 sm:p-6">
       <div className="flex items-start gap-3.5 mb-5">
-        <div className="w-11 h-11 rounded-xl bg-[#e8a817]/10 flex items-center justify-center shrink-0">
-          <Calculator className="w-6 h-6 text-[#e8a817]" />
+        <div className="w-11 h-11 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center shrink-0">
+          <Calculator className="w-6 h-6 text-[#F59E0B]" />
         </div>
         <div>
-          <h3 className="text-base sm:text-lg font-bold text-[#1e3a5f] leading-snug">
+          <h3 className="text-base sm:text-lg font-bold text-[#163A5F] leading-snug">
             Что может потребоваться
           </h3>
           <p className="mt-1 text-xs sm:text-sm text-slate-500 leading-relaxed">
@@ -294,13 +294,13 @@ function CalcRecommendations({ results }: { results: LayerResult[] }) {
               <div className="flex items-start gap-2.5 mb-2">
                 {statusIcon}
                 <div className="min-w-0">
-                  <h4 className="text-sm font-bold text-[#1e3a5f]">{map.title}</h4>
+                  <h4 className="text-sm font-bold text-[#163A5F]">{map.title}</h4>
                   <p className="text-xs text-slate-500 leading-relaxed mt-0.5">{map.description}</p>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 mt-2.5 pl-6">
                 {map.calcServices.map((svc, i) => (
-                  <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#e8a817]/10 text-xs font-semibold text-[#b8860b]">
+                  <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#F59E0B]/10 text-xs font-semibold text-[#D97706]">
                     <Settings className="w-3 h-3" />
                     {svc}
                   </span>
@@ -313,7 +313,7 @@ function CalcRecommendations({ results }: { results: LayerResult[] }) {
 
       <Link
         href="/kalkulyatory/markirovka"
-        className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 bg-[#e8a817] hover:bg-[#d49a12] text-white text-base sm:text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#e8a817]/25 hover:shadow-xl hover:scale-[1.01] active:scale-[0.98]"
+        className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base sm:text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:scale-[1.01] active:scale-[0.98]"
       >
         <Calculator className="w-5 h-5" />
         Рассчитать стоимость решения
@@ -406,7 +406,7 @@ export default function DiagnostikaPage() {
 
     const layersHtml = results.map(r => `
       <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#1e3a5f;">${esc(r.title)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;font-weight:600;color:#163A5F;">${esc(r.title)}</td>
         <td style="padding:10px 12px;border-bottom:1px solid #e2e8f0;">
           <span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;color:${statusColors[r.status]};background:${statusBg[r.status]};">${esc(statusLabels[r.status])}</span>
         </td>
@@ -420,7 +420,7 @@ export default function DiagnostikaPage() {
       <tr>
         <td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;color:#94a3b8;font-size:13px;vertical-align:top;width:30px;">${idx + 1}</td>
         <td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;color:#334155;font-size:13px;vertical-align:top;">${esc(q.title)}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;color:#1e3a5f;font-size:13px;font-weight:500;">${a.map(esc).join(', ') || '&#8212;'}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;color:#163A5F;font-size:13px;font-weight:500;">${a.map(esc).join(', ') || '&#8212;'}</td>
       </tr>`
     }).join('')
 
@@ -433,14 +433,14 @@ export default function DiagnostikaPage() {
 
     return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:24px;background:#f8fafc;}</style></head><body>
 <div style="max-width:640px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.08);overflow:hidden;">
-  <div style="background:linear-gradient(135deg,#1e3a5f,#2a5080);padding:24px;color:#fff;">
+  <div style="background:linear-gradient(135deg,#163A5F,#1E4A78);padding:24px;color:#fff;">
     <div style="font-size:11px;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Теллур-Интех</div>
     <div style="font-size:20px;font-weight:700;margin-bottom:4px;">Результат диагностики маркировки</div>
     <div style="font-size:13px;opacity:0.8;">${esc(dateStr)} в ${esc(timeStr)}</div>
   </div>
   ${kktLabel ? `<div style="padding:12px 24px;background:#f0f9ff;border-bottom:1px solid #bae6fd;"><span style="font-size:12px;color:#0369a1;font-weight:600;">Касса клиента: </span><span style="font-size:12px;color:#0c4a6e;">${esc(kktLabel)}</span></div>` : ''}
   <div style="padding:20px 24px;">
-    <div style="font-size:14px;font-weight:700;color:#1e3a5f;margin-bottom:12px;">Сводка по слоям</div>
+    <div style="font-size:14px;font-weight:700;color:#163A5F;margin-bottom:12px;">Сводка по слоям</div>
     <table style="width:100%;border-collapse:collapse;font-size:13px;">
       <thead><tr style="background:#f8fafc;">
         <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #e2e8f0;color:#64748b;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Слой</th>
@@ -452,11 +452,11 @@ export default function DiagnostikaPage() {
   </div>
   ${results.some(r => r.status !== 'green') ? `
   <div style="padding:0 24px 20px;">
-    <div style="font-size:14px;font-weight:700;color:#1e3a5f;margin-bottom:10px;">Рекомендации</div>
+    <div style="font-size:14px;font-weight:700;color:#163A5F;margin-bottom:10px;">Рекомендации</div>
     <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 16px;">${tipsHtml}</div>
   </div>` : ''}
   <div style="padding:0 24px 20px;">
-    <div style="font-size:14px;font-weight:700;color:#1e3a5f;margin-bottom:10px;">Ответы клиента</div>
+    <div style="font-size:14px;font-weight:700;color:#163A5F;margin-bottom:10px;">Ответы клиента</div>
     <table style="width:100%;border-collapse:collapse;">
       <tbody>${questionsHtml}</tbody>
     </table>
@@ -558,10 +558,10 @@ export default function DiagnostikaPage() {
       {step === 0 && (
         <div className="min-h-[calc(100vh-56px)] flex items-center justify-center px-4 py-8">
           <div className="max-w-lg w-full text-center anim-fade-in">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[#1e3a5f] to-[#2a5080] flex items-center justify-center shadow-lg shadow-[#1e3a5f]/20">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-[#163A5F] to-[#1E4A78] flex items-center justify-center shadow-lg shadow-[#163A5F]/20">
               <ShieldCheck className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight mb-3">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight mb-3">
               Проверьте настройку маркировки
             </h1>
             <p className="text-slate-500 text-sm sm:text-base leading-relaxed mb-8 max-w-md mx-auto">
@@ -569,9 +569,9 @@ export default function DiagnostikaPage() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 text-left">
               {[
-                { icon: <Clock className="w-5 h-5 text-[#e8a817]" />, text: '8 вопросов, 3 минуты' },
-                { icon: <HelpCircle className="w-5 h-5 text-[#e8a817]" />, text: 'Без сложных терминов' },
-                { icon: <FileText className="w-5 h-5 text-[#e8a817]" />, text: 'Конкретные рекомендации' },
+                { icon: <Clock className="w-5 h-5 text-[#F59E0B]" />, text: '8 вопросов, 3 минуты' },
+                { icon: <HelpCircle className="w-5 h-5 text-[#F59E0B]" />, text: 'Без сложных терминов' },
+                { icon: <FileText className="w-5 h-5 text-[#F59E0B]" />, text: 'Конкретные рекомендации' },
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-2.5 bg-white rounded-xl border border-slate-100 p-3 shadow-sm">
                   {item.icon}
@@ -582,7 +582,7 @@ export default function DiagnostikaPage() {
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="pulse-glow inline-flex items-center gap-2.5 px-8 py-4 bg-[#e8a817] hover:bg-[#d49a12] text-white text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#e8a817]/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+              className="pulse-glow inline-flex items-center gap-2.5 px-8 py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
             >
               Начать проверку
               <ArrowRight className="w-5 h-5" />
@@ -599,18 +599,18 @@ export default function DiagnostikaPage() {
           <div ref={questionAreaRef} className="max-w-xl mx-auto w-full">
             <div className="mb-6 sm:mb-8">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs sm:text-sm font-semibold text-[#1e3a5f]">Вопрос {step} из 8</span>
+                <span className="text-xs sm:text-sm font-semibold text-[#163A5F]">Вопрос {step} из 8</span>
                 <span className="text-xs text-slate-400">{Math.round(progress)}%</span>
               </div>
               <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#1e3a5f] to-[#e8a817] rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+                <div className="h-full bg-gradient-to-r from-[#163A5F] to-[#F59E0B] rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
               </div>
             </div>
 
             <div className="anim-slide-in">
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-7 mb-5">
                 <div className="mb-5">
-                  <h2 className="text-base sm:text-lg font-bold text-[#1e3a5f] leading-snug">{currentQuestion.title}</h2>
+                  <h2 className="text-base sm:text-lg font-bold text-[#163A5F] leading-snug">{currentQuestion.title}</h2>
                   {currentQuestion.subtitle && <p className="mt-1 text-xs text-slate-400">{currentQuestion.subtitle}</p>}
                 </div>
                 <div className="space-y-2.5">
@@ -621,15 +621,15 @@ export default function DiagnostikaPage() {
                       onClick={() => toggleAnswer(currentQuestion.id, opt.label)}
                       className={`w-full text-left px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
                         isSelected(currentQuestion.id, opt.label)
-                          ? 'border-[#1e3a5f] bg-[#1e3a5f]/5 text-[#1e3a5f] font-semibold'
+                          ? 'border-[#163A5F] bg-[#163A5F]/5 text-[#163A5F] font-semibold'
                           : 'border-slate-100 hover:border-slate-200 text-slate-600 hover:bg-slate-50'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected(currentQuestion.id, opt.label) ? 'border-[#1e3a5f]' : 'border-slate-200'
+                          isSelected(currentQuestion.id, opt.label) ? 'border-[#163A5F]' : 'border-slate-200'
                         }`}>
-                          {isSelected(currentQuestion.id, opt.label) && <div className="w-2.5 h-2.5 rounded-full bg-[#1e3a5f] anim-scale-in" />}
+                          {isSelected(currentQuestion.id, opt.label) && <div className="w-2.5 h-2.5 rounded-full bg-[#163A5F] anim-scale-in" />}
                         </div>
                         <span className="text-sm sm:text-[15px] leading-snug">{opt.label}</span>
                       </div>
@@ -644,7 +644,7 @@ export default function DiagnostikaPage() {
               <button
                 type="button"
                 onClick={() => setStep(s => s - 1)}
-                className="inline-flex items-center gap-1.5 px-5 py-3 text-sm font-medium text-slate-500 hover:text-[#1e3a5f] rounded-xl hover:bg-slate-50 transition-colors"
+                className="inline-flex items-center gap-1.5 px-5 py-3 text-sm font-medium text-slate-500 hover:text-[#163A5F] rounded-xl hover:bg-slate-50 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" /> Назад
               </button>
@@ -654,7 +654,7 @@ export default function DiagnostikaPage() {
                   onClick={() => setStep(s => s + 1)}
                   disabled={!isAnswered(currentQuestion)}
                   className={`inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold rounded-xl transition-all ${
-                    isAnswered(currentQuestion) ? 'bg-[#1e3a5f] hover:bg-[#2a5080] text-white shadow-lg shadow-[#1e3a5f]/20' : 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                    isAnswered(currentQuestion) ? 'bg-[#163A5F] hover:bg-[#1E4A78] text-white shadow-lg shadow-[#163A5F]/20' : 'bg-slate-100 text-slate-300 cursor-not-allowed'
                   }`}
                 >
                   Далее <ChevronRight className="w-5 h-5" />
@@ -665,7 +665,7 @@ export default function DiagnostikaPage() {
                   onClick={() => setStep(9)}
                   disabled={!isAnswered(currentQuestion)}
                   className={`inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold rounded-xl transition-all ${
-                    isAnswered(currentQuestion) ? 'bg-[#e8a817] hover:bg-[#d49a12] text-white shadow-lg shadow-[#e8a817]/25' : 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                    isAnswered(currentQuestion) ? 'bg-[#F59E0B] hover:bg-[#D97706] text-white shadow-lg shadow-[#F59E0B]/25' : 'bg-slate-100 text-slate-300 cursor-not-allowed'
                   }`}
                 >
                   Показать результат <ShieldCheck className="w-5 h-5" />
@@ -696,7 +696,7 @@ export default function DiagnostikaPage() {
             <div className="anim-fade-in">
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-7 mb-5">
                 <div className="mb-6">
-                  <h2 className="text-base sm:text-lg font-bold text-[#1e3a5f] leading-snug">
+                  <h2 className="text-base sm:text-lg font-bold text-[#163A5F] leading-snug">
                     Как к вам обращаться?
                   </h2>
                   <p className="mt-1 text-xs sm:text-sm text-slate-400 leading-relaxed">
@@ -708,7 +708,7 @@ export default function DiagnostikaPage() {
                 <div className="space-y-4">
                   {/* Имя */}
                   <div>
-                    <label htmlFor="diag-name" className="block text-sm font-semibold text-[#1e3a5f] mb-1.5">
+                    <label htmlFor="diag-name" className="block text-sm font-semibold text-[#163A5F] mb-1.5">
                       Ваше имя
                     </label>
                     <input
@@ -718,13 +718,13 @@ export default function DiagnostikaPage() {
                       onChange={e => setClientName(e.target.value)}
                       placeholder="Иван Иванов"
                       autoComplete="name"
-                      className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all"
                     />
                   </div>
 
                   {/* Телефон */}
                   <div>
-                    <label htmlFor="diag-phone" className="block text-sm font-semibold text-[#1e3a5f] mb-1.5">
+                    <label htmlFor="diag-phone" className="block text-sm font-semibold text-[#163A5F] mb-1.5">
                       Телефон
                     </label>
                     <input
@@ -735,19 +735,19 @@ export default function DiagnostikaPage() {
                       placeholder="+7 (999) 123-45-67"
                       autoComplete="tel"
                       inputMode="tel"
-                      className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all"
                     />
                   </div>
 
                   {/* Выбор кассы */}
                   <div>
-                    <label className="block text-sm font-semibold text-[#1e3a5f] mb-1.5">
+                    <label className="block text-sm font-semibold text-[#163A5F] mb-1.5">
                       Ваша касса <span className="text-slate-400 font-normal">(необязательно)</span>
                     </label>
                     <select
                       value={selectedManufacturer}
                       onChange={e => { setSelectedManufacturer(e.target.value); setSelectedModel('') }}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 bg-white focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 bg-white focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all"
                     >
                       <option value="">— Выберите производителя —</option>
                       <option value="_none">У меня нет кассы</option>
@@ -759,13 +759,13 @@ export default function DiagnostikaPage() {
 
                   {filteredModels.length > 0 && (
                     <div className="anim-fade-in">
-                      <label className="block text-sm font-semibold text-[#1e3a5f] mb-1.5">
+                      <label className="block text-sm font-semibold text-[#163A5F] mb-1.5">
                         Модель кассы
                       </label>
                       <select
                         value={selectedModel}
                         onChange={e => setSelectedModel(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 bg-white focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 bg-white focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all"
                       >
                         <option value="">— Выберите модель —</option>
                         {filteredModels.map(m => (
@@ -790,7 +790,7 @@ export default function DiagnostikaPage() {
               <button
                 type="button"
                 onClick={() => setStep(8)}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-slate-500 hover:text-[#1e3a5f] rounded-xl hover:bg-slate-50 transition-colors"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-slate-500 hover:text-[#163A5F] rounded-xl hover:bg-slate-50 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" /> Назад
               </button>
@@ -801,7 +801,7 @@ export default function DiagnostikaPage() {
                 disabled={!clientName.trim() || !clientPhone.trim() || sending}
                 className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl transition-all ${
                   clientName.trim() && clientPhone.trim() && !sending
-                    ? 'bg-[#e8a817] hover:bg-[#d49a12] text-white shadow-lg shadow-[#e8a817]/25'
+                    ? 'bg-[#F59E0B] hover:bg-[#D97706] text-white shadow-lg shadow-[#F59E0B]/25'
                     : 'bg-slate-100 text-slate-300 cursor-not-allowed'
                 }`}
               >
@@ -834,7 +834,7 @@ export default function DiagnostikaPage() {
               <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-emerald-100 flex items-center justify-center">
                 <CheckCircle2 className="w-10 h-10 text-emerald-500" />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight mb-2">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight mb-2">
                 Спасибо! Ваша заявка отправлена
               </h1>
               <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
@@ -844,7 +844,7 @@ export default function DiagnostikaPage() {
 
             {/* Сводка по слоям */}
             <div className="anim-fade-in bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 mb-6" style={{ animationDelay: '0.1s' }}>
-              <h2 className="text-sm sm:text-base font-bold text-[#1e3a5f] mb-4">Результаты диагностики</h2>
+              <h2 className="text-sm sm:text-base font-bold text-[#163A5F] mb-4">Результаты диагностики</h2>
               <div className="space-y-3">
                 {results.map((layer) => {
                   const statusConfig = {
@@ -871,7 +871,7 @@ export default function DiagnostikaPage() {
             </div>
 
             {/* Лид-генерация — тёмная карточка */}
-            <div className="anim-fade-in rounded-2xl p-5 sm:p-6 mb-6" style={{ animationDelay: '0.2s', background: '#1e3a5f' }}>
+            <div className="anim-fade-in rounded-2xl p-5 sm:p-6 mb-6" style={{ animationDelay: '0.2s', background: '#163A5F' }}>
               <h2 className="text-base sm:text-lg font-bold text-white leading-snug mb-2">
                 Обнаружены проблемы?
               </h2>
@@ -883,7 +883,7 @@ export default function DiagnostikaPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold transition-all shadow-lg hover:scale-[1.02] active:scale-[0.98]"
-                style={{ background: '#e8a817', color: '#fff' }}
+                style={{ background: '#F59E0B', color: '#fff' }}
               >
                 <MessageCircle className="w-5 h-5" />
                 Написать в Max
@@ -892,7 +892,7 @@ export default function DiagnostikaPage() {
                 <Link
                   href="/kalkulyatory/markirovka"
                   className="text-xs sm:text-sm font-medium transition-colors hover:underline"
-                  style={{ color: '#e8a817' }}
+                  style={{ color: '#F59E0B' }}
                 >
                   Рассчитать стоимость
                 </Link>
@@ -904,7 +904,7 @@ export default function DiagnostikaPage() {
               <button
                 type="button"
                 onClick={() => { setStep(0); setAnswers({}); setClientName(''); setClientPhone(''); setSelectedManufacturer(''); setSelectedModel('') }}
-                className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-[#1e3a5f] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-[#163A5F] transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
                 Пройти диагностику ещё раз

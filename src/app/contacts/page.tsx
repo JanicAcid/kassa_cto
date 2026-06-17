@@ -37,7 +37,7 @@ export default function ContactsPage() {
 
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
           Контакты
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-500">
@@ -46,7 +46,7 @@ export default function ContactsPage() {
       </div>
 
       {/* Main Phone CTA */}
-      <div className="bg-gradient-to-r from-[#e8a817] to-[#d49a12] rounded-2xl p-5 sm:p-6 text-center mb-6 sm:mb-8">
+      <div className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] rounded-2xl p-5 sm:p-6 text-center mb-6 sm:mb-8">
         <p className="text-white/80 text-sm mb-1">Бесплатная консультация</p>
         <a href="tel:+78124659457" className="inline-block text-2xl sm:text-3xl font-extrabold text-white">
           +7 (812) 465-94-57
@@ -64,12 +64,12 @@ export default function ContactsPage() {
             key={branch.name}
             className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] px-5 py-3">
+            <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] px-5 py-3">
               <h2 className="text-white font-bold text-base sm:text-lg">«{branch.name}»</h2>
             </div>
             <div className="p-5 space-y-3">
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-[#e8a817] shrink-0 mt-0.5" />
+                <MapPin className="w-5 h-5 text-[#F59E0B] shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm sm:text-[15px] text-slate-700">{branch.address}</p>
                   {YANDEX_MAP_LINKS[branch.name] && (
@@ -77,7 +77,7 @@ export default function ContactsPage() {
                       href={YANDEX_MAP_LINKS[branch.name]}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-[#1e3a5f] hover:underline mt-1"
+                      className="inline-flex items-center gap-1 text-xs text-[#163A5F] hover:underline mt-1"
                     >
                       <ExternalLink className="w-3 h-3" />
                       Открыть на карте
@@ -86,21 +86,21 @@ export default function ContactsPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-[#e8a817] shrink-0" />
-                <a href={`mailto:${branch.email}`} className="text-sm text-[#1e3a5f] hover:underline">{branch.email}</a>
+                <Mail className="w-5 h-5 text-[#F59E0B] shrink-0" />
+                <a href={`mailto:${branch.email}`} className="text-sm text-[#163A5F] hover:underline">{branch.email}</a>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-[#e8a817] shrink-0" />
+                <Phone className="w-5 h-5 text-[#F59E0B] shrink-0" />
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
                   {branch.phones.map((phone, i) => (
-                    <a key={i} href={'tel:' + phone.replace(/[^0-9+]/g, '')} className="text-sm text-[#1e3a5f] hover:underline">
+                    <a key={i} href={'tel:' + phone.replace(/[^0-9+]/g, '')} className="text-sm text-[#163A5F] hover:underline">
                       {phone}
                     </a>
                   ))}
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-[#e8a817] shrink-0" />
+                <Clock className="w-5 h-5 text-[#F59E0B] shrink-0" />
                 <span className="text-sm text-slate-600">{branch.schedule}</span>
               </div>
             </div>
@@ -112,14 +112,14 @@ export default function ContactsPage() {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1e3a5f] hover:bg-[#1e3a5f]/90 text-white text-sm font-bold rounded-xl transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#163A5F] hover:bg-[#163A5F]/90 text-white text-sm font-bold rounded-xl transition-colors"
         >
           <Calculator className="w-4 h-4" />
           Калькулятор маркировки
         </Link>
         <Link
           href="/instructions"
-          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#1e3a5f]/20 text-[#1e3a5f] text-sm font-medium rounded-xl hover:bg-[#1e3a5f]/5 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#163A5F]/20 text-[#163A5F] text-sm font-medium rounded-xl hover:bg-[#163A5F]/5 transition-colors"
         >
           Инструкции
         </Link>

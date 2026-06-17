@@ -192,7 +192,7 @@ const REG_STEPS = [
 const FAQS = [
   {
     q: 'Сколько стоит подключение Честного ЗНАК?',
-    a: 'Сама регистрация в Честном ЗНАКе — бесплатная, это государственная система. Платная часть — это работа специалиста по настройке всех компонентов: помощь с УКЭП, регистрация, настройка кабинета, привязка кассы, ТС ПИоТ, обучение сотрудников. Стоимость настройки начинается от 1 500 ₽, полная настройка под ключ — от 5 300 ₽. Рассчитайте точную стоимость в нашем бесплатном <Link href="/" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">калькуляторе</Link>.',
+    a: 'Сама регистрация в Честном ЗНАКе — бесплатная, это государственная система. Платная часть — это работа специалиста по настройке всех компонентов: помощь с УКЭП, регистрация, настройка кабинета, привязка кассы, ТС ПИоТ, обучение сотрудников. Стоимость настройки начинается от 1 500 ₽, полная настройка под ключ — от 5 300 ₽. Рассчитайте точную стоимость в нашем бесплатном <Link href="/" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">калькуляторе</Link>.',
   },
   {
     q: 'Как зарегистрироваться в Честном ЗНАКе для ИП?',
@@ -227,7 +227,7 @@ export default function ChestnyznakPage() {
 
         {/* Header */}
         <div className="text-center mb-8 sm:mb-10">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
             Подключение Честного ЗНАК в Санкт-Петербурге
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
@@ -239,12 +239,12 @@ export default function ChestnyznakPage() {
 
         {/* ── Что такое Честный ЗНАК ──────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Что такое Честный ЗНАК и зачем он нужен
           </h2>
           <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5">
             <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-4">
-              <strong className="text-[#1e3a5f]">Честный ЗНАК</strong> (честныйзнак.рф) — это
+              <strong className="text-[#163A5F]">Честный ЗНАК</strong> (честныйзнак.рф) — это
               государственная информационная система прослеживаемости товаров в Российской Федерации.
               Каждая единица маркированной продукции получает уникальный код <strong className="text-slate-700">Data Matrix</strong>,
               который наносится на упаковку производителем и заносится в базу данных.
@@ -267,7 +267,7 @@ export default function ChestnyznakPage() {
 
         {/* ── Что входит в подключение ────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Что входит в подключение Честного ЗНАК под ключ
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -281,11 +281,11 @@ export default function ChestnyznakPage() {
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{item.title}</h3>
+                    <h3 className="text-base font-bold text-[#163A5F] mb-1">{item.title}</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -296,7 +296,7 @@ export default function ChestnyznakPage() {
 
         {/* ── Пошаговая регистрация ───────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Как зарегистрироваться в Честном ЗНАКе — пошагово
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -309,11 +309,11 @@ export default function ChestnyznakPage() {
                 key={idx}
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-start gap-4"
               >
-                <span className="text-2xl font-extrabold text-[#e8a817] shrink-0 leading-none mt-0.5">
+                <span className="text-2xl font-extrabold text-[#F59E0B] shrink-0 leading-none mt-0.5">
                   {step.num}
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{step.title}</h3>
+                  <h3 className="text-base font-bold text-[#163A5F] mb-1">{step.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
                 </div>
               </div>
@@ -323,7 +323,7 @@ export default function ChestnyznakPage() {
 
         {/* ── Стоимость ───────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Стоимость подключения Честного ЗНАК
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -333,21 +333,21 @@ export default function ChestnyznakPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-center">
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Регистрация</p>
-              <p className="text-2xl font-extrabold text-[#1e3a5f]">от 1 500 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">от 1 500 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Настройка кабинета, товарных групп и привязка кассы</p>
             </div>
-            <div className="bg-white rounded-xl border-2 border-[#e8a817]/40 shadow-sm p-4 text-center relative">
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#e8a817] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
+            <div className="bg-white rounded-xl border-2 border-[#F59E0B]/40 shadow-sm p-4 text-center relative">
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#F59E0B] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
                 Под ключ
               </span>
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Полная настройка</p>
-              <p className="text-2xl font-extrabold text-[#1e3a5f]">от 8 000 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">от 8 000 ₽</p>
               <p className="text-xs text-slate-500 mt-2">УКЭП, Честный ЗНАК, ТС ПИоТ, ЭДО, касса, обучение</p>
             </div>
           </div>
           <p className="text-xs text-slate-400 mt-4 text-center">
             Точную стоимость рассчитайте в бесплатном{' '}
-            <Link href="/" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">
+            <Link href="/" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">
               калькуляторе
             </Link>{' '}
             — за 2 минуты без регистрации.
@@ -356,13 +356,13 @@ export default function ChestnyznakPage() {
 
         {/* ── Сколько занимает ────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Сколько занимает регистрация
           </h2>
           <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5">
             <div className="flex items-center gap-2 mb-3">
-              <Clock className="w-5 h-5 text-[#e8a817]" />
-              <h3 className="text-base font-bold text-[#1e3a5f]">Полная настройка — 1 рабочий день</h3>
+              <Clock className="w-5 h-5 text-[#F59E0B]" />
+              <h3 className="text-base font-bold text-[#163A5F]">Полная настройка — 1 рабочий день</h3>
             </div>
             <p className="text-sm text-slate-600 leading-relaxed mb-4">
               При наличии УКЭП регистрация в Честном ЗНАКе и полная настройка рабочего места занимает
@@ -379,7 +379,7 @@ export default function ChestnyznakPage() {
 
         {/* ── FAQ ─────────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Часто задаваемые вопросы
           </h2>
           <div className="space-y-3">
@@ -389,7 +389,7 @@ export default function ChestnyznakPage() {
                 className="group bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden"
               >
                 <summary className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 cursor-pointer hover:bg-slate-50/50 transition-colors list-none">
-                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#1e3a5f] pr-4">{faq.q}</h3>
+                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#163A5F] pr-4">{faq.q}</h3>
                   <ChevronDown className="w-5 h-5 text-slate-300 shrink-0 group-open:rotate-180 transition-transform duration-200" />
                 </summary>
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5">
@@ -401,7 +401,7 @@ export default function ChestnyznakPage() {
         </section>
 
         {/* ── CTA ─────────────────────────────────────────────────────── */}
-        <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+        <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
             Нужна помощь с подключением Честного ЗНАК?
           </h2>
@@ -411,7 +411,7 @@ export default function ChestnyznakPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="tel:+78124659457"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
             >
               <Phone className="w-5 h-5" />
               +7 (812) 465-94-57

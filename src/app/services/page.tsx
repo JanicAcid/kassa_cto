@@ -81,7 +81,7 @@ export default function ServicesPage() {
 
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
           Наши услуги
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
@@ -95,24 +95,24 @@ export default function ServicesPage() {
         {SERVICES.map((service, idx) => (
           <div
             key={idx}
-            className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-[#1e3a5f]/20 transition-all duration-300"
+            className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-[#163A5F]/20 transition-all duration-300"
           >
             <div className="flex items-start gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] shrink-0">
                 {service.icon}
               </div>
               <div className="min-w-0">
-                <h2 className="text-base font-bold text-[#1e3a5f] leading-snug">{service.title}</h2>
+                <h2 className="text-base font-bold text-[#163A5F] leading-snug">{service.title}</h2>
               </div>
             </div>
             <p className="text-sm text-slate-500 leading-relaxed mb-3">{service.desc}</p>
-            <p className="text-sm font-bold text-[#e8a817]">{service.price}</p>
+            <p className="text-sm font-bold text-[#F59E0B]">{service.price}</p>
           </div>
         ))}
       </div>
 
       {/* Conversion CTA — Настройка маркировки под ключ */}
-      <div className="mt-8 sm:mt-10 rounded-2xl p-6 sm:p-8 text-center" style={{ backgroundColor: '#1e3a5f' }}>
+      <div className="mt-8 sm:mt-10 rounded-2xl p-6 sm:p-8 text-center" style={{ backgroundColor: '#163A5F' }}>
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
           Настройка маркировки под ключ
         </h2>
@@ -121,15 +121,15 @@ export default function ServicesPage() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto">
           <div className="flex items-center gap-2 justify-center">
-            <CheckCircle2 className="w-5 h-5 text-[#e8a817] shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
             <span className="text-white text-sm font-medium">Подключим к Честный ЗНАК</span>
           </div>
           <div className="flex items-center gap-2 justify-center">
-            <CheckCircle2 className="w-5 h-5 text-[#e8a817] shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
             <span className="text-white text-sm font-medium">Настроим кассу и 1С</span>
           </div>
           <div className="flex items-center gap-2 justify-center">
-            <CheckCircle2 className="w-5 h-5 text-[#e8a817] shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
             <span className="text-white text-sm font-medium">Обучим персонал</span>
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function ServicesPage() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-colors shadow-md"
-            style={{ backgroundColor: '#e8a817' }}
+            style={{ backgroundColor: '#F59E0B' }}
           >
             Оставить заявку
           </a>
@@ -153,7 +153,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-6 sm:mt-8 bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+      <div className="mt-6 sm:mt-8 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
           Рассчитайте стоимость онлайн
         </h2>
@@ -163,7 +163,7 @@ export default function ServicesPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             href="/kalkulyatory/markirovka"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
           >
             <Calculator className="w-5 h-5" />
             Калькулятор маркировки

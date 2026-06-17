@@ -38,7 +38,7 @@ export default function AboutPage() {
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8">
         <Image src="/logo.webp" alt="Теллур-Интех" width={88} height={72} className="h-14 w-auto mx-auto mb-3" quality={100} />
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
           ООО «Теллур-Интех»
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-500">
@@ -50,7 +50,7 @@ export default function AboutPage() {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 mb-6">
         <div className="prose prose-slate max-w-none text-sm sm:text-[15px] text-slate-700 leading-relaxed space-y-3">
           <p>
-            Компания <strong className="text-[#1e3a5f]">ТЕЛЛУР</strong> работает на рынке торгового, офисного и банковского оборудования с 1995 года (более 30 лет).
+            Компания <strong className="text-[#163A5F]">ТЕЛЛУР</strong> работает на рынке торгового, офисного и банковского оборудования с 1995 года (более 30 лет).
             Осуществляем продажу, установку и обслуживание кассового оборудования. Основная деятельность — предоставление комплексных
             сервисных услуг: ремонт, техническая поддержка и полное решение технических задач «из одних рук».
           </p>
@@ -68,14 +68,14 @@ export default function AboutPage() {
       </div>
 
       {/* Advantages */}
-      <h2 className="text-lg sm:text-xl font-bold text-[#1e3a5f] mb-4">Почему выбирают нас</h2>
+      <h2 className="text-lg sm:text-xl font-bold text-[#163A5F] mb-4">Почему выбирают нас</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
         {ADVANTAGES.map((item, idx) => (
           <div key={idx} className="bg-white rounded-xl border border-slate-100 shadow-sm p-4">
-            <div className="w-9 h-9 rounded-lg bg-[#e8a817]/10 flex items-center justify-center text-[#e8a817] mb-2.5">
+            <div className="w-9 h-9 rounded-lg bg-[#F59E0B]/10 flex items-center justify-center text-[#F59E0B] mb-2.5">
               {item.icon}
             </div>
-            <h3 className="text-sm font-bold text-[#1e3a5f] mb-1">{item.title}</h3>
+            <h3 className="text-sm font-bold text-[#163A5F] mb-1">{item.title}</h3>
             <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
           </div>
         ))}
@@ -85,7 +85,7 @@ export default function AboutPage() {
       <div className="text-center">
         <Link
           href="/contacts"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
         >
           <Phone className="w-5 h-5" />
           Контакты и адреса

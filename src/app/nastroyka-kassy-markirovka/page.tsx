@@ -217,7 +217,7 @@ const CASSES = [
 const FAQS = [
   {
     q: 'Сколько стоит настройка кассы для маркировки?',
-    a: 'Частичная настройка маркировки начинается от 1 500 ₽. Полная настройка под ключ — от 5 300 ₽. Рассчитайте точную стоимость в нашем бесплатном <Link href="/" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">калькуляторе</Link> — это занимает 2 минуты.',
+    a: 'Частичная настройка маркировки начинается от 1 500 ₽. Полная настройка под ключ — от 5 300 ₽. Рассчитайте точную стоимость в нашем бесплатном <Link href="/" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">калькуляторе</Link> — это занимает 2 минуты.',
   },
   {
     q: 'Как проходит процесс настройки кассы?',
@@ -252,7 +252,7 @@ export default function NastroykaKassyPage() {
 
         {/* Header */}
         <div className="text-center mb-8 sm:mb-10">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
             Настройка кассы для маркировки в Санкт-Петербурге
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
@@ -264,7 +264,7 @@ export default function NastroykaKassyPage() {
 
         {/* ── Что входит в настройку ─────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Что входит в настройку кассы под ключ
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -280,11 +280,11 @@ export default function NastroykaKassyPage() {
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{item.title}</h3>
+                    <h3 className="text-base font-bold text-[#163A5F] mb-1">{item.title}</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -295,13 +295,13 @@ export default function NastroykaKassyPage() {
 
         {/* ── Цены ───────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Цены на настройку кассы для маркировки
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
             Стоимость зависит от состояния кассы, бренда и набора необходимых услуг. Мы работаем
             прозрачно — без скрытых платежей. Используйте наш бесплатный{' '}
-            <Link href="/" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">
+            <Link href="/" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">
               калькулятор
             </Link>{' '}
             для точного расчёта.
@@ -309,20 +309,20 @@ export default function NastroykaKassyPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-center">
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Базовая</p>
-              <p className="text-2xl font-extrabold text-[#1e3a5f]">от 1 500 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">от 1 500 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Настройка одной из систем (ЭДО, Честный ЗНАК или ТС ПИоТ)</p>
             </div>
-            <div className="bg-white rounded-xl border-2 border-[#e8a817]/40 shadow-sm p-4 text-center relative">
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#e8a817] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
+            <div className="bg-white rounded-xl border-2 border-[#F59E0B]/40 shadow-sm p-4 text-center relative">
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#F59E0B] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
                 Под ключ
               </span>
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Полная</p>
-              <p className="text-2xl font-extrabold text-[#1e3a5f]">8 000 – 15 000 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">8 000 – 15 000 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Все системы: ЭДО, Честный ЗНАК, ТС ПИоТ, ФНС, ОФД, обучение</p>
             </div>
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-center">
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Б/у касса</p>
-              <p className="text-2xl font-extrabold text-[#1e3a5f]">+2 000 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">+2 000 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Доплата за обновление прошивки и диагностику б/у оборудования</p>
             </div>
           </div>
@@ -330,7 +330,7 @@ export default function NastroykaKassyPage() {
 
         {/* ── 6 шагов ────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Как мы настраиваем кассу — 6 шагов
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -343,11 +343,11 @@ export default function NastroykaKassyPage() {
                 key={idx}
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-start gap-4"
               >
-                <span className="text-2xl font-extrabold text-[#e8a817] shrink-0 leading-none mt-0.5">
+                <span className="text-2xl font-extrabold text-[#F59E0B] shrink-0 leading-none mt-0.5">
                   {step.num}
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{step.title}</h3>
+                  <h3 className="text-base font-bold text-[#163A5F] mb-1">{step.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
                 </div>
               </div>
@@ -357,7 +357,7 @@ export default function NastroykaKassyPage() {
 
         {/* ── Какие кассы ────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Какие кассы поддерживают маркировку
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -379,14 +379,14 @@ export default function NastroykaKassyPage() {
 
         {/* ── Сколько времени ────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Сколько времени занимает настройка
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-5 h-5 text-[#e8a817]" />
-                <h3 className="text-base font-bold text-[#1e3a5f]">Новая касса — 1 день</h3>
+                <Clock className="w-5 h-5 text-[#F59E0B]" />
+                <h3 className="text-base font-bold text-[#163A5F]">Новая касса — 1 день</h3>
               </div>
               <p className="text-sm text-slate-600 leading-relaxed">
                 При наличии электронной цифровой подписи (ЭЦП) полная настройка новой кассы под ключ
@@ -396,8 +396,8 @@ export default function NastroykaKassyPage() {
             </div>
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5">
               <div className="flex items-center gap-2 mb-2">
-                <Settings className="w-5 h-5 text-[#e8a817]" />
-                <h3 className="text-base font-bold text-[#1e3a5f]">Б/у касса — 2–3 дня</h3>
+                <Settings className="w-5 h-5 text-[#F59E0B]" />
+                <h3 className="text-base font-bold text-[#163A5F]">Б/у касса — 2–3 дня</h3>
               </div>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Для касс, которые уже находились в эксплуатации, потребуется дополнительное время на
@@ -410,7 +410,7 @@ export default function NastroykaKassyPage() {
 
         {/* ── FAQ ─────────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Часто задаваемые вопросы
           </h2>
           <div className="space-y-3">
@@ -420,7 +420,7 @@ export default function NastroykaKassyPage() {
                 className="group bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden"
               >
                 <summary className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 cursor-pointer hover:bg-slate-50/50 transition-colors list-none">
-                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#1e3a5f] pr-4">{faq.q}</h3>
+                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#163A5F] pr-4">{faq.q}</h3>
                   <ChevronDown className="w-5 h-5 text-slate-300 shrink-0 group-open:rotate-180 transition-transform duration-200" />
                 </summary>
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5">
@@ -432,7 +432,7 @@ export default function NastroykaKassyPage() {
         </section>
 
         {/* ── CTA ─────────────────────────────────────────────────────── */}
-        <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+        <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
             Нужна настройка кассы для маркировки?
           </h2>
@@ -443,7 +443,7 @@ export default function NastroykaKassyPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="tel:+78124659457"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
             >
               <Phone className="w-5 h-5" />
               +7 (812) 465-94-57

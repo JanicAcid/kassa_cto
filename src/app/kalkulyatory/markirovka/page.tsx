@@ -695,7 +695,7 @@ export default function TellurServiceCalculator() {
                       <Input value={clientData.comment} onChange={(e) => setClientData({ ...clientData, comment: e.target.value })} placeholder="Что случилось с кассой или что нужно настроить" className="mt-1.5 text-sm h-11" autoComplete="off" />
                     </div>
                     <Button
-                      className={`w-full py-4 sm:py-5 text-base sm:text-lg font-bold transition-all ${clientData.name.trim() !== '' && isPhoneValid(clientData.phone) && clientData.kkmModel.trim() !== '' ? 'bg-[#F59E0B] hover:bg-[#d49a12] hover:shadow-lg hover:shadow-[#F59E0B]/20 text-white' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`}
+                      className={`w-full py-4 sm:py-5 text-base sm:text-lg font-bold transition-all ${clientData.name.trim() !== '' && isPhoneValid(clientData.phone) && clientData.kkmModel.trim() !== '' ? 'bg-[#F59E0B] hover:bg-[#D97706] hover:shadow-lg hover:shadow-[#F59E0B]/20 text-white' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`}
                       size="lg"
                       disabled={clientData.name.trim() === '' || !isPhoneValid(clientData.phone) || clientData.kkmModel.trim() === ''}
                       onClick={handleDone}
@@ -756,7 +756,7 @@ export default function TellurServiceCalculator() {
               <div className={`transition-all duration-300 origin-bottom-center mb-3 pointer-events-auto ${showConsultSlide ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
                 <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-[#F59E0B]/30 p-5 sm:p-7 w-full max-w-md">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#d49a12] flex items-center justify-center shrink-0 shadow-lg shadow-[#F59E0B]/30">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center shrink-0 shadow-lg shadow-[#F59E0B]/30">
                       <Phone className="w-6 h-6 text-white" />
                     </div>
                     <div className="min-w-0">
@@ -768,7 +768,7 @@ export default function TellurServiceCalculator() {
                   <button
                     type="button"
                     onClick={() => { setShowConsultSlide(false); startConsultation() }}
-                    className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-[#F59E0B] to-[#d49a12] hover:from-[#d49a12] hover:to-[#c08b0d] text-white text-base sm:text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:shadow-[#F59E0B]/30 active:scale-[0.98]"
+                    className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white text-base sm:text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:shadow-[#F59E0B]/30 active:scale-[0.98]"
                   >
                     Оставить телефон
                   </button>
@@ -777,7 +777,7 @@ export default function TellurServiceCalculator() {
               <button
                 type="button"
                 onClick={() => setShowConsultSlide(v => !v)}
-                className="pointer-events-auto w-full max-w-sm sm:max-w-md flex items-center justify-center gap-2.5 py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#F59E0B] to-[#d49a12] hover:from-[#d49a12] hover:to-[#c08b0d] text-white shadow-xl shadow-[#F59E0B]/30 hover:shadow-2xl hover:shadow-[#F59E0B]/40 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                className="pointer-events-auto w-full max-w-sm sm:max-w-md flex items-center justify-center gap-2.5 py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white shadow-xl shadow-[#F59E0B]/30 hover:shadow-2xl hover:shadow-[#F59E0B]/40 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                 <span className="font-bold text-base sm:text-lg">Перезвоните мне!</span>

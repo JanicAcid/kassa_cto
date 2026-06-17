@@ -9,11 +9,11 @@ import { MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
 
 const NAV_LINKS = [
   { label: 'Главная', href: '/' },
-  { label: 'Диагностика', href: '/diagnostika' },
   { label: 'Калькуляторы', href: '/kalkulyatory' },
   { label: 'База знаний', href: '/instructions' },
   { label: 'Услуги', href: '/services' },
   { label: 'Контакты', href: '/contacts' },
+  { label: 'Кабинет', href: '/admin-orders' },
 ]
 
 const SERVICE_LINKS = [
@@ -28,7 +28,7 @@ const SERVICE_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="bg-[#163A5F] text-white">
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-8 sm:py-10">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 sm:py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Лого + описание */}
           <div className="sm:col-span-2 lg:col-span-1">

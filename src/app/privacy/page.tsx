@@ -10,19 +10,19 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-      <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] mb-6">
+      <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] mb-6">
         Политика конфиденциальности
       </h1>
 
       <div className="space-y-6 text-sm text-slate-600 leading-relaxed">
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">1. Общие положения</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">1. Общие положения</h2>
           <p>Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006 №152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных и меры по обеспечению безопасности персональных данных, предпринимаемые ООО «Теллур-Интех» (далее — Оператор).</p>
           <p className="mt-2">Оператор ставит своей важнейшей целью и условием осуществления своей деятельности соблюдение прав и свобод человека и гражданина при обработке его персональных данных, в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">2. Какие данные мы собираем</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">2. Какие данные мы собираем</h2>
           <p>При использовании сайта kassa-cto.ru мы можем собирать следующие данные:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li><strong>Контактные данные</strong>: имя, номер телефона, email — указываются вами добровольно при заполнении форм (калькулятор, чат, диагностика)</li>
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">3. Цели обработки данных</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">3. Цели обработки данных</h2>
           <p>Персональные данные обрабатываются в следующих целях:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li>Обработка заявок на подключение услуг и обратная связь</li>
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">4. Файлы cookie</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">4. Файлы cookie</h2>
           <p>Сайт использует файлы cookie двух категорий:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li><strong>Необходимые</strong> — для корректной работы сайта, сохранения настроек и сессий. Не отключаются.</li>
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">5. Передача данных третьим лицам</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">5. Передача данных третьим лицам</h2>
           <p>Оператор не передаёт персональные данные пользователей третьим лицам, за исключением случаев:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li>Пользователь дал на это явное согласие</li>
@@ -65,12 +65,12 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">6. Хранение данных</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">6. Хранение данных</h2>
           <p>Персональные данные хранятся в течение срока, необходимого для достижения целей их обработки, но не более 3 лет с момента последнего обращения. Технические данные аналитики хранятся на серверах Яндекс.Метрики в соответствии с их политикой.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">7. Права пользователя</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">7. Права пользователя</h2>
           <p>Вы имеете право:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li>Запросить информацию об обработке ваших данных</li>
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[#1e3a5f] mt-8 mb-3">8. Контактная информация</h2>
+          <h2 className="text-lg font-bold text-[#163A5F] mt-8 mb-3">8. Контактная информация</h2>
           <p>Оператор персональных данных: ООО «Теллур-Интех»</p>
           <p>Адрес: 192007, г. Санкт-Петербург, ул. Заслонова, д. 32-34</p>
           <p>Телефон: +7 (812) 465-94-57</p>

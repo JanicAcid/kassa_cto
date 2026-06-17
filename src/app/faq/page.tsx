@@ -100,7 +100,7 @@ export default function FaqPage() {
       <FaqHashScroller />
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
           Часто задаваемые вопросы
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-500">
@@ -117,7 +117,7 @@ export default function FaqPage() {
             className="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
           >
             <summary className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 cursor-pointer hover:bg-slate-50/50 transition-colors list-none">
-              <h2 className="text-sm sm:text-[15px] font-semibold text-[#1e3a5f] pr-4">{faq.q}</h2>
+              <h2 className="text-sm sm:text-[15px] font-semibold text-[#163A5F] pr-4">{faq.q}</h2>
               <ChevronDown className="w-5 h-5 text-slate-300 shrink-0 group-open:rotate-180 transition-transform duration-200" />
             </summary>
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
@@ -133,21 +133,21 @@ export default function FaqPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href="tel:+78124659457"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#e8a817] hover:bg-[#d49a12] text-white text-sm font-bold rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-sm font-bold rounded-xl transition-colors"
           >
             <Phone className="w-4 h-4" />
             +7 (812) 465-94-57
           </a>
           <Link
             href="/instructions"
-            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#1e3a5f]/20 text-[#1e3a5f] text-sm font-medium rounded-xl hover:bg-[#1e3a5f]/5 transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#163A5F]/20 text-[#163A5F] text-sm font-medium rounded-xl hover:bg-[#163A5F]/5 transition-colors"
           >
             <BookOpen className="w-4 h-4" />
             Инструкции
           </Link>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#1e3a5f]/20 text-[#1e3a5f] text-sm font-medium rounded-xl hover:bg-[#1e3a5f]/5 transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#163A5F]/20 text-[#163A5F] text-sm font-medium rounded-xl hover:bg-[#163A5F]/5 transition-colors"
           >
             Калькулятор
           </Link>

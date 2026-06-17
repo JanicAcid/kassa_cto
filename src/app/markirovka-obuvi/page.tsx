@@ -107,14 +107,14 @@ export default function MarkirovkaObuviPage() {
       <div className="max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
         {/* ── Breadcrumbs ──────────────────────────────────────────────── */}
         <nav className="mb-4 text-xs text-slate-400" aria-label="Хлебные крошки">
-          <Link href="/" className="hover:text-[#1e3a5f] transition-colors">Главная</Link>
+          <Link href="/" className="hover:text-[#163A5F] transition-colors">Главная</Link>
           <ChevronRight className="inline w-3 h-3 mx-1 text-slate-300" />
           <span className="text-slate-600">Маркировка обуви</span>
         </nav>
 
         {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-6 sm:p-8 mb-8 sm:mb-10 text-center">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
             Маркировка обуви 2025
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
@@ -125,7 +125,7 @@ export default function MarkirovkaObuviPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <Link
               href="/kalkulyatory/markirovka"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#1e3a5f] hover:bg-[#2a5080] text-white font-bold rounded-xl transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#163A5F] hover:bg-[#1E4A78] text-white font-bold rounded-xl transition-colors shadow-md"
             >
               <Calculator className="w-5 h-5" />
               Рассчитать стоимость
@@ -134,7 +134,7 @@ export default function MarkirovkaObuviPage() {
               href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#1e3a5f]/20 hover:border-[#1e3a5f]/40 text-[#1e3a5f] font-bold rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#163A5F]/20 hover:border-[#163A5F]/40 text-[#163A5F] font-bold rounded-xl transition-colors"
             >
               <MessageCircle className="w-5 h-5" />
               Получить консультацию
@@ -144,7 +144,7 @@ export default function MarkirovkaObuviPage() {
 
         {/* ── Что необходимо для маркировки обуви ─────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-2">
             Что необходимо для маркировки обуви
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -156,13 +156,13 @@ export default function MarkirovkaObuviPage() {
             {REQUIREMENTS.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-[#1e3a5f]/20 transition-all duration-300"
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 hover:shadow-md hover:border-[#163A5F]/20 transition-all duration-300"
               >
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] shrink-0">
                     {item.icon}
                   </div>
-                  <h3 className="text-base font-bold text-[#1e3a5f] leading-snug">{item.title}</h3>
+                  <h3 className="text-base font-bold text-[#163A5F] leading-snug">{item.title}</h3>
                 </div>
                 <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
               </div>
@@ -172,7 +172,7 @@ export default function MarkirovkaObuviPage() {
 
         {/* ── Как проходит настройка ───────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Как проходит настройка маркировки обуви
           </h2>
           <div className="space-y-4">
@@ -181,11 +181,11 @@ export default function MarkirovkaObuviPage() {
                 key={step.num}
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-start gap-4"
               >
-                <span className="text-2xl font-extrabold text-[#e8a817] shrink-0 leading-none mt-0.5">
+                <span className="text-2xl font-extrabold text-[#F59E0B] shrink-0 leading-none mt-0.5">
                   {step.num}
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{step.title}</h3>
+                  <h3 className="text-base font-bold text-[#163A5F] mb-1">{step.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
                 </div>
               </div>
@@ -195,27 +195,27 @@ export default function MarkirovkaObuviPage() {
 
         {/* ── Стоимость ────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <div className="bg-white rounded-2xl border-2 border-[#e8a817]/30 shadow-sm p-6 sm:p-8 text-center">
+          <div className="bg-white rounded-2xl border-2 border-[#F59E0B]/30 shadow-sm p-6 sm:p-8 text-center">
             <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Стоимость настройки маркировки обуви</p>
-            <p className="text-3xl font-extrabold text-[#1e3a5f] mb-1">от 5 000 ₽</p>
+            <p className="text-3xl font-extrabold text-[#163A5F] mb-1">от 5 000 ₽</p>
             <p className="text-sm text-slate-500 mb-4">от 1 рабочего дня · без остановки работы магазина</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto">
               <div className="flex items-center gap-2 justify-center">
-                <CheckCircle2 className="w-5 h-5 text-[#e8a817] shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
                 <span className="text-slate-600 text-sm font-medium">Подключим к Честный ЗНАК</span>
               </div>
               <div className="flex items-center gap-2 justify-center">
-                <CheckCircle2 className="w-5 h-5 text-[#e8a817] shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
                 <span className="text-slate-600 text-sm font-medium">Настроим кассу и 1С</span>
               </div>
               <div className="flex items-center gap-2 justify-center">
-                <CheckCircle2 className="w-5 h-5 text-[#e8a817] shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
                 <span className="text-slate-600 text-sm font-medium">Обучим персонал</span>
               </div>
             </div>
             <Link
               href="/kalkulyatory/markirovka"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
             >
               <Calculator className="w-5 h-5" />
               Рассчитать точную стоимость
@@ -225,7 +225,7 @@ export default function MarkirovkaObuviPage() {
 
         {/* ── FAQ ──────────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Часто задаваемые вопросы о маркировке обуви
           </h2>
           <div className="space-y-3">
@@ -235,7 +235,7 @@ export default function MarkirovkaObuviPage() {
                 className="group bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden"
               >
                 <summary className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 cursor-pointer hover:bg-slate-50/50 transition-colors list-none">
-                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#1e3a5f] pr-4">{faq.q}</h3>
+                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#163A5F] pr-4">{faq.q}</h3>
                   <ChevronDown className="w-5 h-5 text-slate-300 shrink-0 group-open:rotate-180 transition-transform duration-200" />
                 </summary>
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5">
@@ -247,7 +247,7 @@ export default function MarkirovkaObuviPage() {
         </section>
 
         {/* ── CTA Bottom ───────────────────────────────────────────────── */}
-        <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+        <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
             Настроим маркировку обуви под ключ
           </h2>
@@ -261,7 +261,7 @@ export default function MarkirovkaObuviPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-colors shadow-md"
-              style={{ backgroundColor: '#e8a817' }}
+              style={{ backgroundColor: '#F59E0B' }}
             >
               Оставить заявку
             </a>

@@ -13,11 +13,11 @@ export default function FnsDiagnostikaPage() {
       <Breadcrumbs items={[{ label: 'Диагностика', href: '/diagnostika' }, { label: 'Проверка ФНС' }]} />
 
       <div className="text-center mt-4">
-        <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[#1e3a5f]/5 flex items-center justify-center">
-          <Building2 className="w-10 h-10 text-[#1e3a5f]/40" />
+        <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[#163A5F]/5 flex items-center justify-center">
+          <Building2 className="w-10 h-10 text-[#163A5F]/40" />
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] mb-3">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] mb-3">
           Проверка регистрации ККТ в ФНС
         </h1>
 
@@ -31,7 +31,7 @@ export default function FnsDiagnostikaPage() {
 
         {/* Превью возможностей */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 mb-8 text-left">
-          <h2 className="text-sm font-bold text-[#1e3a5f] mb-3">Что будет проверять инструмент:</h2>
+          <h2 className="text-sm font-bold text-[#163A5F] mb-3">Что будет проверять инструмент:</h2>
           <div className="space-y-2.5">
             {[
               'Статус регистрации ККТ в ФНС',
@@ -41,7 +41,7 @@ export default function FnsDiagnostikaPage() {
               'Признаки маркировки в карточке регистрации',
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-2.5 text-sm text-slate-600">
-                <ShieldCheck className="w-4 h-4 text-[#e8a817] shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#F59E0B] shrink-0" />
                 <span>{item}</span>
               </div>
             ))}
@@ -51,7 +51,7 @@ export default function FnsDiagnostikaPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             href="/diagnostika"
-            className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-[#1e3a5f]/20 text-[#1e3a5f] text-sm font-semibold rounded-xl hover:bg-[#1e3a5f] hover:text-white hover:border-[#1e3a5f] transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-[#163A5F]/20 text-[#163A5F] text-sm font-semibold rounded-xl hover:bg-[#163A5F] hover:text-white hover:border-[#163A5F] transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             Все диагностики
@@ -60,7 +60,7 @@ export default function FnsDiagnostikaPage() {
             href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#e8a817] hover:bg-[#d49a12] text-white text-sm font-bold rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-sm font-bold rounded-xl transition-colors"
           >
             <Clock className="w-4 h-4" />
             Проверить вручную

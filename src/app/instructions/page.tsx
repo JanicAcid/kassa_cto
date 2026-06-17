@@ -16,7 +16,7 @@ export default function InstructionsPage() {
 
       {/* Заголовок */}
       <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
           Инструкции по маркировке товаров
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
@@ -28,7 +28,7 @@ export default function InstructionsPage() {
       {/* Категории */}
       {categories.length > 0 && (
         <div className="flex flex-wrap justify-center gap-2 mb-6 sm:mb-8">
-          <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-[#1e3a5f] text-white text-xs font-semibold">
+          <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-[#163A5F] text-white text-xs font-semibold">
             Все ({articles.length})
           </span>
           {categories.map(cat => {
@@ -36,7 +36,7 @@ export default function InstructionsPage() {
             return (
               <span
                 key={cat.slug}
-                className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-medium hover:border-[#1e3a5f]/30 hover:text-[#1e3a5f] transition-colors cursor-default"
+                className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-medium hover:border-[#163A5F]/30 hover:text-[#163A5F] transition-colors cursor-default"
               >
                 {cat.name} ({count})
               </span>
@@ -68,7 +68,7 @@ export default function InstructionsPage() {
       )}
 
       {/* CTA блок */}
-      <div className="mt-8 sm:mt-12 bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+      <div className="mt-8 sm:mt-12 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
           Нужна помощь с подключением маркировки?
         </h2>
@@ -79,7 +79,7 @@ export default function InstructionsPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href="tel:+78123210606"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
           >
             +7 (812) 321-06-06
           </a>

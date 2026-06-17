@@ -243,7 +243,7 @@ const STEPS = [
 const FAQS = [
   {
     q: 'Сколько стоит интеграция 1С с маркировкой?',
-    a: 'Базовая интеграция 1С с Честным ЗНАКом (настройка обмена данными) начинается от 5 000 ₽. Полная интеграция под ключ с подключением ЭДО, настройкой сканеров штрихкодов и обучением сотрудников — от 10 000 ₽. Окончательная стоимость зависит от конфигурации 1С, количества торговых точек и объёма товаров. Рассчитайте точную цену в нашем бесплатном <Link href="/" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">калькуляторе</Link>.',
+    a: 'Базовая интеграция 1С с Честным ЗНАКом (настройка обмена данными) начинается от 5 000 ₽. Полная интеграция под ключ с подключением ЭДО, настройкой сканеров штрихкодов и обучением сотрудников — от 10 000 ₽. Окончательная стоимость зависит от конфигурации 1С, количества торговых точек и объёма товаров. Рассчитайте точную цену в нашем бесплатном <Link href="/" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">калькуляторе</Link>.',
   },
   {
     q: 'Какие версии 1С поддерживает интеграция с маркировкой?',
@@ -278,7 +278,7 @@ export default function Integraciya1CPage() {
 
         {/* Header */}
         <div className="text-center mb-8 sm:mb-10">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
             Интеграция 1С с системой маркировки в Санкт-Петербурге
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
@@ -290,7 +290,7 @@ export default function Integraciya1CPage() {
 
         {/* ── Зачем нужна интеграция ──────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Зачем нужна интеграция 1С с маркировкой
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -305,10 +305,10 @@ export default function Integraciya1CPage() {
                 key={idx}
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4"
               >
-                <div className="w-10 h-10 rounded-xl bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] mb-3">
+                <div className="w-10 h-10 rounded-xl bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] mb-3">
                   {item.icon}
                 </div>
-                <h3 className="text-sm font-bold text-[#1e3a5f] mb-1.5">{item.title}</h3>
+                <h3 className="text-sm font-bold text-[#163A5F] mb-1.5">{item.title}</h3>
                 <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -317,7 +317,7 @@ export default function Integraciya1CPage() {
 
         {/* ── Что входит ──────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Что входит в интеграцию 1С с Честным ЗНАКом
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -332,11 +332,11 @@ export default function Integraciya1CPage() {
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{item.title}</h3>
+                    <h3 className="text-base font-bold text-[#163A5F] mb-1">{item.title}</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function Integraciya1CPage() {
 
         {/* ── Конфигурации 1С ─────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Какие конфигурации 1С поддерживаем
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -362,11 +362,11 @@ export default function Integraciya1CPage() {
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#1e3a5f] mb-1">{item.name}</h3>
+                    <h3 className="text-sm font-bold text-[#163A5F] mb-1">{item.name}</h3>
                     <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -377,7 +377,7 @@ export default function Integraciya1CPage() {
 
         {/* ── 5 этапов ────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Как проходит интеграция — 5 этапов
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -390,11 +390,11 @@ export default function Integraciya1CPage() {
                 key={idx}
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-start gap-4"
               >
-                <span className="text-2xl font-extrabold text-[#e8a817] shrink-0 leading-none mt-0.5">
+                <span className="text-2xl font-extrabold text-[#F59E0B] shrink-0 leading-none mt-0.5">
                   {step.num}
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{step.title}</h3>
+                  <h3 className="text-base font-bold text-[#163A5F] mb-1">{step.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
                 </div>
               </div>
@@ -404,7 +404,7 @@ export default function Integraciya1CPage() {
 
         {/* ── Цены ────────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Цены на интеграцию 1С с маркировкой
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -414,21 +414,21 @@ export default function Integraciya1CPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-center">
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Базовая</p>
-              <p className="text-2xl font-extrabold text-[#1e3a5f]">от 5 000 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">от 5 000 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Настройка обмена данными между 1С и Честным ЗНАК</p>
             </div>
-            <div className="bg-white rounded-xl border-2 border-[#e8a817]/40 shadow-sm p-4 text-center relative">
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#e8a817] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
+            <div className="bg-white rounded-xl border-2 border-[#F59E0B]/40 shadow-sm p-4 text-center relative">
+              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#F59E0B] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wide">
                 Под ключ
               </span>
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Полная</p>
-              <p className="text-2xl font-extrabold text-[#1e3a5f]">от 10 000 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">от 10 000 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Обмен данными, ЭДО, сканеры, тестирование, обучение</p>
             </div>
           </div>
           <p className="text-xs text-slate-400 mt-4 text-center">
             Рассчитайте точную стоимость в бесплатном{' '}
-            <Link href="/" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">
+            <Link href="/" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">
               калькуляторе
             </Link>{' '}
             — за 2 минуты без регистрации.
@@ -437,7 +437,7 @@ export default function Integraciya1CPage() {
 
         {/* ── FAQ ─────────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Часто задаваемые вопросы
           </h2>
           <div className="space-y-3">
@@ -447,7 +447,7 @@ export default function Integraciya1CPage() {
                 className="group bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden"
               >
                 <summary className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 cursor-pointer hover:bg-slate-50/50 transition-colors list-none">
-                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#1e3a5f] pr-4">{faq.q}</h3>
+                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#163A5F] pr-4">{faq.q}</h3>
                   <ChevronDown className="w-5 h-5 text-slate-300 shrink-0 group-open:rotate-180 transition-transform duration-200" />
                 </summary>
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5">
@@ -459,7 +459,7 @@ export default function Integraciya1CPage() {
         </section>
 
         {/* ── CTA ─────────────────────────────────────────────────────── */}
-        <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+        <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
             Нужна интеграция 1С с маркировкой?
           </h2>
@@ -470,7 +470,7 @@ export default function Integraciya1CPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="tel:+78124659457"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
             >
               <Phone className="w-5 h-5" />
               +7 (812) 465-94-57

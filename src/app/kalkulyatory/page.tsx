@@ -38,7 +38,7 @@ export default function KalkulyatoryPage() {
 
       {/* Header */}
       <div className="text-center mb-8 sm:mb-10">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
           Калькуляторы стоимости
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-500 max-w-xl mx-auto">
@@ -54,14 +54,14 @@ export default function KalkulyatoryPage() {
             href={calc.active ? calc.href : '#'}
             className={`group relative bg-white rounded-2xl border-2 p-6 transition-all duration-300 hover:shadow-lg ${
               calc.active
-                ? 'border-[#e8a817]/40 hover:border-[#e8a817] shadow-md'
+                ? 'border-[#F59E0B]/40 hover:border-[#F59E0B] shadow-md'
                 : 'border-slate-100 hover:border-slate-200'
             } ${!calc.active ? 'pointer-events-none opacity-80' : ''}`}
           >
             {/* Active badge */}
             {calc.active && (
               <div className="absolute -top-3 left-5">
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#e8a817] text-white text-xs font-bold shadow-md shadow-[#e8a817]/30">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#F59E0B] text-white text-xs font-bold shadow-md shadow-[#F59E0B]/30">
                   <CheckCircle className="w-3 h-3" />
                   Работает
                 </span>
@@ -79,14 +79,14 @@ export default function KalkulyatoryPage() {
 
             <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 ${
               calc.active
-                ? 'bg-[#e8a817]/10 text-[#e8a817]'
+                ? 'bg-[#F59E0B]/10 text-[#F59E0B]'
                 : 'bg-slate-100 text-slate-400'
             }`}>
               {calc.icon}
             </div>
 
             <h2 className={`text-lg font-bold mb-2 ${
-              calc.active ? 'text-[#1e3a5f]' : 'text-slate-500'
+              calc.active ? 'text-[#163A5F]' : 'text-slate-500'
             }`}>
               {calc.title}
             </h2>
@@ -96,8 +96,8 @@ export default function KalkulyatoryPage() {
 
             {calc.active ? (
               <div className="flex items-center justify-between">
-                <span className="text-lg font-bold text-[#e8a817]">{calc.price}</span>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#1e3a5f] group-hover:gap-2.5 transition-all">
+                <span className="text-lg font-bold text-[#F59E0B]">{calc.price}</span>
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#163A5F] group-hover:gap-2.5 transition-all">
                   Открыть <ArrowRight className="w-4 h-4" />
                 </span>
               </div>
@@ -109,7 +109,7 @@ export default function KalkulyatoryPage() {
       </div>
 
       {/* CTA */}
-      <div className="mt-10 bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+      <div className="mt-10 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
           Нужна помощь с расчётом?
         </h2>
@@ -119,7 +119,7 @@ export default function KalkulyatoryPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href="tel:+78124659457"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
           >
             +7 (812) 465-94-57
           </a>

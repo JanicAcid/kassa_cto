@@ -122,11 +122,11 @@ export default async function ArticlePage({
       <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-1.5 text-xs text-slate-400 mb-4 sm:mb-6 flex-wrap">
-          <Link href="/" className="hover:text-[#1e3a5f] transition-colors">Главная</Link>
+          <Link href="/" className="hover:text-[#163A5F] transition-colors">Главная</Link>
           <ChevronRight className="w-3 h-3 shrink-0" />
-          <Link href="/instructions" className="hover:text-[#1e3a5f] transition-colors">Инструкции</Link>
+          <Link href="/instructions" className="hover:text-[#163A5F] transition-colors">Инструкции</Link>
           <ChevronRight className="w-3 h-3 shrink-0" />
-          <span className="text-[#1e3a5f] font-medium truncate max-w-[200px] sm:max-w-none">{article.shortTitle}</span>
+          <span className="text-[#163A5F] font-medium truncate max-w-[200px] sm:max-w-none">{article.shortTitle}</span>
         </nav>
 
         {/* Layout: content + sidebar */}
@@ -183,7 +183,7 @@ export default async function ArticlePage({
                     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                       {/* Шапка шага */}
                       <div className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100">
-                        <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#1e3a5f] flex items-center justify-center">
+                        <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#163A5F] flex items-center justify-center">
                           {step.icon ? (
                             <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                           ) : (
@@ -192,9 +192,9 @@ export default async function ArticlePage({
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[#e8a817] font-extrabold text-sm">ШАГ {idx + 1}</span>
+                            <span className="text-[#F59E0B] font-extrabold text-sm">ШАГ {idx + 1}</span>
                           </div>
-                          <h2 className="text-lg sm:text-xl font-bold text-[#1e3a5f] leading-snug">
+                          <h2 className="text-lg sm:text-xl font-bold text-[#163A5F] leading-snug">
                             {step.title}
                           </h2>
                         </div>
@@ -203,7 +203,7 @@ export default async function ArticlePage({
                       {/* Контент шага */}
                       <div className="p-4 sm:p-5">
                         <div
-                          className="prose prose-slate max-w-none prose-headings:text-[#1e3a5f] prose-strong:text-slate-800 prose-a:text-[#1e3a5f] prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-li:marker:text-[#e8a817]"
+                          className="prose prose-slate max-w-none prose-headings:text-[#163A5F] prose-strong:text-slate-800 prose-a:text-[#163A5F] prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-li:marker:text-[#F59E0B]"
                           dangerouslySetInnerHTML={{ __html: step.content }}
                         />
 
@@ -236,7 +236,7 @@ export default async function ArticlePage({
             </div>
 
             {/* CTA — нужна помощь */}
-            <div className="mt-8 sm:mt-10 bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8">
+            <div className="mt-8 sm:mt-10 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8">
               <div className="text-center">
                 <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
                   Нужна помощь с подключением?
@@ -248,7 +248,7 @@ export default async function ArticlePage({
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <a
                     href="tel:+78123210606"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md w-full sm:w-auto justify-center"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md w-full sm:w-auto justify-center"
                   >
                     <Phone className="w-5 h-5" />
                     +7 (812) 321-06-06
@@ -267,7 +267,7 @@ export default async function ArticlePage({
             {/* Связанные статьи */}
             {relatedArticles.length > 0 && (
               <div className="mt-8 sm:mt-10">
-                <h2 className="text-lg sm:text-xl font-bold text-[#1e3a5f] mb-4">
+                <h2 className="text-lg sm:text-xl font-bold text-[#163A5F] mb-4">
                   Другие инструкции
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -291,7 +291,7 @@ export default async function ArticlePage({
             <div className="mt-8 text-center">
               <Link
                 href="/instructions"
-                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-[#1e3a5f] transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-[#163A5F] transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Все инструкции
@@ -305,13 +305,13 @@ export default async function ArticlePage({
 
             {/* Мини-CTA в сайдбаре */}
             <div className="mt-4 bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
-              <p className="text-sm font-bold text-[#1e3a5f] mb-2">Бесплатная консультация</p>
+              <p className="text-sm font-bold text-[#163A5F] mb-2">Бесплатная консультация</p>
               <p className="text-xs text-slate-500 mb-3">
                 Позвоните или напишите нам — поможем с подключением маркировки.
               </p>
               <a
                 href="tel:+78123210606"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#e8a817] hover:bg-[#d49a12] text-white text-sm font-bold rounded-lg transition-colors w-full justify-center"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#F59E0B] hover:bg-[#D97706] text-white text-sm font-bold rounded-lg transition-colors w-full justify-center"
               >
                 <Phone className="w-4 h-4" />
                 Позвонить

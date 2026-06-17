@@ -323,7 +323,7 @@ const FAQS = [
   },
   {
     q: 'Можно ли использовать старую кассу для маркировки?',
-    a: 'В большинстве случаев старую кассу можно адаптировать под маркировку. Если модель аппаратно поддерживает ФФД 1.2 — достаточно обновить прошивку и заменить фискальный накопитель на ФН 1.1М. Многие модели Атол, Штрих-М, Меркурий и Эвотор поддерживают обновление ПО. Если же касса не поддерживает ФФД 1.2 даже после обновления — придётся заменить оборудование. Мы бесплатно проконсультируем по совместимости вашей кассы: <Link href="tel:+78124659457" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">+7 (812) 465-94-57</Link>.',
+    a: 'В большинстве случаев старую кассу можно адаптировать под маркировку. Если модель аппаратно поддерживает ФФД 1.2 — достаточно обновить прошивку и заменить фискальный накопитель на ФН 1.1М. Многие модели Атол, Штрих-М, Меркурий и Эвотор поддерживают обновление ПО. Если же касса не поддерживает ФФД 1.2 даже после обновления — придётся заменить оборудование. Мы бесплатно проконсультируем по совместимости вашей кассы: <Link href="tel:+78124659457" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">+7 (812) 465-94-57</Link>.',
   },
   {
     q: 'Нужен ли сканер штрихкодов для работы с маркировкой?',
@@ -335,7 +335,7 @@ const FAQS = [
   },
   {
     q: 'Сколько стоит касса с поддержкой маркировки?',
-    a: 'Бюджетные модели (Меркурий 115Ф, Меркурий-119Ф) — от 10 900 ₽. Смарт-терминалы среднего сегмента (Эвотор 5, Атол Sigma 7Ф) — от 24 900 до 32 000 ₽. Флагманские решения (Эвотор 7.3, Атол Sigma 8Ф, Pirit 2Ф) — от 42 000 ₽. К стоимости кассы добавьте: фискальный накопитель (8 000–13 000 ₽ в зависимости от срока), настройку под маркировку (от 1 500 ₽) и при необходимости внешний 2D-сканер (от 3 000 ₽). Рассчитайте точную стоимость в нашем бесплатном <Link href="/" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">калькуляторе маркировки</Link>.',
+    a: 'Бюджетные модели (Меркурий 115Ф, Меркурий-119Ф) — от 10 900 ₽. Смарт-терминалы среднего сегмента (Эвотор 5, Атол Sigma 7Ф) — от 24 900 до 32 000 ₽. Флагманские решения (Эвотор 7.3, Атол Sigma 8Ф, Pirit 2Ф) — от 42 000 ₽. К стоимости кассы добавьте: фискальный накопитель (8 000–13 000 ₽ в зависимости от срока), настройку под маркировку (от 1 500 ₽) и при необходимости внешний 2D-сканер (от 3 000 ₽). Рассчитайте точную стоимость в нашем бесплатном <Link href="/" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">калькуляторе маркировки</Link>.',
   },
   {
     q: 'Чем отличается фискальный регистратор от смарт-терминала?',
@@ -358,7 +358,7 @@ export default function KakuyuKassuPage() {
 
         {/* Header */}
         <div className="text-center mb-8 sm:mb-10">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1e3a5f] leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F] leading-tight">
             Какую кассу выбрать для работы с маркировкой товаров
           </h1>
           <p className="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
@@ -399,7 +399,7 @@ export default function KakuyuKassuPage() {
 
         {/* ── Обязательные требования ───────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-2">
             Обязательные требования к кассе для маркировки
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -413,11 +413,11 @@ export default function KakuyuKassuPage() {
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#1e3a5f]/5 flex items-center justify-center text-[#1e3a5f] shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#163A5F]/5 flex items-center justify-center text-[#163A5F] shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{item.title}</h3>
+                    <h3 className="text-base font-bold text-[#163A5F] mb-1">{item.title}</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -429,7 +429,7 @@ export default function KakuyuKassuPage() {
         {/* ── Кассы по категориям ──────────────────────────────────── */}
         {CASSES_BY_CATEGORY.map((cat, catIdx) => (
           <section key={catIdx} className="mb-10 sm:mb-12">
-            <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-2">
               {cat.category}
             </h2>
             <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -443,10 +443,10 @@ export default function KakuyuKassuPage() {
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-3">
                     <div>
-                      <h3 className="text-base font-bold text-[#1e3a5f]">{model.name}</h3>
+                      <h3 className="text-base font-bold text-[#163A5F]">{model.name}</h3>
                       <p className="text-xs text-slate-400">{model.vendor}</p>
                     </div>
-                    <span className="text-lg font-extrabold text-[#e8a817] shrink-0">{model.price}</span>
+                    <span className="text-lg font-extrabold text-[#F59E0B] shrink-0">{model.price}</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <ul className="space-y-1.5">
@@ -470,7 +470,7 @@ export default function KakuyuKassuPage() {
 
         {/* ── Критерии выбора ───────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-2">
             Критерии выбора кассы для маркировки
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-6">
@@ -485,11 +485,11 @@ export default function KakuyuKassuPage() {
                 className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#e8a817]/10 flex items-center justify-center text-[#e8a817] shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center text-[#F59E0B] shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-[#1e3a5f] mb-1">{item.title}</h3>
+                    <h3 className="text-base font-bold text-[#163A5F] mb-1">{item.title}</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -500,7 +500,7 @@ export default function KakuyuKassuPage() {
 
         {/* ── Старая касса — что делать ─────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-2">
             У вас уже есть касса? Проверим совместимость
           </h2>
           <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed mb-4">
@@ -510,36 +510,36 @@ export default function KakuyuKassuPage() {
           <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 sm:p-5">
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <span className="text-sm font-extrabold text-[#e8a817] shrink-0">01</span>
+                <span className="text-sm font-extrabold text-[#F59E0B] shrink-0">01</span>
                 <span className="text-sm text-slate-600 leading-relaxed">
-                  <strong className="text-[#1e3a5f]">Проверяем модель и прошивку.</strong> Уточняем,
+                  <strong className="text-[#163A5F]">Проверяем модель и прошивку.</strong> Уточняем,
                   поддерживает ли касса ФФД 1.2 аппаратно. Для этого достаточно назвать модель кассы
                   — мы проверим по реестру ФНС.
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-sm font-extrabold text-[#e8a817] shrink-0">02</span>
+                <span className="text-sm font-extrabold text-[#F59E0B] shrink-0">02</span>
                 <span className="text-sm text-slate-600 leading-relaxed">
-                  <strong className="text-[#1e3a5f]">Обновляем ПО.</strong> Если модель поддерживает
+                  <strong className="text-[#163A5F]">Обновляем ПО.</strong> Если модель поддерживает
                   ФФД 1.2, обновляем прошивку кассы до последней версии. На большинстве моделей Атол,
                   Штрих-М, Эвотор и Меркурий это делается за 15–30 минут.
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-sm font-extrabold text-[#e8a817] shrink-0">03</span>
+                <span className="text-sm font-extrabold text-[#F59E0B] shrink-0">03</span>
                 <span className="text-sm text-slate-600 leading-relaxed">
-                  <strong className="text-[#1e3a5f]">Меняем фискальный накопитель.</strong> Если текущий
+                  <strong className="text-[#163A5F]">Меняем фискальный накопитель.</strong> Если текущий
                   ФН не поддерживает ФФД 1.2 (старые модели ФН 1.0, ФН 1.1), устанавливаем новый
                   ФН 1.1М и перерегистрируем ККТ в ФНС.
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-sm font-extrabold text-[#e8a817] shrink-0">04</span>
+                <span className="text-sm font-extrabold text-[#F59E0B] shrink-0">04</span>
                 <span className="text-sm text-slate-600 leading-relaxed">
-                  <strong className="text-[#1e3a5f]">Настраиваем маркировку.</strong> Подключаем ЭДО,
+                  <strong className="text-[#163A5F]">Настраиваем маркировку.</strong> Подключаем ЭДО,
                   регистрируем в Честном ЗНАКе, устанавливаем ТС ПИоТ, тестируем пробитие чека с
                   кодом маркировки.{' '}
-                  <Link href="/nastroyka-kassy-markirovka" className="text-[#1e3a5f] underline underline-offset-2 hover:text-[#2a5080]">
+                  <Link href="/nastroyka-kassy-markirovka" className="text-[#163A5F] underline underline-offset-2 hover:text-[#1E4A78]">
                     Подробнее о настройке →
                   </Link>
                 </span>
@@ -557,7 +557,7 @@ export default function KakuyuKassuPage() {
 
         {/* ── FAQ ─────────────────────────────────────────────────────── */}
         <section className="mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f] mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F] mb-6">
             Часто задаваемые вопросы
           </h2>
           <div className="space-y-3">
@@ -568,7 +568,7 @@ export default function KakuyuKassuPage() {
                 className="group bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden"
               >
                 <summary className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 cursor-pointer hover:bg-slate-50/50 transition-colors list-none">
-                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#1e3a5f] pr-4">{faq.q}</h3>
+                  <h3 className="text-sm sm:text-[15px] font-semibold text-[#163A5F] pr-4">{faq.q}</h3>
                   <ChevronDown className="w-5 h-5 text-slate-300 shrink-0 group-open:rotate-180 transition-transform duration-200" />
                 </summary>
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5">
@@ -580,7 +580,7 @@ export default function KakuyuKassuPage() {
         </section>
 
         {/* ── CTA ─────────────────────────────────────────────────────── */}
-        <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] rounded-2xl p-6 sm:p-8 text-center">
+        <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
             Нужна помощь с выбором или настройкой кассы?
           </h2>
@@ -591,7 +591,7 @@ export default function KakuyuKassuPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="tel:+78124659457"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold rounded-xl transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
             >
               <Phone className="w-5 h-5" />
               +7 (812) 465-94-57
