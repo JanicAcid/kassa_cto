@@ -206,18 +206,18 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 .checklist {
   list-style: none;
   margin-top: 8px;
+  margin: 8px -14px 0;
 }
 .checklist li {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 8px 0;
+  padding: 8px 14px;
   border-bottom: 1px dashed var(--border);
   font-size: 13px;
-  cursor: pointer;
 }
 .checklist li:last-child { border-bottom: none; }
-.checklist li:hover { background: var(--border-soft); margin: 0 -14px; padding: 8px 14px; }
+.checklist li:hover { background: var(--border-soft); }
 .checklist input[type=checkbox] {
   width: 18px;
   height: 18px;
@@ -226,7 +226,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   accent-color: var(--success);
   flex-shrink: 0;
 }
-.checklist .check-label { flex: 1; line-height: 1.4; }
+.checklist .check-label { flex: 1; line-height: 1.4; cursor: pointer; user-select: none; }
 .checklist .check-label small { display: block; color: var(--text-soft); font-size: 11px; margin-top: 2px; }
 .checklist li.done { opacity: .55; }
 .checklist li.done .check-label { text-decoration: line-through; }
@@ -386,25 +386,46 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 // ════════════════════════════════════════════════════════════════
 const API_BASE = '/api';
 
-// Чек-лист инженера — стандартный набор работ по маркировке/кассе
+// ─── Чек-лист МЕНЕДЖЕРА: продажи и оформление ───────────────────
+const MANAGER_CHECKLIST = [
+  { id: 'm_fn_sale',        label: 'Продать ФН (15/36 мес)',           hint: 'Уточнить тип под задачи клиента,маркировка → 36 мес (ФН-1.1М)' },
+  { id: 'm_fn_in_stock',    label: 'Подтвердить наличие ФН на складе',  hint: 'Связаться со складом, забронировать' },
+  { id: 'm_ofd_sale',       label: 'Продлить/продать ОФД',              hint: 'Такском/Портал-ОФД/Первый ОФД — на 13/15 мес' },
+  { id: 'm_ofd_renewal',    label: 'Проверить срок действующего ОФД',   hint: 'Если <30 дней — предложить продление' },
+  { id: 'm_edo_sale',       label: 'Продать ЭДО (Диадок/СБИС/Тензор)',  hint: 'Для приёма кодов маркировки от поставщика' },
+  { id: 'm_ecp_sale',       label: 'Продать/продлить ЭЦП',              hint: 'Для работы с Честным ЗНАКом и ГИС МТ' },
+  { id: 'm_chestnyznak',    label: 'Оформить кабинет Честный ЗНАК',     hint: 'Зарегистрировать компанию, получить доступ' },
+  { id: 'm_tspiot_sale',    label: 'Продать лицензию ТС ПИоТ',          hint: 'Программа для сканирования кодов маркировки' },
+  { id: 'm_scanner_sale',   label: 'Продать 2D-сканер',                 hint: 'Если у клиента нет — Honeywell/Zebra' },
+  { id: 'm_service_contract', label: 'Продать договор ТО',              hint: 'Скидка на работы, приоритетный выезд' },
+  { id: 'm_extras',         label: 'Продать допы (кабель, лоток и т.д.)', hint: 'Зависит от кассы и задачи' },
+  { id: 'm_contract',       label: 'Подписать договор с клиентом',      hint: 'Скан → в дело' },
+  { id: 'm_invoice',        label: 'Выставить счёт',                    hint: '1С → отправить на email клиента' },
+  { id: 'm_payment',        label: 'Получить оплату',                   hint: 'Отметить в 1С, передать инженеру' },
+  { id: 'm_schedule',       label: 'Назначить выезд инженера',          hint: 'Согласовать дату/время с клиентом' },
+  { id: 'm_brief_engineer', label: 'Передать заявку инженеру',          hint: 'Распечатать чек-лист, обсудить нюансы' },
+];
+
+// ─── Чек-лист ИНЖЕНЕРА: технические работы ──────────────────────
 const ENGINEER_CHECKLIST = [
-  { id: 'check_kkm', label: 'Проверить ККМ: включение, печать чека, дисплей', hint: 'Включить кассу, проверить тестовый чек' },
-  { id: 'check_fn', label: 'Проверить ФН: срок действия, остаток записей', hint: 'Меню → Информация → ФН' },
-  { id: 'check_fn_type', label: 'Уточнить тип ФН (15/36 мес) под задачи клиента', hint: 'Маркировка требует ФН-1.1М (36 мес) с поддержкой тегов 1162/1163' },
-  { id: 'check_firmware', label: 'Проверить версию прошивки ККМ (ФФД 1.2+)', hint: 'Маркировка требует ФФД 1.2' },
-  { id: 'check_ofd', label: 'Проверить договор ОФД и регистрацию в ФНС', hint: 'Касса должна быть зарегистрирована с поддержкой маркировки' },
-  { id: 'check_edo', label: 'Подключить/проверить ЭДО (Диадок/СБИС)', hint: 'Для приёма кодов от поставщика' },
-  { id: 'check_cryptographer', label: 'Настроить криптопровайдер (VipNet/GroCrypt)', hint: 'Для работы с ГИС МТ' },
-  { id: 'check_chestnyznak', label: 'Зарегистрировать кабинет Честный ЗНАК', hint: 'Получить токен для интеграции' },
-  { id: 'check_tspiot', label: 'Настроить ТС ПИоТ на кассе', hint: 'Программа для сканирования кодов маркировки' },
-  { id: 'check_scanner', label: 'Подключить и настроить 2D-сканер штрихкодов', hint: 'Проверить чтение DataMatrix' },
-  { id: 'check_goods', label: 'Загрузить товарную номенклатуру с кодами', hint: 'Через 1С или вручную' },
-  { id: 'check_test_sale', label: 'Провести тестовую продажу маркированного товара', hint: 'Проверить вывод кода в чеке' },
-  { id: 'check_return', label: 'Провести тестовый возврат', hint: 'Проверить обработку возврата с маркировкой' },
-  { id: 'check_inventory', label: 'Провести инвентаризацию остатков', hint: 'Для маркировки остатков до ввода в оборот' },
-  { id: 'check_print', label: 'Проверить печать чека с тегом 1162/1163', hint: 'Код маркировки в чеке' },
-  { id: 'check_training', label: 'Обучить персонал работе с маркировкой', hint: 'Сканирование, возвраты, ошибки' },
-  { id: 'check_docs', label: 'Передать акт выполненных работ', hint: 'Подписать с клиентом' },
+  { id: 'e_kkm_check',     label: 'Проверить ККМ: включение, печать чека, дисплей',  hint: 'Включить кассу, проверить тестовый чек' },
+  { id: 'e_fn_check',      label: 'Проверить ФН: срок действия, остаток записей',    hint: 'Меню → Информация → ФН' },
+  { id: 'e_fn_install',    label: 'Установить/заменить ФН',                          hint: 'Снять старый, установить новый, активировать' },
+  { id: 'e_fn_report',     label: 'Снять отчёт о закрытии ФН (если замена)',         hint: 'Сохранить отчёт, передать менеджеру' },
+  { id: 'e_firmware',      label: 'Обновить прошивку ККМ до ФФД 1.2+',               hint: 'Маркировка требует ФФД 1.2, скачать с сайта производителя' },
+  { id: 'e_ofd_setup',     label: 'Настроить/продлить ОФД в кассе',                  hint: 'Ввести параметры ОФД, проверить отправку чеков' },
+  { id: 'e_fns_reg',       label: 'Регистрация/перерегистрация ККТ в ФНС',           hint: 'Через ЛК ФНС или оператора ОФД' },
+  { id: 'e_edo_setup',     label: 'Настроить ЭДО (Диадок/СБИС)',                     hint: 'Установить клиент, настроить роутинг документов' },
+  { id: 'e_crypto',        label: 'Настроить криптопровайдер (VipNet/GroCrypt)',     hint: 'Для работы с ГИС МТ' },
+  { id: 'e_chestnyznak',   label: 'Настроить интеграцию Честный ЗНАК',               hint: 'Привязать токен, проверить обмен' },
+  { id: 'e_tspiot',        label: 'Установить и настроить ТС ПИоТ',                  hint: 'Программа для сканирования кодов маркировки' },
+  { id: 'e_scanner',       label: 'Подключить и настроить 2D-сканер',                hint: 'Проверить чтение DataMatrix, настроить префиксы' },
+  { id: 'e_goods_load',    label: 'Загрузить товарную номенклатуру с кодами',        hint: 'Через 1С или вручную, проверить коды' },
+  { id: 'e_inventory',     label: 'Провести инвентаризацию остатков (маркировка)',   hint: 'Для маркировки остатков до ввода в оборот' },
+  { id: 'e_test_sale',     label: 'Провести тестовую продажу маркированного товара', hint: 'Проверить вывод кода в чеке (тег 1162/1163)' },
+  { id: 'e_test_return',   label: 'Провести тестовый возврат',                       hint: 'Проверить обработку возврата с маркировкой' },
+  { id: 'e_training',      label: 'Обучить персонал работе с маркировкой',           hint: 'Сканирование, возвраты, обработка ошибок' },
+  { id: 'e_act',           label: 'Подписать акт выполненных работ',                 hint: 'Передать менеджеру скан' },
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -476,17 +497,18 @@ async function loadOrders() {
   render();
 }
 
-async function patchOrder(rowIndex, updates) {
+async function patchOrder(rowIndex, updates, opts = {}) {
+  const { silent = false, skipRender = false } = opts;
   try {
     await api('/admin/orders', {
       method: 'PATCH',
       body: JSON.stringify({ rowIndex, updates }),
     });
-    toast('Сохранено', 'success');
+    if (!silent) toast('Сохранено', 'success');
     // Обновляем локально
     const o = state.orders.find(x => x._rowIndex === rowIndex);
     if (o) Object.assign(o, updates);
-    render();
+    if (!skipRender) render();
   } catch (e) {
     toast('Ошибка: ' + e.message, 'error');
   }
@@ -532,8 +554,32 @@ function getOrderData(o) {
     status:  getCol(o, ['Статус', 'Status']),
     note:    getCol(o, ['Комментарий менеджера', 'AdminComment', 'managerNote']),
     file:    getCol(o, ['Файл заказа', 'file']),
+    // Если есть закэшированное значение из toggleCheck — используем его, иначе парсим из колонки
+    managerChecklist:    o._managerChecklist !== undefined
+                          ? parseChecklist(o._managerChecklist)
+                          : parseChecklist(getCol(o, ['Чек-лист менеджера'])),
+    engineerChecklist:   o._engineerChecklist !== undefined
+                          ? parseChecklist(o._engineerChecklist)
+                          : parseChecklist(getCol(o, ['Чек-лист инженера'])),
     rowIndex:o._rowIndex,
   };
+}
+
+// Чек-листы хранятся в Sheets как JSON-массив id отмеченных пунктов:
+// ["m_fn_sale","m_ofd_sale"] → Set(["m_fn_sale","m_ofd_sale"])
+function parseChecklist(raw) {
+  if (!raw) return new Set();
+  try {
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) return new Set(arr);
+  } catch {}
+  // Запасной вариант: разделённые запятой
+  const parts = String(raw).split(',').map(s => s.trim()).filter(Boolean);
+  return new Set(parts);
+}
+
+function checklistToJSON(set) {
+  return JSON.stringify(Array.from(set).sort());
 }
 
 function condLabel(c) {
@@ -732,11 +778,12 @@ function renderOrder(o) {
 }
 
 function renderManagerPanel(d, services) {
+  const checkedSet = d.managerChecklist || new Set();
   return `
     <div class="panel manager">
-      <h3>👤 Для менеджера</h3>
+      <h3>👤 Менеджер — продажи и оформление</h3>
       <div class="body">
-        <div class="kv">
+        <div class="kv" style="margin-bottom:14px">
           <div class="k">№ заказа</div><div class="v">${escapeHtml(d.num||'—')}</div>
           <div class="k">Дата</div><div class="v">${escapeHtml(d.date||'—')}</div>
           <div class="k">Клиент</div><div class="v">${escapeHtml(d.client||'—')}</div>
@@ -745,46 +792,56 @@ function renderManagerPanel(d, services) {
           <div class="k">Сумма</div><div class="v"><b>${fmtTotal(d.total)}</b></div>
           <div class="k">Комментарий</div><div class="v">${escapeHtml(d.comment||'—')}</div>
         </div>
+        <ul class="checklist">
+          ${MANAGER_CHECKLIST.map(item => {
+            const checked = checkedSet.has(item.id);
+            return `
+            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${checked?'done':''}">
+              <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)">
+              <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()">
+                ${escapeHtml(item.label)}
+                ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
+              </div>
+            </li>`;
+          }).join('')}
+        </ul>
+        <div style="margin-top:8px;font-size:11px;color:var(--text-soft)">
+          Отмеченные пункты сохраняются в Google Sheets автоматически
+        </div>
       </div>
     </div>
   `;
 }
 
 function renderEngineerPanel(d, services) {
-  // Подбираем релевантные пункты чек-листа на основе услуг
-  const allServices = (d.services || '').toLowerCase();
-  const isMarking = allServices.includes('маркиров') || allServices.includes('честный');
-  const isFn = allServices.includes('фн') || allServices.includes('фискальн');
-  const isReg = allServices.includes('регистрац') || allServices.includes('перерегистрац');
-  const isRepair = allServices.includes('ремонт') || allServices.includes('обслуживан');
-
-  let checklist = ENGINEER_CHECKLIST;
-  if (isFn) checklist = checklist.filter(x => x.id.includes('fn'));
-  else if (isRepair) checklist = checklist.filter(x => ['check_kkm','check_fn','check_firmware','check_ofd','check_training','check_docs'].includes(x.id));
-  else if (!isMarking) checklist = checklist.filter(x => !['check_cryptographer','check_chestnyznak','check_tspiot','check_scanner','check_goods','check_inventory'].includes(x.id));
-
+  const checkedSet = d.engineerChecklist || new Set();
   return `
     <div class="panel engineer">
-      <h3>🔧 Для инженера — чек-лист работ</h3>
+      <h3>🔧 Инженер — технические работы</h3>
       <div class="body">
-        <div class="kv" style="margin-bottom:12px">
+        <div class="kv" style="margin-bottom:14px">
           <div class="k">Модель ККМ</div><div class="v"><b>${escapeHtml(d.kkm||'—')}</b></div>
           <div class="k">Состояние</div><div class="v">${escapeHtml(condLabel(d.cond))}</div>
           <div class="k">Услуги</div><div class="v">${services.map(s => `<div>• ${escapeHtml(s)}</div>`).join('') || '—'}</div>
         </div>
         <ul class="checklist">
-          ${checklist.map(item => `
-            <li onclick="toggleCheck(this)" data-row="${d.rowIndex}" data-check="${item.id}">
-              <input type="checkbox" id="${item.id}_${d.rowIndex}">
-              <div class="check-label">
+          ${ENGINEER_CHECKLIST.map(item => {
+            const checked = checkedSet.has(item.id);
+            return `
+            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="engineer" class="${checked?'done':''}">
+              <input type="checkbox" id="e_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'engineer', this.checked)">
+              <div class="check-label" onclick="document.getElementById('e_${item.id}_${d.rowIndex}').click()">
                 ${escapeHtml(item.label)}
                 ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
               </div>
-            </li>
-          `).join('')}
+            </li>`;
+          }).join('')}
         </ul>
         <div style="margin-top:10px;font-size:11px;color:#92400e;padding:8px 10px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b">
           ⚠️ Перед выездом уточнить наличие ФН нужного типа и актуальность ПО кассы
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--text-soft)">
+          Отмеченные пункты сохраняются в Google Sheets автоматически
         </div>
       </div>
     </div>
@@ -805,12 +862,33 @@ function toggleOrder(rowIndex) {
   if (el) el.classList.toggle('expanded');
 }
 
-function toggleCheck(li) {
-  const cb = li.querySelector('input[type=checkbox]');
-  cb.checked = !cb.checked;
-  li.classList.toggle('done', cb.checked);
-  // Чек-лист не сохраняется на сервер (нет колонки), только визуально
-  // Можно расширить: добавить колонку "Чек-лист инженера" и PATCH
+// Переключение чекбокса с сохранением в Google Sheets
+// rowIndex — строка заказа
+// checkId  — id пункта (m_fn_sale / e_kkm_check / ...)
+// listType — 'manager' или 'engineer'
+// checked  — новое состояние (true/false)
+function toggleCheck(rowIndex, checkId, listType, checked) {
+  const order = state.orders.find(o => o._rowIndex === rowIndex);
+  if (!order) return;
+  const d = getOrderData(order);
+  const set = (listType === 'manager') ? d.managerChecklist : d.engineerChecklist;
+  if (checked) set.add(checkId);
+  else set.delete(checkId);
+
+  // Обновляем визуально (класс done)
+  const li = document.querySelector(`li[data-row="${rowIndex}"][data-check="${checkId}"][data-list="${listType}"]`);
+  if (li) li.classList.toggle('done', checked);
+
+  // Записываем обратно в заказ (чтобы при перерисовке не слетало)
+  if (listType === 'manager') {
+    order._managerChecklist = checklistToJSON(set);
+  } else {
+    order._engineerChecklist = checklistToJSON(set);
+  }
+
+  // Сохраняем в Google Sheets через PATCH (тихо, без toast и перерисовки)
+  const colName = (listType === 'manager') ? 'Чек-лист менеджера' : 'Чек-лист инженера';
+  patchOrder(rowIndex, { [colName]: checklistToJSON(set) }, { silent: true, skipRender: true });
 }
 
 function saveNote(rowIndex) {
