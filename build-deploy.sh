@@ -64,13 +64,17 @@ ARCHIVE_PATH="$PROJECT_DIR/$ARCHIVE_NAME"
 rm -f "$PROJECT_DIR"/kassa-cto-deploy-*.zip
 
 # ── 6. Упаковка в ZIP (файлы в корне архива!) ───────────────────────────────
+# ВАЖНО: robots.txt нужен в архиве, поэтому исключаем только *.txt-дубликаты
+# страниц (например, index.txt), а robots.txt добавляем явно.
+# admin.html и admin/ ВКЛЮЧЕНЫ — CRM-кабинет менеджера активно используется.
 echo "📦 Упаковка архива $ARCHIVE_NAME ..."
 cd out
 zip -r "$ARCHIVE_PATH" . \
-  -x "*.txt" \
-  -x "admin.html" \
-  -x "admin/*" \
-  -x "admin.txt"
+  -x "*.txt"
+# Гарантированно добавляем robots.txt (если он не попал из-за -x "*.txt")
+if [ -f "robots.txt" ]; then
+  zip -u "$ARCHIVE_PATH" robots.txt 2>/dev/null || true
+fi
 cd "$PROJECT_DIR"
 
 # ── 7. Отчёт ────────────────────────────────────────────────────────────────

@@ -9,10 +9,15 @@
 
 | Ресурс | Данные |
 |---|---|
-| GitHub (рабочий) | `JanicAcid/kassa_cto` (private), PAT: `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` |
+| GitHub (рабочий) | `JanicAcid/kassa_cto` (private), PAT: `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` |
 | GitHub (архив) | `JanicAcid/tellur-markirovka-backup` (private, **НЕ РЕДАКТИРОВАТЬ!**) |
 | Beget хостинг | Логин: `xdeck7ph`, Пароль: `89520955956Ff`, IP: `87.236.16.235` |
-| Telegram бот | @spbmarkirovka_bot (токен в config.php на сервере) |
+| FTP/SSH Beget | `xdeck7ph_cto` / `K1slotn1k!` |
+| Почта домена | `admin@kassa-cto.ru` / `K1slotn1k!` (SMTP `smtp.beget.com:465` SSL) |
+| CRM (admin/login) | Логин: `tellur`, Пароль: `Tellur2026!`, JWT secret: `k7Hm2pQw9xR4vN8jL3fY6tB5cA1dE0sZm` |
+| Google Sheets ID | `1d73G5EtY2oLG07x8A7HnDg3VjKoGYWKAHQiHc874uSA` |
+| Google SA email | `tellur-crm@avid-catalyst-445621-c0.iam.gserviceaccount.com` |
+| Уведомления | `janicacid@gmail.com` |
 | Yandex Metrika | ID: `108406091` |
 | Google верификация | `google6d0854c5f9ec794a.html` |
 | Яндекс верификация | `yandex_1a88703cc40147f3.html` |
@@ -213,6 +218,8 @@ Hardcoded значения убраны, но fallback пустые строки
 
 | Коммит | Дата | Описание |
 |---|---|---|
+| (HEAD) | 2026-06-17 | **Актуализация из архива kassa-cto-deploy_11.zip**: api/index.php v8→v11 (Apps Script убран; PHP пишет в Google Sheets напрямую через Service Account; email: mail() primary + SMTP fallback с multipart/alternative + envelope sender -f admin@kassa-cto.ru). .htaccess: добавлены clean URLs (`/foo` → `foo.html`, 3 уровня), 301 `/diagnostika` → `/markirovka/diagnostika`, HTTP→HTTPS, www→non-www. build-deploy.sh: убрано исключение `admin.html` и `admin/*` (CRM-кабинет менеджера активно используется), добавлено явное включение `robots.txt`. config.php.example обновлён под v11. |
+| `9178ea7` | 2026-06-03 | Архитектурный переход: убран Telegram Bot, добавлены Max/Telegram контакты, Google Sheets через Apps Script |
 | `7b68068` | 2026-05-08 | Скрипт `build-deploy.sh`, удалены 6 старых ZIP (~15MB) |
 | `6a7bcac` | 2026-05-08 | CookieConsent баннер (ФЗ-152) + страница /privacy |
 | `cffef8c` | 2026-05-08 | Убраны hardcoded секреты, SITE_URL централизован, .htaccess, config.php.example |
@@ -229,8 +236,10 @@ Hardcoded значения убраны, но fallback пустые строки
 ## 📋 ОЧЕРЕДЬ ЗАДАЧ (по приоритету)
 
 ### 🔥 Критические (бизнес-логика)
-- [ ] **Google Sheets логирование** — через Apps Script Web App (OAuth на Beget невозможен)
-- [ ] **Постоянное хранилище заказов** — сейчас только в Telegram, при потере чата — всё пропало
+- [x] **Google Sheets логирование** — реализовано в api/index.php v10+ через Service Account (Apps Script не нужен)
+- [x] **Постоянное хранилище заказов** — Google Sheets Лист1 (12 колонок: A-L)
+- [x] **Email уведомления** — v11: `mail()` primary (через локальный MTA Beget с DKIM) + SMTP fallback. multipart/alternative + envelope sender `-f admin@kassa-cto.ru`.
+- [x] **CRM кабинет менеджера** — `/admin/login` + `/admin`, JWT auth, чтение/правка заказов в Sheets
 - [ ] **Ротация GitHub PAT** — токен в remote URL, нужно обновлять перед истечением
 
 ### ⚡ Высокие (функционал)
@@ -292,6 +301,14 @@ Hardcoded значения убраны, но fallback пустые строки
 ---
 
 ## 🔄 ИСТОРИЯ ИЗМЕНЕНИЙ (этот файл)
+
+### 2026-06-17 — Актуализация из архива kassa-cto-deploy_11.zip
+- **api/index.php v8 → v11**: убран Apps Script, PHP пишет в Google Sheets напрямую через Service Account. Email переписан: `mail()` primary (multipart/alternative + envelope sender `-f admin@kassa-cto.ru`) + SMTP `smtp.beget.com:465` fallback с проверкой каждого шага (MAIL FROM/RCPT TO/DATA).
+- **.htaccess**: добавлены clean URLs (`/foo` → `foo.html`, до 3 уровней), 301 `/diagnostika` → `/markirovka/diagnostika`, HTTP→HTTPS, www→non-www редиректы.
+- **build-deploy.sh**: убрано исключение `admin.html` и `admin/*` (CRM теперь в проде), добавлено явное включение `robots.txt`.
+- **config.php.example**: переписан под структуру v11 (return array с ADMIN_*, GOOGLE_*, NOTIFY_EMAIL).
+- **Доступы**: обновлён GitHub PAT, добавлены FTP/SSH, SMTP, CRM-credentials.
+- Последний коммит в main: `9178ea7` (до этого коммита) → HEAD после пуша этой актуализации.
 
 ### 2026-05-08 — Создание AGENT_HANDOFF.md
 - Создан файл журнала передачи контекста

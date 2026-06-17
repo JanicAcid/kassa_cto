@@ -1,32 +1,23 @@
 <?php
 /**
- * kassa-cto.ru API Router v8 — Google Sheets via Apps Script
- *
- * Эндпоинты:
- *   GET  /api/captcha    — генерация капчи
- *   POST /api/log-order  — отправка заказа в Google Sheets (через Apps Script Web App)
- *
- * Удалено из v7:
- *   - Весь Telegram Bot API (send-order, chat/*)
- *   - Данные чата (chat-data/)
- *   - Admin endpoints
+ * kassa-cto.ru API Router v11
+ * Apps Script УБРАН — PHP пишет в Sheets напрямую.
+ * Email: mail() (primary, Beget local MTA + DKIM) → SMTP smtp.beget.com:465 (fallback).
  */
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 
 $configPath = __DIR__ . '/config.php';
-if (!file_exists($configPath)) { jsonResponse(['error' => 'API not configured'], 500); exit; }
+if (!file_exists($configPath)) { jsonResponse(['error' => 'API not configured'], 500); }
 
 $config = require $configPath;
-$appsScriptUrl = $config['APPS_SCRIPT_URL'] ?? '';
-
-if (empty($appsScriptUrl)) { jsonResponse(['error' => 'API not configured'], 500); exit; }
 
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $path = preg_replace('#^/api/#', '', parse_url($requestUri, PHP_URL_PATH));
@@ -35,86 +26,693 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 try {
     switch ("$method $path") {
-        case 'GET captcha': handleCaptcha(); break;
-        case 'POST log-order': handleLogOrder($appsScriptUrl); break;
+        case 'GET captcha':        handleCaptcha(); break;
+        case 'GET test':           handleTest($config); break;
+        case 'POST log-order':     handleLogOrder($config); break;
+        case 'GET admin/auth':     handleAdminCaptcha(); break;
+        case 'POST admin/auth':    handleAdminLogin($config); break;
+        case 'DELETE admin/auth':  handleAdminLogout(); break;
+        case 'GET admin/orders':   requireAuth($config); handleGetOrders($config); break;
+        case 'PATCH admin/orders': requireAuth($config); handlePatchOrder($config); break;
         default: jsonResponse(['error' => 'Not Found'], 404);
     }
-} catch (Throwable $e) { error_log("API: " . $e->getMessage()); jsonResponse(['error' => 'Internal Server Error'], 500); }
+} catch (Throwable $e) {
+    error_log('API error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    jsonResponse(['error' => 'Internal Server Error'], 500);
+}
 
-// ==================== CAPTCHA ====================
+// ══════════════════════════════════════════════════════════════════
+// CAPTCHA
+// ══════════════════════════════════════════════════════════════════
 
-function handleCaptcha(): void {
-    $a = rand(1, 20); $b = rand(1, 20);
+function handleCaptcha(): void      { jsonResponse(makeCaptcha()); }
+function handleAdminCaptcha(): void { jsonResponse(makeCaptcha()); }
+
+function makeCaptcha(): array {
+    $a = rand(2, 15); $b = rand(2, 15);
     $ops = ['+', '-', '*']; $op = $ops[array_rand($ops)];
     switch ($op) {
         case '+': $ans = $a + $b; $q = "$a + $b = ?"; break;
-        case '-': $ans = $a - $b; $q = "$a - $b = ?"; break;
-        case '*': $ans = $a * $b; $q = "$a x $b = ?"; break;
+        case '-': if ($a < $b) [$a,$b] = [$b,$a]; $ans = $a - $b; $q = "$a − $b = ?"; break;
+        default:  $a = rand(2,9); $b = rand(2,9); $ans = $a * $b; $q = "$a × $b = ?"; break;
     }
-    jsonResponse(['id' => bin2hex(random_bytes(4)), 'question' => $q, 'token' => base64_encode(json_encode(['answer' => $ans, 'ts' => time()]))]);
+    return ['id' => bin2hex(random_bytes(4)), 'question' => $q,
+            'token' => base64_encode(json_encode(['answer' => $ans, 'ts' => time()]))];
 }
 
-// ==================== LOG ORDER → APPS SCRIPT ====================
+function verifyCaptcha(string $token, string $answer, int $maxAge = 300): bool {
+    $d = json_decode(base64_decode($token), true);
+    if (!$d || !isset($d['answer'], $d['ts'])) return false;
+    if (time() - $d['ts'] > $maxAge) return false;
+    return (string)$d['answer'] === trim($answer);
+}
 
-function handleLogOrder(string $appsScriptUrl): void {
+// ══════════════════════════════════════════════════════════════════
+// LOG ORDER — пишем напрямую в Google Sheets + отправляем email
+// ══════════════════════════════════════════════════════════════════
+
+function handleLogOrder(array $config): void {
     $input = getJsonInput();
     if (empty($input['orderNum']) || empty($input['clientName'])) {
-        jsonResponse(['error' => 'Missing fields: orderNum, clientName'], 400);
-        return;
+        jsonResponse(['error' => 'Missing fields'], 400);
     }
 
-    // Формируем данные для Apps Script (соответствие колонок в Google Таблице)
-    $payload = [
-        'orderNum'      => $input['orderNum'] ?? '',
-        'clientName'    => $input['clientName'] ?? '',
-        'phone'         => $input['phone'] ?? '',
-        'email'         => $input['email'] ?? '',
-        'kkmType'       => $input['kkmType'] ?? '',
-        'kkmCondition'  => $input['kkmCondition'] ?? '',
-        'services'      => is_array($input['services'] ?? null) ? implode(', ', $input['services']) : ($input['services'] ?? ''),
-        'total'         => $input['total'] ?? 0,
-        'comment'       => $input['comment'] ?? '',
-        'subject'       => $input['subject'] ?? ('Заказ #' . $input['orderNum']),
-    ];
+    $sheetsId = $config['GOOGLE_SHEETS_ID'] ?? '';
+    $saEmail  = $config['GOOGLE_SA_EMAIL'] ?? '';
+    $saKey    = $config['GOOGLE_SA_PRIVATE_KEY'] ?? '';
+    $notify   = $config['NOTIFY_EMAIL'] ?? 'janicacid@gmail.com';
 
-    $ch = curl_init();
-    curl_setopt_array($ch, [
-        CURLOPT_URL            => $appsScriptUrl,
-        CURLOPT_POST           => true,
-        CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
-        CURLOPT_HTTPHEADER     => ['Content-Type: application/json;charset=utf-8'],
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 30,
-        CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_FOLLOWLOCATION => true,   // Apps Script может редиректить
-        CURLOPT_MAXREDIRS      => 5,
-        CURLOPT_SSL_VERIFYPEER => true,
-    ]);
-    $resp = curl_exec($ch);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlErr = curl_error($ch);
-    curl_close($ch);
+    $orderNum    = $input['orderNum']    ?? '';
+    $clientName  = $input['clientName']  ?? '';
+    $phone       = $input['phone']       ?? '';
+    $email       = $input['email']       ?? '';
+    $kkmType     = $input['kkmType']     ?? '';
+    $kkmCond     = $input['kkmCondition'] ?? '';
+    $services    = is_array($input['services'] ?? null)
+                   ? implode(', ', $input['services'])
+                   : ($input['services'] ?? '');
+    $total       = $input['total']       ?? 0;
+    $comment     = $input['comment']     ?? '';
 
-    if ($curlErr) {
-        error_log("Apps Script curl error: $curlErr");
-        jsonResponse(['success' => false, 'error' => 'Connection error'], 502);
-        return;
-    }
+    $sheetsOk = false;
+    $emailOk  = false;
+    $errors   = [];
 
-    if ($code === 200 && $resp) {
-        $data = json_decode($resp, true) ?: [];
-        jsonResponse([
-            'success' => true,
-            'sheets'  => $data['sheets'] ?? 'ok',
-            'email'   => $data['email'] ?? 'ok',
-        ]);
+    // ── 1. Пишем в Google Sheets ──────────────────────────────────
+    if ($sheetsId && $saEmail && $saKey) {
+        $token = getGoogleAccessToken($saEmail, $saKey);
+        if ($token) {
+            $sheetsOk = appendOrderToSheet($sheetsId, $token, [
+                date('d.m.Y H:i'),
+                $orderNum, $clientName, $phone, $email,
+                $kkmType, $kkmCond, $services, $total, $comment,
+                'Новый', '',
+            ]);
+            if (!$sheetsOk) $errors[] = 'sheets_write_failed';
+        } else {
+            $errors[] = 'sheets_token_failed';
+        }
     } else {
-        error_log("Apps Script HTTP $code: " . substr($resp, 0, 500));
-        jsonResponse(['success' => false, 'error' => 'Apps Script returned HTTP ' . $code], 502);
+        $errors[] = 'sheets_not_configured';
     }
+
+    // ── 2. Отправляем email уведомление ───────────────────────────
+    $emailOk = sendOrderEmail($notify, $orderNum, $clientName, $phone,
+                              $email, $kkmType, $kkmCond, $services, $total, $comment);
+    if (!$emailOk) $errors[] = 'email_failed';
+
+    jsonResponse([
+        'success' => true,
+        'sheets'  => $sheetsOk ? 'ok' : 'error',
+        'email'   => $emailOk  ? 'ok' : 'error',
+        'errors'  => $errors,
+    ]);
 }
 
-// ==================== HELPERS ====================
+// ── Добавить строку в Лист1 ───────────────────────────────────────
 
-function jsonResponse(array $d, int $s = 200): void { http_response_code($s); echo json_encode($d, JSON_UNESCAPED_UNICODE); exit; }
-function getJsonInput(): array { $r = file_get_contents('php://input'); return is_array($d = json_decode($r, true)) ? $d : []; }
+function appendOrderToSheet(string $sheetsId, string $token, array $row): bool {
+    // Проверяем/создаём заголовки
+    $headers = ['Timestamp','orderNum','clientName','phone','email',
+                'kkmType','kkmCondition','services','total','comment','Status','AdminComment'];
+
+    $checkUrl = 'https://sheets.googleapis.com/v4/spreadsheets/'
+                . urlencode($sheetsId) . '/values/%D0%9B%D0%B8%D1%81%D1%821!A1:L1';
+    $check = curlGet($checkUrl, ["Authorization: Bearer $token"]);
+    $existing = json_decode($check['body'] ?? '', true)['values'][0] ?? [];
+
+    if (empty($existing)) {
+        // Пишем заголовки
+        $hUrl = 'https://sheets.googleapis.com/v4/spreadsheets/'
+                . urlencode($sheetsId)
+                . '/values/%D0%9B%D0%B8%D1%81%D1%821!A1?valueInputOption=RAW';
+        curlPut($hUrl, ['values' => [$headers]], ["Authorization: Bearer $token"]);
+    }
+
+    // Добавляем строку
+    $appendUrl = 'https://sheets.googleapis.com/v4/spreadsheets/'
+                 . urlencode($sheetsId)
+                 . '/values/%D0%9B%D0%B8%D1%81%D1%821:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS';
+    $resp = curlPost($appendUrl, ['values' => [$row]], 15, ["Authorization: Bearer $token"]);
+
+    return ($resp['code'] ?? 0) === 200;
+}
+
+// ── Email уведомление: mail() (primary) → SMTP (fallback) ─────────
+
+function sendOrderEmail(string $to, string $orderNum, string $clientName,
+                        string $phone, string $email, string $kkmType,
+                        string $kkmCond, string $services, $total, string $comment): bool {
+
+    $subject    = "[Заказ #{$orderNum}] {$clientName} — kassa-cto.ru";
+    $totalFmt   = $total ? number_format((float)$total, 0, '.', ' ') . ' ₽' : '—';
+    $kkmCondFmt = match($kkmCond) { 'new' => 'Новая', 'old' => 'Б/у', default => $kkmCond ?: '—' };
+    $phoneSafe  = htmlspecialchars($phone);
+    $phoneHref  = 'tel:' . preg_replace('/\D/', '', $phone);
+
+    $tr = function(string $l, string $v, bool $bold = false): string {
+        $fw = $bold ? 'font-weight:600;color:#111' : 'color:#222';
+        return "<tr>
+          <td style='padding:7px 14px;font-size:13px;color:#555;white-space:nowrap;border-bottom:1px solid #eee;width:40%'>{$l}</td>
+          <td style='padding:7px 14px;font-size:13px;{$fw};border-bottom:1px solid #eee'>{$v}</td>
+        </tr>";
+    };
+
+    $date         = date('d.m.Y H:i');
+    $clientSafe   = htmlspecialchars($clientName);
+    $kkmSafe      = htmlspecialchars($kkmType) ?: '—';
+    $commentSafe  = $comment ? htmlspecialchars($comment) : '—';
+    $emailLink    = $email ? "<a href='mailto:{$email}' style='color:#1e3a5f;text-decoration:none'>" . htmlspecialchars($email) . "</a>" : '—';
+    $serviceLines = "<div style='line-height:1.7'>" . nl2br(htmlspecialchars(str_replace(', ', "\n", $services))) . "</div>";
+
+    $html = "<!DOCTYPE html>
+<html lang='ru'>
+<head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'></head>
+<body style='margin:0;padding:0;background:#f0f2f5;font-family:Arial,Helvetica,sans-serif'>
+<table width='100%' cellpadding='0' cellspacing='0' style='background:#f0f2f5;padding:24px 0'>
+<tr><td align='center'>
+<table width='600' cellpadding='0' cellspacing='0' style='max-width:600px;width:100%'>
+
+  <tr><td style='background:#1e3a5f;border-radius:10px 10px 0 0;padding:22px 28px'>
+    <table width='100%' cellpadding='0' cellspacing='0'>
+      <tr>
+        <td><p style='margin:0;font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px'>kassa-cto.ru · Теллур-Интех</p>
+            <h1 style='margin:5px 0 0;font-size:20px;color:#fff;font-weight:700'>Новый заказ #{$orderNum}</h1></td>
+        <td align='right' style='font-size:12px;color:rgba(255,255,255,0.5)'>{$date}</td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <tr><td style='background:#fff;padding:24px 28px 16px'>
+    <p style='margin:0 0 10px;font-size:11px;font-weight:700;color:#1e3a5f;text-transform:uppercase;letter-spacing:1px'>👤 Для менеджера</p>
+    <table width='100%' cellpadding='0' cellspacing='0' style='border:1px solid #e8eaed;border-radius:8px;overflow:hidden;border-collapse:collapse'>
+      " . $tr('Клиент', $clientSafe, true)
+       . $tr('Телефон', "<a href='{$phoneHref}' style='color:#1e3a5f;font-weight:600;text-decoration:none'>{$phoneSafe}</a>")
+       . $tr('Email', $emailLink)
+       . $tr('№ заказа', htmlspecialchars($orderNum))
+       . $tr('Сумма', "<span style='font-weight:700;color:#1e3a5f'>{$totalFmt}</span>")
+       . $tr('Комментарий', $commentSafe) . "
+    </table>
+    <div style='margin-top:14px'>
+      <a href='https://kassa-cto.ru/admin' style='display:inline-block;background:#1e3a5f;color:#fff;text-decoration:none;padding:10px 22px;border-radius:7px;font-size:13px;font-weight:600'>Открыть кабинет менеджера →</a>
+    </div>
+  </td></tr>
+
+  <tr><td style='background:#fff;padding:0 28px 4px'><hr style='border:none;border-top:2px dashed #e0e3e8;margin:0'></td></tr>
+
+  <tr><td style='background:#fff;padding:16px 28px 24px'>
+    <p style='margin:0 0 10px;font-size:11px;font-weight:700;color:#b45309;text-transform:uppercase;letter-spacing:1px'>🔧 Для инженера</p>
+    <table width='100%' cellpadding='0' cellspacing='0' style='border:1px solid #fcd34d;border-radius:8px;overflow:hidden;border-collapse:collapse;background:#fffbeb'>
+      " . $tr('Модель кассы', $kkmSafe, true)
+       . $tr('Состояние', $kkmCondFmt)
+       . $tr('Работы', $serviceLines)
+       . $tr('Примечание', $commentSafe) . "
+    </table>
+    <p style='margin:10px 0 0;font-size:11px;color:#92400e;padding:8px 12px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b'>
+      ⚠️ Уточните у менеджера наличие ФН нужного типа и актуальность ПО кассы перед визитом.
+    </p>
+  </td></tr>
+
+  <tr><td style='background:#f8f9fb;border-top:1px solid #e8eaed;border-radius:0 0 10px 10px;padding:12px 28px'>
+    <p style='margin:0;font-size:11px;color:#9ca3af;text-align:center'>
+      Авто-уведомление · <a href='https://kassa-cto.ru' style='color:#6b7280;text-decoration:none'>kassa-cto.ru</a> · ООО «Теллур-Интех» · ИНН 7806044498
+    </p>
+  </td></tr>
+
+</table></td></tr></table>
+</body></html>";
+
+    // ── Текстовая версия (для спам-фильтров и multipart/alternative) ────
+    $plain = "Новый заказ #{$orderNum} на kassa-cto.ru\n"
+           . "Дата: {$date}\n\n"
+           . "Клиент: {$clientName}\n"
+           . "Телефон: {$phone}\n"
+           . "Email: " . ($email ?: '—') . "\n"
+           . "№ заказа: {$orderNum}\n"
+           . "Сумма: {$totalFmt}\n"
+           . "Комментарий: " . ($comment ?: '—') . "\n\n"
+           . "Модель кассы: " . ($kkmType ?: '—') . "\n"
+           . "Состояние: {$kkmCondFmt}\n"
+           . "Работы: " . ($services ?: '—') . "\n\n"
+           . "—\nООО «Теллур-Интех» · kassa-cto.ru · ИНН 7806044498";
+
+    // ── Способ 1: PHP mail() — основной, через локальный MTA Beget ────
+    //    Beget подписывает исходящую почту DKIM, у MTA хороший IP-reputation.
+    $mailOk = sendViaMail('admin@kassa-cto.ru', 'Теллур-Интех', $to, $subject, $html, $plain);
+    if ($mailOk) { error_log("Email sent via mail() to {$to} (order #{$orderNum})"); return true; }
+    error_log("mail() failed for order #{$orderNum}, trying SMTP fallback...");
+
+    // ── Способ 2: SMTP smtp.beget.com:465 — fallback ──────────────────
+    $smtpOk = smtpSend(
+        host:    'smtp.beget.com',
+        port:    465,
+        user:    'admin@kassa-cto.ru',
+        pass:    'K1slotn1k!',
+        from:    'admin@kassa-cto.ru',
+        fromName: 'Теллур-Интех',
+        to:      $to,
+        subject: $subject,
+        html:    $html,
+        plain:   $plain
+    );
+    if ($smtpOk) { error_log("Email sent via SMTP to {$to} (order #{$orderNum})"); return true; }
+    error_log("Both mail() and SMTP failed for order #{$orderNum}");
+    return false;
+}
+
+// ── PHP mail() с multipart/alternative + envelope sender (-f) ──────
+
+function sendViaMail(string $from, string $fromName, string $to,
+                     string $subject, string $html, string $plain): bool {
+    $boundary = 'b1_' . md5(uniqid('', true));
+    $subjectB64 = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $fromB64    = '=?UTF-8?B?' . base64_encode($fromName) . '?=';
+
+    $headers  = "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: multipart/alternative; boundary=\"{$boundary}\"\r\n";
+    $headers .= "From: {$fromB64} <{$from}>\r\n";
+    $headers .= "Reply-To: {$from}\r\n";
+    $headers .= "Return-Path: {$from}\r\n";
+    $headers .= "X-Mailer: kassa-cto.ru/PHP" . PHP_VERSION . "\r\n";
+    $headers .= "Auto-Submitted: auto-generated\r\n";
+    $headers .= "Date: " . date('r') . "\r\n";
+    $headers .= "Message-ID: <" . uniqid('order@', true) . ">\r\n";
+
+    $body  = "--{$boundary}\r\n";
+    $body .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
+    $body .= chunk_split(base64_encode($plain)) . "\r\n";
+    $body .= "--{$boundary}\r\n";
+    $body .= "Content-Type: text/html; charset=UTF-8\r\n";
+    $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
+    $body .= chunk_split(base64_encode($html)) . "\r\n";
+    $body .= "--{$boundary}--\r\n";
+
+    // -f задаёт envelope sender (повышает шансы пройти SPF/DKIM-проверки)
+    // На Beget это работает только если $from — реальный ящик домена.
+    $oldSendmail = ini_set('sendmail_from', $from);
+    $ok = @mail($to, $subjectB64, $body, $headers, "-f {$from}");
+    if ($oldSendmail !== false) ini_restore('sendmail_from');
+
+    return (bool)$ok;
+}
+
+// ── SMTP клиент (SSL, без библиотек) ──────────────────────────────
+
+function smtpSend(string $host, int $port, string $user, string $pass,
+                  string $from, string $fromName, string $to,
+                  string $subject, string $html, string $plain = ''): bool {
+
+    $ctx = stream_context_create(['ssl' => [
+        'verify_peer'       => false,
+        'verify_peer_name'  => false,
+        'allow_self_signed' => true,
+    ]]);
+
+    $sock = @stream_socket_client(
+        "ssl://{$host}:{$port}", $errno, $errstr, 15,
+        STREAM_CLIENT_CONNECT, $ctx
+    );
+    if (!$sock) { error_log("SMTP connect failed: {$errno} {$errstr}"); return false; }
+
+    stream_set_timeout($sock, 15);
+
+    $read = function() use ($sock): string {
+        $out = '';
+        while ($line = fgets($sock, 512)) {
+            $out .= $line;
+            if (isset($line[3]) && $line[3] === ' ') break;
+        }
+        return $out;
+    };
+
+    $cmd = function(string $c) use ($sock, $read): string {
+        fwrite($sock, $c . "\r\n");
+        return $read();
+    };
+
+    $read(); // приветствие
+
+    $r = $cmd("EHLO kassa-cto.ru");
+    if (!str_contains($r, '250')) { fclose($sock); error_log("SMTP EHLO: {$r}"); return false; }
+
+    $r = $cmd("AUTH LOGIN");
+    $cmd(base64_encode($user));
+    $r = $cmd(base64_encode($pass));
+    if (!str_contains($r, '235')) { fclose($sock); error_log("SMTP AUTH: {$r}"); return false; }
+
+    $r = $cmd("MAIL FROM:<{$from}>");
+    if (!str_contains($r, '250')) { fclose($sock); error_log("SMTP MAIL FROM: {$r}"); return false; }
+    $r = $cmd("RCPT TO:<{$to}>");
+    if (!str_contains($r, '250') && !str_contains($r, '251')) { fclose($sock); error_log("SMTP RCPT TO: {$r}"); return false; }
+    $r = $cmd("DATA");
+    if (!str_contains($r, '354')) { fclose($sock); error_log("SMTP DATA: {$r}"); return false; }
+
+    $boundary   = 'b2_' . md5(uniqid('', true));
+    $subjectB64 = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $fromB64    = '=?UTF-8?B?' . base64_encode($fromName) . '?=';
+    $msgId      = '<' . uniqid('order@', true) . '>';
+    $date       = date('r');
+
+    $headers = "Date: {$date}\r\n"
+         . "From: {$fromB64} <{$from}>\r\n"
+         . "To: {$to}\r\n"
+         . "Subject: {$subjectB64}\r\n"
+         . "Message-ID: {$msgId}\r\n"
+         . "MIME-Version: 1.0\r\n"
+         . "Reply-To: {$from}\r\n"
+         . "Auto-Submitted: auto-generated\r\n";
+
+    if ($plain !== '') {
+        $headers .= "Content-Type: multipart/alternative; boundary=\"{$boundary}\"\r\n\r\n";
+        $body  = "--{$boundary}\r\n"
+               . "Content-Type: text/plain; charset=UTF-8\r\n"
+               . "Content-Transfer-Encoding: base64\r\n\r\n"
+               . chunk_split(base64_encode($plain)) . "\r\n"
+               . "--{$boundary}\r\n"
+               . "Content-Type: text/html; charset=UTF-8\r\n"
+               . "Content-Transfer-Encoding: base64\r\n\r\n"
+               . chunk_split(base64_encode($html)) . "\r\n"
+               . "--{$boundary}--\r\n";
+    } else {
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n"
+                  . "Content-Transfer-Encoding: base64\r\n\r\n";
+        $body = chunk_split(base64_encode($html));
+    }
+
+    $msg = $headers . $body . "\r\n.\r\n";
+
+    $r = $cmd($msg);
+    $cmd("QUIT");
+    fclose($sock);
+
+    $ok = str_contains($r, '250');
+    if (!$ok) error_log("SMTP DATA response: {$r}");
+    return $ok;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// ADMIN AUTH
+// ══════════════════════════════════════════════════════════════════
+
+function handleAdminLogin(array $config): void {
+    $input    = getJsonInput();
+    $login    = trim($input['login']    ?? '');
+    $password = trim($input['password'] ?? '');
+    $token    = $input['captchaToken']  ?? '';
+    $answer   = (string)($input['captchaAnswer'] ?? '');
+
+    if (!verifyCaptcha($token, $answer))
+        jsonResponse(['error' => 'Неверный ответ на капчу или время истекло'], 400);
+
+    $expLogin = $config['ADMIN_LOGIN']    ?? '';
+    $expPass  = $config['ADMIN_PASSWORD'] ?? '';
+    if (!$expLogin || !$expPass)
+        jsonResponse(['error' => 'CRM не настроен'], 500);
+
+    if (!hash_equals($expLogin, $login) || !hash_equals($expPass, $password))
+        jsonResponse(['error' => 'Неверный логин или пароль'], 401);
+
+    $secret = $config['ADMIN_JWT_SECRET'] ?? '';
+    if (!$secret) jsonResponse(['error' => 'JWT secret не настроен'], 500);
+
+    $jwt    = createJwt($secret);
+    $secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+    setcookie('admin_jwt', $jwt, [
+        'expires' => time() + 86400 * 30, 'path' => '/',
+        'secure' => $secure, 'httponly' => true, 'samesite' => 'Lax',
+    ]);
+    jsonResponse(['success' => true]);
+}
+
+function handleAdminLogout(): void {
+    setcookie('admin_jwt', '', ['expires' => time() - 3600, 'path' => '/', 'httponly' => true]);
+    jsonResponse(['success' => true]);
+}
+
+function requireAuth(array $config): void {
+    $secret = $config['ADMIN_JWT_SECRET'] ?? '';
+    $jwt    = $_COOKIE['admin_jwt'] ?? '';
+    if (!$jwt || !verifyJwt($jwt, $secret))
+        jsonResponse(['error' => 'Unauthorized', 'code' => 'AUTH_REQUIRED'], 401);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// JWT
+// ══════════════════════════════════════════════════════════════════
+
+function b64url(string $d): string { return rtrim(strtr(base64_encode($d), '+/', '-_'), '='); }
+
+function createJwt(string $secret): string {
+    $h = b64url(json_encode(['alg'=>'HS256','typ'=>'JWT']));
+    $p = b64url(json_encode(['sub'=>'admin','iat'=>time(),'exp'=>time()+86400*30]));
+    $s = b64url(hash_hmac('sha256', "$h.$p", $secret, true));
+    return "$h.$p.$s";
+}
+
+function verifyJwt(string $token, string $secret): bool {
+    $parts = explode('.', $token);
+    if (count($parts) !== 3) return false;
+    [$h,$p,$s] = $parts;
+    if (!hash_equals(b64url(hash_hmac('sha256', "$h.$p", $secret, true)), $s)) return false;
+    $d = json_decode(base64_decode(strtr($p, '-_', '+/')), true);
+    return isset($d['exp']) && $d['exp'] > time();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// ADMIN ORDERS — чтение из Google Sheets
+// ══════════════════════════════════════════════════════════════════
+
+function handleGetOrders(array $config): void {
+    $sheetsId = $config['GOOGLE_SHEETS_ID'] ?? '';
+    $saEmail  = $config['GOOGLE_SA_EMAIL']  ?? '';
+    $saKey    = $config['GOOGLE_SA_PRIVATE_KEY'] ?? '';
+
+    if (!$sheetsId || !$saEmail || !$saKey)
+        jsonResponse(['error'=>'SHEETS_NOT_CONFIGURED', 'message'=>'Заполните GOOGLE_* в config.php'], 503);
+
+    $token = getGoogleAccessToken($saEmail, $saKey);
+    if (!$token) jsonResponse(['error' => 'Не удалось получить Google токен'], 502);
+
+    $url  = 'https://sheets.googleapis.com/v4/spreadsheets/'
+            . urlencode($sheetsId) . '/values/%D0%9B%D0%B8%D1%81%D1%821';
+    $resp = curlGet($url, ["Authorization: Bearer $token"]);
+
+    if (!$resp || $resp['code'] !== 200) {
+        error_log("Sheets GET {$resp['code']}: " . substr($resp['body'], 0, 300));
+        jsonResponse(['error' => 'Ошибка чтения Google Sheets (HTTP ' . ($resp['code']??0) . ')'], 502);
+    }
+
+    $values = json_decode($resp['body'], true)['values'] ?? [];
+    if (empty($values)) { jsonResponse(['orders' => [], 'columns' => []]); }
+
+    $headers = array_map('trim', $values[0]);
+    $orders  = [];
+    for ($i = 1; $i < count($values); $i++) {
+        $row = $values[$i]; $obj = [];
+        foreach ($headers as $j => $h) $obj[$h] = $row[$j] ?? '';
+        $obj['_rowIndex'] = $i + 1;
+        $orders[] = $obj;
+    }
+    jsonResponse(['orders' => array_reverse($orders), 'columns' => $headers]);
+}
+
+function handlePatchOrder(array $config): void {
+    $sheetsId = $config['GOOGLE_SHEETS_ID']      ?? '';
+    $saEmail  = $config['GOOGLE_SA_EMAIL']        ?? '';
+    $saKey    = $config['GOOGLE_SA_PRIVATE_KEY']  ?? '';
+
+    if (!$sheetsId || !$saEmail || !$saKey)
+        jsonResponse(['error' => 'SHEETS_NOT_CONFIGURED'], 503);
+
+    $input    = getJsonInput();
+    $rowIndex = (int)($input['rowIndex'] ?? 0);
+    $updates  = $input['updates'] ?? [];
+
+    if ($rowIndex < 2 || empty($updates))
+        jsonResponse(['error' => 'rowIndex и updates обязательны'], 400);
+
+    $token = getGoogleAccessToken($saEmail, $saKey);
+    if (!$token) jsonResponse(['error' => 'Не удалось получить Google токен'], 502);
+
+    $hUrl    = 'https://sheets.googleapis.com/v4/spreadsheets/'
+               . urlencode($sheetsId) . '/values/%D0%9B%D0%B8%D1%81%D1%821!1:1';
+    $hResp   = curlGet($hUrl, ["Authorization: Bearer $token"]);
+    $headers = array_map('trim', json_decode($hResp['body'], true)['values'][0] ?? []);
+
+    $data = [];
+    foreach ($updates as $col => $val) {
+        $ci = array_search($col, $headers);
+        if ($ci === false) {
+            $ci = count($headers); $headers[] = $col;
+            $wUrl = 'https://sheets.googleapis.com/v4/spreadsheets/'
+                    . urlencode($sheetsId)
+                    . '/values/%D0%9B%D0%B8%D1%81%D1%821!' . colLetter($ci) . '1?valueInputOption=RAW';
+            curlPut($wUrl, ['values' => [[$col]]], ["Authorization: Bearer $token"]);
+        }
+        $data[] = ['range' => 'Лист1!' . colLetter($ci) . $rowIndex, 'values' => [[(string)$val]]];
+    }
+
+    $bUrl  = 'https://sheets.googleapis.com/v4/spreadsheets/'
+             . urlencode($sheetsId) . '/values:batchUpdate';
+    $bResp = curlPost($bUrl, ['valueInputOption'=>'RAW','data'=>$data], 15, ["Authorization: Bearer $token"]);
+
+    if (!$bResp || $bResp['code'] !== 200) {
+        error_log("Sheets PATCH {$bResp['code']}: " . substr($bResp['body'], 0, 300));
+        jsonResponse(['error' => 'Ошибка записи'], 502);
+    }
+    jsonResponse(['success' => true]);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// GOOGLE SERVICE ACCOUNT AUTH
+// ══════════════════════════════════════════════════════════════════
+
+function getGoogleAccessToken(string $email, string $key): ?string {
+    $now  = time();
+    $h    = b64url(json_encode(['alg'=>'RS256','typ'=>'JWT']));
+    $p    = b64url(json_encode([
+        'iss'=>$email, 'scope'=>'https://www.googleapis.com/auth/spreadsheets',
+        'aud'=>'https://oauth2.googleapis.com/token', 'iat'=>$now, 'exp'=>$now+3600,
+    ]));
+    $pkey = openssl_pkey_get_private($key);
+    if (!$pkey) { error_log('SA: bad private key'); return null; }
+    if (!openssl_sign("$h.$p", $sig, $pkey, OPENSSL_ALGO_SHA256)) { error_log('SA: sign failed'); return null; }
+
+    $resp = curlPost('https://oauth2.googleapis.com/token', [], 15, [],
+        http_build_query(['grant_type'=>'urn:ietf:params:oauth:grant-type:jwt-bearer','assertion'=>"$h.$p.".b64url($sig)]),
+        'application/x-www-form-urlencoded');
+
+    if (!$resp || $resp['code'] !== 200) {
+        error_log("SA token HTTP {$resp['code']}: " . substr($resp['body'],0,300)); return null;
+    }
+    return json_decode($resp['body'], true)['access_token'] ?? null;
+}
+
+
+// ══════════════════════════════════════════════════════════════════
+// TEST — диагностика, удалить после проверки
+// ══════════════════════════════════════════════════════════════════
+
+function handleTest(array $config): void {
+    header('Content-Type: text/html; charset=utf-8');
+
+    $sheetsId = $config['GOOGLE_SHEETS_ID'] ?? '';
+    $saEmail  = $config['GOOGLE_SA_EMAIL']  ?? '';
+    $saKey    = $config['GOOGLE_SA_PRIVATE_KEY'] ?? '';
+    $notify   = $config['NOTIFY_EMAIL'] ?? 'janicacid@gmail.com';
+
+    $out = '<style>body{font:14px monospace;padding:20px}.ok{color:green}.err{color:red}.box{background:#f5f5f5;padding:10px;margin:8px 0;border-left:3px solid #ccc}</style>';
+    $out .= '<h2>🔧 Диагностика kassa-cto</h2>';
+
+    // 1. Конфиг
+    $out .= '<h3>1. Конфиг</h3><div class=box>';
+    $out .= 'SHEETS_ID: <b>'.($sheetsId ? '✅ '.substr($sheetsId,0,10).'...' : '❌ пусто').'</b><br>';
+    $out .= 'SA_EMAIL: <b>' .($saEmail  ? '✅ '.$saEmail : '❌ пусто').'</b><br>';
+    $out .= 'SA_KEY: <b>'   .(strlen($saKey)>100 ? '✅ '.strlen($saKey).' байт' : '❌ пусто').'</b><br>';
+    $out .= 'NOTIFY: <b>'   .$notify.'</b></div>';
+
+    // 2. Google Token
+    $out .= '<h3>2. Google Access Token</h3>';
+    $token = null;
+    if ($saEmail && $saKey) {
+        $pkey = openssl_pkey_get_private($saKey);
+        if (!$pkey) {
+            $out .= '<div class=box><span class=err>❌ Не удалось загрузить приватный ключ</span></div>';
+        } else {
+            $token = getGoogleAccessToken($saEmail, $saKey);
+            if ($token) $out .= '<div class=box><span class=ok>✅ Токен получен</span></div>';
+            else        $out .= '<div class=box><span class=err>❌ Не удалось получить токен (см. error_log)</span></div>';
+        }
+    } else { $out .= '<div class=box><span class=err>❌ Конфиг пустой</span></div>'; }
+
+    // 3. Запись в Sheets
+    $out .= '<h3>3. Запись тестовой строки в Лист1</h3>';
+    if ($token && $sheetsId) {
+        $row = [date('d.m.Y H:i'),'TEST-'.time(),'Тест Диагностика','+79001234567','','АТОЛ 91Ф','','Тест',0,'Авто-тест удалить','Новый',''];
+        $url = 'https://sheets.googleapis.com/v4/spreadsheets/'.urlencode($sheetsId).'/values/%D0%9B%D0%B8%D1%81%D1%821:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS';
+        $resp = curlPost($url, [], 15, ["Authorization: Bearer $token"],
+                         json_encode(['values'=>[$row]], JSON_UNESCAPED_UNICODE));
+        if (($resp['code']??0) === 200) $out .= '<div class=box><span class=ok>✅ Строка записана в таблицу!</span></div>';
+        else $out .= '<div class=box><span class=err>❌ HTTP '.($resp['code']??0).'</span><br>'.htmlspecialchars(substr($resp['body']??'',0,400)).'</div>';
+    } else { $out .= '<div class=box>⏭ Пропущено</div>'; }
+
+    // 4. Email через sendViaMail() (multipart/alternative + envelope sender)
+    $out .= '<h3>4. Email → '.$notify.' (через sendViaMail)</h3>';
+    $testHtml  = '<div style="font-family:Arial;padding:20px"><h2 style="color:#1e3a5f">🔧 Тест kassa-cto.ru</h2>'
+               . '<p><b>Время:</b> ' . date('d.m.Y H:i:s') . '</p>'
+               . '<p><b>Способ:</b> sendViaMail() — multipart/alternative + -f admin@kassa-cto.ru</p>'
+               . '<p>Если это письмо пришло — уведомления о заказах тоже будут приходить.</p></div>';
+    $testPlain = "Тест kassa-cto.ru\nВремя: " . date('d.m.Y H:i:s') . "\nСпособ: sendViaMail()";
+    $mailOk = sendViaMail('admin@kassa-cto.ru', 'Теллур-Интех (тест)', $notify,
+                          'Тест kassa-cto диагностика', $testHtml, $testPlain);
+    if ($mailOk) $out .= '<div class=box><span class=ok>✅ mail() → true (проверь ящик + Спам, From: admin@kassa-cto.ru)</span></div>';
+    else         $out .= '<div class=box><span class=err>❌ mail() → false (см. error_log, проверь что ящик admin@kassa-cto.ru создан в Beget)</span></div>';
+
+    // 5. SMTP fallback
+    $out .= '<h3>5. Email через SMTP smtp.beget.com:465 (fallback)</h3>';
+    $smtpOk = smtpSend(
+        host: 'smtp.beget.com', port: 465,
+        user: 'admin@kassa-cto.ru', pass: 'K1slotn1k!',
+        from: 'admin@kassa-cto.ru', fromName: 'Теллур-Интех (SMTP тест)',
+        to: $notify, subject: 'Тест kassa-cto SMTP',
+        html: $testHtml, plain: $testPlain
+    );
+    if ($smtpOk) $out .= '<div class=box><span class=ok>✅ SMTP → письмо отправлено</span></div>';
+    else         $out .= '<div class=box><span class=err>❌ SMTP не смог отправить (см. error_log)</span></div>';
+
+    $out .= '<hr><p style="color:#999">Удали этот эндпоинт после проверки. Логи: /var/log/php/error.log на Beget.</p>';
+
+    // Сбрасываем JSON-заголовок, ставим HTML
+    header_remove('Content-Type');
+    header('Content-Type: text/html; charset=utf-8');
+    echo $out; exit;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════════
+
+function colLetter(int $i): string {
+    $l = ''; $i++;
+    while ($i > 0) { $i--; $l = chr(65+($i%26)).$l; $i = intdiv($i,26); }
+    return $l;
+}
+
+function curlGet(string $url, array $headers = []): ?array {
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER=>true, CURLOPT_TIMEOUT=>15,
+        CURLOPT_HTTPHEADER=>array_merge(['Content-Type: application/json'],$headers),
+        CURLOPT_SSL_VERIFYPEER=>true]);
+    $body = curl_exec($ch); $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $err  = curl_error($ch); curl_close($ch);
+    if ($err) { error_log("curlGet: $err"); return null; }
+    return ['code'=>$code,'body'=>$body];
+}
+
+function curlPost(string $url, array $data, int $timeout=30, array $xHeaders=[], string $raw='', string $ct='application/json'): ?array {
+    $body = $raw ?: json_encode($data, JSON_UNESCAPED_UNICODE);
+    $ch   = curl_init($url);
+    curl_setopt_array($ch, [CURLOPT_POST=>true, CURLOPT_POSTFIELDS=>$body,
+        CURLOPT_RETURNTRANSFER=>true, CURLOPT_TIMEOUT=>$timeout, CURLOPT_CONNECTTIMEOUT=>10,
+        CURLOPT_FOLLOWLOCATION=>true, CURLOPT_POSTREDIR=>3, CURLOPT_MAXREDIRS=>5,
+        CURLOPT_SSL_VERIFYPEER=>true,
+        CURLOPT_HTTPHEADER=>array_merge(["Content-Type: $ct"],$xHeaders)]);
+    $b = curl_exec($ch); $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $err = curl_error($ch); curl_close($ch);
+    if ($err) { error_log("curlPost: $err"); return null; }
+    return ['code'=>$code,'body'=>$b];
+}
+
+function curlPut(string $url, array $data, array $xHeaders=[]): ?array {
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [CURLOPT_CUSTOMREQUEST=>'PUT',
+        CURLOPT_POSTFIELDS=>json_encode($data,JSON_UNESCAPED_UNICODE),
+        CURLOPT_RETURNTRANSFER=>true, CURLOPT_TIMEOUT=>15, CURLOPT_SSL_VERIFYPEER=>true,
+        CURLOPT_HTTPHEADER=>array_merge(['Content-Type: application/json'],$xHeaders)]);
+    $b = curl_exec($ch); $code = curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+    return ['code'=>$code,'body'=>$b];
+}
+
+function jsonResponse(array $d, int $s=200): void { http_response_code($s); echo json_encode($d,JSON_UNESCAPED_UNICODE); exit; }
+function getJsonInput(): array { $r=file_get_contents('php://input'); return is_array($d=json_decode($r,true))?$d:[]; }

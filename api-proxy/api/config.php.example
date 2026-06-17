@@ -1,12 +1,32 @@
 <?php
 // ============================================================================
-// КОНФИГУРАЦИЯ PHP API PROXY v8 — kassa-cto.ru
+// КОНФИГУРАЦИЯ PHP API PROXY v10 — kassa-cto.ru
 // ============================================================================
 // ВНИМАНИЕ: Этот файл содержит секреты. НЕ коммитить в Git!
 // Скопировать на Beget вручную и заполнить реальными значениями.
 // ============================================================================
+//
+// В v10 Apps Script УБРАН — PHP пишет в Google Sheets напрямую через
+// Service Account и шлёт email через SMTP smtp.beget.com:465.
+// ============================================================================
 
-// Apps Script Web App URL — сюда отправляются заказы → Google Таблица + email
-// Получить URL: Apps Script → Deploy → New deployment → Web app → Anyone
-// Формат: https://script.google.com/macros/s/XXXXXXXXXX/exec
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+return [
+    // Apps Script URL (оставлен для совместимости, не используется в v10)
+    'APPS_SCRIPT_URL'       => 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec',
+
+    // ─── CRM Admin ──────────────────────────────────────────────────────────
+    'ADMIN_LOGIN'           => 'tellur',
+    'ADMIN_PASSWORD'        => 'CHANGE_ME',
+    'ADMIN_JWT_SECRET'      => 'CHANGE_ME_RANDOM_32_CHARS',
+
+    // ─── Уведомления ────────────────────────────────────────────────────────
+    'NOTIFY_EMAIL'          => 'manager@example.com',
+
+    // ─── Google Sheets (Service Account) ────────────────────────────────────
+    // 1. Создать GCP проект, включить Google Sheets API
+    // 2. Создать Service Account, скачать JSON ключ
+    // 3. Расшарить таблицу на email SA (в формате xxx@yyy.iam.gserviceaccount.com)
+    'GOOGLE_SHEETS_ID'      => 'YOUR_SHEETS_ID',
+    'GOOGLE_SA_EMAIL'       => 'sa-name@project-id.iam.gserviceaccount.com',
+    'GOOGLE_SA_PRIVATE_KEY' => "-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n",
+];

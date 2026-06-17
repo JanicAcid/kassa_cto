@@ -4,6 +4,49 @@
 
 ---
 
+## [2026-06-17] — Актуализация из архива kassa-cto-deploy_11.zip + фикс email
+
+**Автор:** Super Z (AI-агент), пользователь
+
+### Причина
+Репозиторий `JanicAcid/kassa_cto` отставал от актуального состояния продакшена. В архиве `kassa-cto-deploy_11.zip` был PHP API v10 (Apps Script убран, прямая запись в Google Sheets через Service Account, email через SMTP), а в репо лежал v8 (Apps Script). Также пользователь сообщил, что уведомления о заявках не приходят на почту.
+
+### Изменения
+
+#### `api-proxy/api/index.php` (v8 → v11)
+- **Apps Script полностью убран** — PHP пишет в Google Sheets напрямую через Service Account (JWT → access_token → Sheets API v4 append).
+- **Email переписан**: теперь `sendOrderEmail()` сначала пробует PHP `mail()` (через локальный MTA Beget — у него лучше IP-reputation и DKIM-подпись), а при неудаче падает на SMTP `smtp.beget.com:465` (SSL) с проверкой каждого шага (`MAIL FROM`, `RCPT TO`, `DATA`).
+- Добавлена функция `sendViaMail()` — multipart/alternative (text/plain + text/html), envelope sender `-f admin@kassa-cto.ru` (повышает шансы пройти SPF/DKIM), корректные `Message-ID`, `Date`, `Reply-To`, `Auto-Submitted`.
+- `smtpSend()` теперь принимает параметр `plain` и тоже шлёт multipart/alternative, проверяет ответы на каждом шаге, логирует ошибки в `error_log`.
+- `/api/test` переписан: показывает результат обоих методов (`mail()` и SMTP) — удобно для отладки «почему не доходит».
+
+#### `public/.htaccess`
+- Добавлены **clean URLs**: `/foo` → `foo.html`, `/dir/bar` → `dir/bar.html`, 3-й уровень вложенности.
+- 301 редирект `/diagnostika` → `/markirovka/diagnostika`.
+- HTTP → HTTPS, www → non-www редиректы.
+- `Redirect 301 /diagnostika` поставлен ПЕРЕД clean-URL правилами (важно: Apache применяет Redirect до Rewrite).
+
+#### `build-deploy.sh`
+- Убрано исключение `admin.html` и `admin/*` — CRM-кабинет менеджера теперь в проде.
+- Добавлено явное включение `robots.txt` в архив (раньше падало жертвой `-x "*.txt"`).
+
+#### `api-proxy/api/config.php.example`
+- Переписан под структуру v11: `return [...]` массив с ключами `APPS_SCRIPT_URL`, `ADMIN_LOGIN`, `ADMIN_PASSWORD`, `ADMIN_JWT_SECRET`, `NOTIFY_EMAIL`, `GOOGLE_SHEETS_ID`, `GOOGLE_SA_EMAIL`, `GOOGLE_SA_PRIVATE_KEY`.
+
+#### `AGENT_HANDOFF.md`
+- Обновлён GitHub PAT (новый: `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`).
+- Добавлены FTP/SSH, SMTP, CRM credentials.
+- Отмечены выполненными: Google Sheets логирование, постоянное хранилище заказов, email уведомления, CRM кабинет.
+- Добавлен раздел в историю изменений.
+
+### Деплой
+- Файл `api-proxy/api/index.php` — копируется в `out/api/index.php` при сборке.
+- На сервере `api/config.php` НЕ трогается (секреты).
+- Для применения фикса email: собрать архив (`./build-deploy.sh`) → загрузить в `public_html` на Beget → распаковать с заменой.
+- Диагностика: `https://kassa-cto.ru/api/test` — показывает статус `mail()`, SMTP, Google Sheets.
+
+---
+
 ## [2026-04-25 ~ 2026-04-26] — Полная миграция с Cloudflare на Beget
 
 **Автор:** Super Z (AI-агент), пользователь
