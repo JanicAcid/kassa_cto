@@ -579,18 +579,45 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 // ════════════════════════════════════════════════════════════════
 const API_BASE = '/api';
 
-// ─── Чек-лист МЕНЕДЖЕРА: обобщённая воронка ЦТО касс ───────────────
-// Не продажу ФН/ОФД по пунктам, а этапы работы с заявкой.
+// ─── Чек-лист МЕНЕДЖЕРА: привязан к воронке статусов 1-в-1 ────────
+// Каждый этап = один статус. При отметке этапа — статус меняется автоматически.
+// При снятии — откатывается назад.
 const MANAGER_CHECKLIST = [
-  { id: 'm_accept',         label: 'Принять заявку',                       hint: 'Заявка получена с сайта/телефона, проверены контакты' },
-  { id: 'm_call',           label: 'Связаться с клиентом',                 hint: 'Позвонить в течение 30 минут, подтвердить получение заявки' },
-  { id: 'm_clarify',        label: 'Уточнить задачу и модель кассы',       hint: 'Что нужно: маркировка / регистрация / ремонт / замена ФН / ТО. Какая касса, состояние, ФФД, ФН' },
-  { id: 'm_estimate',       label: 'Согласовать смету и сроки',            hint: 'Расчёт в калькуляторе, отправить КП на email/WhatsApp' },
-  { id: 'm_extras',         label: 'Предложить допы (ФН, ОФД, ЭДО, ТО)',   hint: 'Сопутствующие услуги под задачу — без жёсткого списка' },
-  { id: 'm_contract',       label: 'Подписать договор/счёт',               hint: 'Отправить на подпись, получить обратно скан' },
-  { id: 'm_payment',        label: 'Получить оплату (аванс/полностью)',    hint: 'Отметить в 1С, приложить платёжку' },
-  { id: 'm_schedule',       label: 'Назначить выезд инженера',             hint: 'Согласовать дату/время с клиентом и инженером' },
-  { id: 'm_brief_engineer', label: 'Передать заявку инженеру',             hint: 'Раскрыть чек-лист инженера, обсудить нюансы кассы и задачи' },
+  {
+    id: 'm_new',
+    label: 'Принять заявку',
+    hint: 'Заявка получена с сайта/телефона, контакты проверены',
+    status: 'Новый',
+    icon: '📌',
+  },
+  {
+    id: 'm_in_progress',
+    label: 'Связаться и уточнить задачу',
+    hint: 'Позвонить за 30 мин, выяснить что нужно: маркировка/ремонт/ФН/ТО. Согласовать смету и допы',
+    status: 'В работе',
+    icon: '🔧',
+  },
+  {
+    id: 'm_waiting',
+    label: 'Ожидание оплаты / согласования',
+    hint: 'Счёт выставлен, ждём оплату или решение клиента. Запчасти/ФН в заказе',
+    status: 'Ожидает',
+    icon: '⏳',
+  },
+  {
+    id: 'm_done',
+    label: 'Работы выполнены',
+    hint: 'Инженер закончил, касса работает. Согласовать сдачу с клиентом',
+    status: 'Готово',
+    icon: '✅',
+  },
+  {
+    id: 'm_closed',
+    label: 'Закрыть сделку',
+    hint: 'Акт подписан, оплата получена, документы в деле',
+    status: 'Закрыт',
+    icon: '📦',
+  },
 ];
 
 // ─── Чек-лист ИНЖЕНЕРА: технические работы ──────────────────────
@@ -956,7 +983,6 @@ function renderOrder(o) {
         <div class="order-toggle">▶</div>
       </div>
       <div class="order-details">
-        ${renderFunnel(d)}
         ${renderServicesBlock(d, services)}
         <div class="details-grid">
           ${renderManagerPanel(d, services)}
@@ -1053,22 +1079,30 @@ function renderManagerPanel(d, services) {
           <div class="k">Сумма</div><div class="v"><b>${fmtTotal(d.total)}</b></div>
           <div class="k">Комментарий клиента</div><div class="v">${escapeHtml(d.comment||'—')}</div>
         </div>
-        <div class="funnel-label" style="margin-top:6px">Этапы работы менеджера</div>
-        <ul class="checklist">
-          ${MANAGER_CHECKLIST.map(item => {
+        <div class="funnel-label" style="margin-top:6px">Воронка менеджера (отметка этапа = статус)</div>
+        <ul class="checklist funnel-checklist">
+          ${MANAGER_CHECKLIST.map((item, idx) => {
             const checked = checkedSet.has(item.id);
+            const current = (d.status || 'Новый') === item.status;
+            const cls = checked ? 'done' : (current ? 'current' : '');
+            const arrow = idx < MANAGER_CHECKLIST.length - 1 ? '<span class="funnel-arrow">↓</span>' : '';
             return `
-            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${checked?'done':''}">
-              <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)">
-              <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()">
-                ${escapeHtml(item.label)}
-                ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
+            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${cls}" style="flex-direction:column;align-items:stretch;border-left:3px solid ${checked?'#16a34a':(current?'#1e3a5f':'#e5e7eb')};background:${checked?'#f0fdf4':(current?'#eff6ff':'#fff')};padding:10px 14px">
+              <div style="display:flex;align-items:flex-start;gap:10px">
+                <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)" style="margin-top:3px">
+                <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()" style="flex:1">
+                  <div style="font-weight:600;color:#111">${item.icon} ${escapeHtml(item.label)} <span style="font-size:10px;color:${current?'#1e3a5f':'#9ca3af'};background:${current?'#dbeafe':'#f3f4f6'};padding:2px 6px;border-radius:8px">→ ${escapeHtml(item.status)}</span></div>
+                  ${item.hint ? `<small style="display:block;color:#6b7280;font-size:11px;margin-top:3px;font-weight:400">${escapeHtml(item.hint)}</small>` : ''}
+                </div>
               </div>
             </li>`;
           }).join('')}
         </ul>
-        <div style="margin-top:8px;font-size:11px;color:var(--text-soft)">
-          Отмеченные пункты сохраняются в Google Sheets автоматически
+        <div style="margin-top:10px;padding:8px 10px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b;font-size:11px;color:#92400e">
+          ⚠️ Отметка этапа автоматически меняет статус заказа. Снятие галочки откатывает статус назад.
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+          <button class="btn danger" onclick="setStatus(${d.rowIndex}, 'Отказ')" style="font-size:12px;padding:6px 12px">❌ Отметить как отказ</button>
         </div>
       </div>
     </div>
@@ -1141,9 +1175,12 @@ function toggleOrder(rowIndex) {
 
 // Переключение чекбокса с сохранением в Google Sheets
 // rowIndex — строка заказа
-// checkId  — id пункта (m_fn_sale / e_kkm_check / ...)
+// checkId  — id пункта (m_new / e_kkm_check / ...)
 // listType — 'manager' или 'engineer'
 // checked  — новое состояние (true/false)
+//
+// Для менеджера: отметка этапа автоматически меняет статус заказа
+// (привязка к воронке). Снятие — откатывает статус назад.
 function toggleCheck(rowIndex, checkId, listType, checked) {
   const order = state.orders.find(o => o._rowIndex === rowIndex);
   if (!order) return;
@@ -1152,10 +1189,6 @@ function toggleCheck(rowIndex, checkId, listType, checked) {
   if (checked) set.add(checkId);
   else set.delete(checkId);
 
-  // Обновляем визуально (класс done)
-  const li = document.querySelector(`li[data-row="${rowIndex}"][data-check="${checkId}"][data-list="${listType}"]`);
-  if (li) li.classList.toggle('done', checked);
-
   // Записываем обратно в заказ (чтобы при перерисовке не слетало)
   if (listType === 'manager') {
     order._managerChecklist = checklistToJSON(set);
@@ -1163,9 +1196,52 @@ function toggleCheck(rowIndex, checkId, listType, checked) {
     order._engineerChecklist = checklistToJSON(set);
   }
 
-  // Сохраняем в Google Sheets через PATCH (тихо, без toast и перерисовки)
+  // Готовим PATCH-обновление
+  const updates = {};
   const colName = (listType === 'manager') ? 'Чек-лист менеджера' : 'Чек-лист инженера';
-  patchOrder(rowIndex, { [colName]: checklistToJSON(set) }, { silent: true, skipRender: true });
+  updates[colName] = checklistToJSON(set);
+
+  // ─── Для менеджера: синхронизируем статус с воронкой ───────────
+  if (listType === 'manager') {
+    const item = MANAGER_CHECKLIST.find(x => x.id === checkId);
+    if (!item) return;
+
+    if (checked) {
+      // Отметили этап → статус = этому этапу
+      updates['Статус'] = item.status;
+      order['Статус'] = item.status; // обновляем локально
+      // Также помечаем все предыдущие этапы как выполненные
+      const idx = MANAGER_CHECKLIST.findIndex(x => x.id === checkId);
+      for (let i = 0; i < idx; i++) {
+        set.add(MANAGER_CHECKLIST[i].id);
+      }
+      updates[colName] = checklistToJSON(set);
+      order._managerChecklist = checklistToJSON(set);
+      toast(`Этап «${item.label}» → статус «${item.status}»`, 'success');
+    } else {
+      // Сняли галочку → откатываем статус на предыдущий этап
+      const idx = MANAGER_CHECKLIST.findIndex(x => x.id === checkId);
+      // Снимаем все последующие этапы
+      for (let i = idx; i < MANAGER_CHECKLIST.length; i++) {
+        set.delete(MANAGER_CHECKLIST[i].id);
+      }
+      updates[colName] = checklistToJSON(set);
+      order._managerChecklist = checklistToJSON(set);
+      // Новый статус = последний отмеченный этап, или 'Новый' если ничего не отмечено
+      const lastChecked = MANAGER_CHECKLIST.filter(x => set.has(x.id)).pop();
+      const newStatus = lastChecked ? lastChecked.status : 'Новый';
+      updates['Статус'] = newStatus;
+      order['Статус'] = newStatus;
+      toast(`Статус откатился на «${newStatus}»`, 'success');
+    }
+    // Перерисовываем карточку чтобы обновилась воронка
+    renderList();
+    patchOrder(rowIndex, updates, { silent: true, skipRender: true });
+    return;
+  }
+
+  // ─── Для инженера: просто сохраняем чек-лист ──────────────────
+  patchOrder(rowIndex, updates, { silent: true, skipRender: true });
 }
 
 function saveNote(rowIndex) {
