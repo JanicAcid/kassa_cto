@@ -11,6 +11,11 @@ RewriteEngine On
 # /diagnostika → /markirovka/diagnostika
 Redirect 301 /diagnostika /markirovka/diagnostika
 
+# /admin (старая CRM) → /admin-orders (новая CRM с чек-листом инженера)
+# ВАЖНО: RedirectMatch ^/admin/?$ — точное совпадение, НЕ затрагивает /admin/login
+# (старая страница входа остаётся доступной для совместимости)
+RedirectMatch 301 ^/admin/?$ /admin-orders
+
 
 # ─── API proxy — /api/* → api/index.php ─────────────────────────────────────
 RewriteRule ^api/(.*)$ api/index.php [QSA,L]
