@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Заказы — kassa-cto.ru</title>
+<style>
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --primary: #1e3a5f;
+  --primary-hover: #2a4f7f;
+  --accent: #f59e0b;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --warning: #b45309;
+  --info: #0284c7;
+  --text: #111827;
+  --text-soft: #6b7280;
+  --border: #e5e7eb;
+  --border-soft: #f3f4f6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+header {
+  background: var(--primary);
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+header h1 { font-size: 18px; font-weight: 600; }
+header .actions { display: flex; gap: 10px; align-items: center; }
+header .actions button {
+  background: rgba(255,255,255,.15);
+  border: none;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+header .actions button:hover { background: rgba(255,255,255,.25); }
+
+.filters {
+  background: var(--card);
+  padding: 14px 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+.filters input, .filters select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.filters input { flex: 1; min-width: 200px; }
+.filters select { min-width: 140px; }
+.filters input:focus, .filters select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(30,58,95,.1);
+}
+
+main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat {
+  background: var(--card);
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+.stat .label { font-size: 11px; color: var(--text-soft); text-transform: uppercase; letter-spacing: .5px; }
+.stat .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+.stat.success { border-color: var(--success); }
+.stat.warning { border-color: var(--warning); }
+.stat.info { border-color: var(--info); }
+
+.orders-list { display: flex; flex-direction: column; gap: 10px; }
+.order {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow .15s;
+}
+.order:hover { box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.order-header {
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 110px 1fr 180px 130px 100px 40px;
+  gap: 14px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.order-header:hover { background: var(--border-soft); }
+.order-num {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 13px;
+}
+.order-client { font-weight: 600; font-size: 14px; }
+.order-client small { display: block; color: var(--text-soft); font-weight: 400; font-size: 12px; margin-top: 2px; }
+.order-kkm { font-size: 13px; color: var(--text); }
+.order-kkm small { display: block; color: var(--text-soft); font-size: 11px; }
+.order-total { font-weight: 600; color: var(--primary); text-align: right; font-size: 15px; }
+.order-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+.status-Новый { background: #dbeafe; color: #1e40af; }
+.status-В работе { background: #fef3c7; color: #92400e; }
+.status-Ожидает { background: #f3e8ff; color: #6b21a8; }
+.status-Готово { background: #dcfce7; color: #166534; }
+.status-Закрыт { background: #e5e7eb; color: #4b5563; }
+.status-Отказ { background: #fee2e2; color: #991b1b; }
+.order-toggle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-soft);
+  transition: transform .15s;
+  font-size: 16px;
+}
+.order.expanded .order-toggle { transform: rotate(90deg); }
+.order-details {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: #fafbfc;
+}
+.order.expanded .order-details { display: block; }
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 18px;
+}
+@media (max-width: 900px) {
+  .details-grid { grid-template-columns: 1fr; }
+  .order-header {
+    grid-template-columns: 1fr 1fr 40px;
+    gap: 8px;
+  }
+  .order-header > .order-kkm,
+  .order-header > .order-total { display: none; }
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.panel h3 {
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--primary);
+  color: #fff;
+}
+.panel.engineer h3 { background: var(--warning); }
+.panel.manager h3 { background: var(--primary); }
+.panel .body { padding: 12px 14px; }
+
+.kv {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 8px 12px;
+  font-size: 13px;
+}
+.kv .k { color: var(--text-soft); }
+.kv .v { font-weight: 500; word-break: break-word; }
+.kv .v a { color: var(--primary); text-decoration: none; }
+.kv .v a:hover { text-decoration: underline; }
+
+.checklist {
+  list-style: none;
+  margin-top: 8px;
+}
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 13px;
+  cursor: pointer;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li:hover { background: var(--border-soft); margin: 0 -14px; padding: 8px 14px; }
+.checklist input[type=checkbox] {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  cursor: pointer;
+  accent-color: var(--success);
+  flex-shrink: 0;
+}
+.checklist .check-label { flex: 1; line-height: 1.4; }
+.checklist .check-label small { display: block; color: var(--text-soft); font-size: 11px; margin-top: 2px; }
+.checklist li.done { opacity: .55; }
+.checklist li.done .check-label { text-decoration: line-through; }
+
+.actions-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--border-soft);
+}
+.btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn:hover { background: var(--border-soft); }
+.btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn.primary:hover { background: var(--primary-hover); }
+.btn.success { background: var(--success); color: #fff; border-color: var(--success); }
+.btn.danger { background: #fff; color: var(--danger); border-color: var(--danger); }
+.btn.danger:hover { background: var(--danger); color: #fff; }
+.btn.warning { background: var(--warning); color: #fff; border-color: var(--warning); }
+
+.status-select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+}
+.status-select:focus { outline: none; border-color: var(--primary); }
+
+.note-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-family: inherit;
+}
+.note-input:focus { outline: none; border-color: var(--primary); }
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-soft);
+}
+.empty h2 { font-size: 18px; margin-bottom: 8px; color: var(--text); }
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-soft);
+}
+.spinner {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: var(--text);
+  color: #fff;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .2s, transform .2s;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger); }
+
+/* Логин форма */
+.login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.login-box {
+  background: var(--card);
+  padding: 28px 32px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+  max-width: 380px;
+  width: 100%;
+}
+.login-box h1 { color: var(--primary); margin-bottom: 6px; font-size: 22px; }
+.login-box p { color: var(--text-soft); font-size: 13px; margin-bottom: 20px; }
+.login-box label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+.login-box input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 14px;
+  font-family: inherit;
+}
+.login-box input:focus { outline: none; border-color: var(--primary); }
+.login-box .captcha {
+  background: var(--border-soft);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.login-box button:hover { background: var(--primary-hover); }
+.login-box button:disabled { opacity: .6; cursor: not-allowed; }
+.login-error { color: var(--danger); font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<div id="toast" class="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// КОНФИГ
+// ════════════════════════════════════════════════════════════════
+const API_BASE = '/api';
+
+// Чек-лист инженера — стандартный набор работ по маркировке/кассе
+const ENGINEER_CHECKLIST = [
+  { id: 'check_kkm', label: 'Проверить ККМ: включение, печать чека, дисплей', hint: 'Включить кассу, проверить тестовый чек' },
+  { id: 'check_fn', label: 'Проверить ФН: срок действия, остаток записей', hint: 'Меню → Информация → ФН' },
+  { id: 'check_fn_type', label: 'Уточнить тип ФН (15/36 мес) под задачи клиента', hint: 'Маркировка требует ФН-1.1М (36 мес) с поддержкой тегов 1162/1163' },
+  { id: 'check_firmware', label: 'Проверить версию прошивки ККМ (ФФД 1.2+)', hint: 'Маркировка требует ФФД 1.2' },
+  { id: 'check_ofd', label: 'Проверить договор ОФД и регистрацию в ФНС', hint: 'Касса должна быть зарегистрирована с поддержкой маркировки' },
+  { id: 'check_edo', label: 'Подключить/проверить ЭДО (Диадок/СБИС)', hint: 'Для приёма кодов от поставщика' },
+  { id: 'check_cryptographer', label: 'Настроить криптопровайдер (VipNet/GroCrypt)', hint: 'Для работы с ГИС МТ' },
+  { id: 'check_chestnyznak', label: 'Зарегистрировать кабинет Честный ЗНАК', hint: 'Получить токен для интеграции' },
+  { id: 'check_tspiot', label: 'Настроить ТС ПИоТ на кассе', hint: 'Программа для сканирования кодов маркировки' },
+  { id: 'check_scanner', label: 'Подключить и настроить 2D-сканер штрихкодов', hint: 'Проверить чтение DataMatrix' },
+  { id: 'check_goods', label: 'Загрузить товарную номенклатуру с кодами', hint: 'Через 1С или вручную' },
+  { id: 'check_test_sale', label: 'Провести тестовую продажу маркированного товара', hint: 'Проверить вывод кода в чеке' },
+  { id: 'check_return', label: 'Провести тестовый возврат', hint: 'Проверить обработку возврата с маркировкой' },
+  { id: 'check_inventory', label: 'Провести инвентаризацию остатков', hint: 'Для маркировки остатков до ввода в оборот' },
+  { id: 'check_print', label: 'Проверить печать чека с тегом 1162/1163', hint: 'Код маркировки в чеке' },
+  { id: 'check_training', label: 'Обучить персонал работе с маркировкой', hint: 'Сканирование, возвраты, ошибки' },
+  { id: 'check_docs', label: 'Передать акт выполненных работ', hint: 'Подписать с клиентом' },
+];
+
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let state = {
+  authed: false,
+  orders: [],
+  columns: [],
+  expanded: new Set(),
+  filter: '',
+  statusFilter: '',
+  loading: false,
+  captchaToken: '',
+  captchaQuestion: '',
+};
+
+// ════════════════════════════════════════════════════════════════
+// API
+// ════════════════════════════════════════════════════════════════
+async function api(path, opts = {}) {
+  const r = await fetch(API_BASE + path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', ...(opts.headers||{}) },
+    credentials: 'same-origin',
+  });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+  return data;
+}
+
+async function loadCaptcha() {
+  const d = await api('/captcha');
+  state.captchaToken = d.token;
+  state.captchaQuestion = d.question;
+}
+
+async function login(login, password, captchaAnswer) {
+  return api('/admin/auth', {
+    method: 'POST',
+    body: JSON.stringify({ login, password, captchaToken: state.captchaToken, captchaAnswer }),
+  });
+}
+
+async function logout() {
+  try { await api('/admin/auth', { method: 'DELETE' }); } catch {}
+  state.authed = false;
+  state.orders = [];
+  state.expanded.clear();
+  render();
+}
+
+async function loadOrders() {
+  state.loading = true;
+  try {
+    const d = await api('/admin/orders');
+    state.orders = d.orders || [];
+    state.columns = d.columns || [];
+    state.loading = false;
+  } catch (e) {
+    state.loading = false;
+    if (e.message.includes('Unauthorized') || e.message.includes('AUTH_REQUIRED')) {
+      state.authed = false;
+      render();
+      return;
+    }
+    toast('Ошибка загрузки: ' + e.message, 'error');
+  }
+  render();
+}
+
+async function patchOrder(rowIndex, updates) {
+  try {
+    await api('/admin/orders', {
+      method: 'PATCH',
+      body: JSON.stringify({ rowIndex, updates }),
+    });
+    toast('Сохранено', 'success');
+    // Обновляем локально
+    const o = state.orders.find(x => x._rowIndex === rowIndex);
+    if (o) Object.assign(o, updates);
+    render();
+  } catch (e) {
+    toast('Ошибка: ' + e.message, 'error');
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════════
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function fmtTotal(v) {
+  const n = parseFloat(String(v||'').replace(/\s/g,'').replace(',','.'));
+  if (!n) return '—';
+  return n.toLocaleString('ru-RU') + ' ₽';
+}
+
+function getCol(o, names) {
+  for (const n of names) {
+    for (const key of Object.keys(o)) {
+      if (key.toLowerCase().includes(n.toLowerCase())) return o[key];
+    }
+  }
+  return '';
+}
+
+function getOrderData(o) {
+  return {
+    date:    getCol(o, ['Дата', 'Timestamp', 'Время']),
+    num:     getCol(o, ['Заказ', 'orderNum', '№']),
+    client:  getCol(o, ['Клиент', 'clientName', 'Имя']),
+    phone:   getCol(o, ['Телефон', 'phone']),
+    email:   getCol(o, ['Email']),
+    kkm:     getCol(o, ['ККМ', 'kkmType', 'Модель']),
+    cond:    getCol(o, ['Состояние', 'kkmCondition', 'Сост']),
+    services:getCol(o, ['Услуги', 'services', 'Работы']),
+    total:   getCol(o, ['Сумма', 'total']),
+    comment: getCol(o, ['Комментарий', 'comment']) ,
+    status:  getCol(o, ['Статус', 'Status']),
+    note:    getCol(o, ['Комментарий менеджера', 'AdminComment', 'managerNote']),
+    file:    getCol(o, ['Файл заказа', 'file']),
+    rowIndex:o._rowIndex,
+  };
+}
+
+function condLabel(c) {
+  if (!c) return '';
+  const m = { 'new': 'Новая', 'old': 'Б/у', 'Новая': 'Новая', 'Б/у': 'Б/у' };
+  return m[c] || c;
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════════
+function render() {
+  const app = document.getElementById('app');
+  if (!state.authed) {
+    renderLogin(app);
+    return;
+  }
+  renderMain(app);
+}
+
+function renderLogin(root) {
+  root.innerHTML = `
+    <div class="login-screen">
+      <div class="login-box">
+        <h1>CRM kassa-cto.ru</h1>
+        <p>Вход для менеджеров</p>
+        <div id="loginForm">
+          <label>Логин</label>
+          <input id="li_login" type="text" autocomplete="username" placeholder="tellur">
+          <label>Пароль</label>
+          <input id="li_pass" type="password" autocomplete="current-password" placeholder="••••••••">
+          <label>Капча: <span class="captcha" id="li_captcha">${state.captchaQuestion || 'загрузка...'}</span></label>
+          <input id="li_cap_ans" type="text" inputmode="numeric" placeholder="Ответ">
+          <button id="li_btn" onclick="doLogin()">Войти</button>
+          <div id="li_err" class="login-error"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function doLogin() {
+  const l = document.getElementById('li_login').value.trim();
+  const p = document.getElementById('li_pass').value;
+  const a = document.getElementById('li_cap_ans').value.trim();
+  const err = document.getElementById('li_err');
+  const btn = document.getElementById('li_btn');
+  btn.disabled = true; btn.textContent = 'Вход...';
+  err.textContent = '';
+  try {
+    await login(l, p, a);
+    state.authed = true;
+    await loadOrders();
+  } catch (e) {
+    err.textContent = e.message;
+    await loadCaptcha();
+    render();
+  } finally {
+    btn.disabled = false; btn.textContent = 'Войти';
+  }
+}
+
+function renderMain(root) {
+  const filtered = state.orders.filter(o => {
+    const d = getOrderData(o);
+    const text = `${d.num} ${d.client} ${d.phone} ${d.email} ${d.kkm} ${d.services} ${d.comment}`.toLowerCase();
+    const matchText = !state.filter || text.includes(state.filter.toLowerCase());
+    const matchStatus = !state.statusFilter || d.status === state.statusFilter;
+    return matchText && matchStatus;
+  });
+
+  // Статистика
+  const stats = { new:0, inProgress:0, done:0, total:0, sum:0 };
+  state.orders.forEach(o => {
+    const d = getOrderData(o);
+    stats.total++;
+    const s = (d.status||'Новый').toLowerCase();
+    if (s === 'новый' || !s) stats.new++;
+    else if (s.includes('работ')) stats.inProgress++;
+    else if (s.includes('готов') || s.includes('закрыт')) stats.done++;
+    const t = parseFloat(String(d.total).replace(/\s/g,'').replace(',','.'));
+    if (t) stats.sum += t;
+  });
+
+  root.innerHTML = `
+    <header>
+      <h1>📋 Заказы — kassa-cto.ru</h1>
+      <div class="actions">
+        <button onclick="loadOrders()">↻ Обновить</button>
+        <button onclick="logout()">Выйти</button>
+      </div>
+    </header>
+    <div class="filters">
+      <input id="filter_input" placeholder="🔍 Поиск: имя, телефон, касса, услуги..." value="${state.filter.replace(/"/g,'&quot;')}" oninput="state.filter=this.value; renderList()">
+      <select id="status_filter" onchange="state.statusFilter=this.value; renderList()">
+        <option value="">Все статусы</option>
+        <option value="Новый" ${state.statusFilter==='Новый'?'selected':''}>Новый</option>
+        <option value="В работе" ${state.statusFilter==='В работе'?'selected':''}>В работе</option>
+        <option value="Ожидает" ${state.statusFilter==='Ожидает'?'selected':''}>Ожидает</option>
+        <option value="Готово" ${state.statusFilter==='Готово'?'selected':''}>Готово</option>
+        <option value="Закрыт" ${state.statusFilter==='Закрыт'?'selected':''}>Закрыт</option>
+        <option value="Отказ" ${state.statusFilter==='Отказ'?'selected':''}>Отказ</option>
+      </select>
+    </div>
+    <main>
+      <div class="stats">
+        <div class="stat"><div class="label">Всего</div><div class="value">${stats.total}</div></div>
+        <div class="stat info"><div class="label">Новые</div><div class="value">${stats.new}</div></div>
+        <div class="stat warning"><div class="label">В работе</div><div class="value">${stats.inProgress}</div></div>
+        <div class="stat success"><div class="label">Готово/Закрыто</div><div class="value">${stats.done}</div></div>
+        <div class="stat"><div class="label">Сумма</div><div class="value">${stats.sum.toLocaleString('ru-RU')} ₽</div></div>
+      </div>
+      <div id="orders_container"></div>
+    </main>
+  `;
+  renderList(filtered);
+}
+
+function renderList(orders) {
+  if (orders === undefined) {
+    // Перерисовать отфильтрованный список
+    const filtered = state.orders.filter(o => {
+      const d = getOrderData(o);
+      const text = `${d.num} ${d.client} ${d.phone} ${d.email} ${d.kkm} ${d.services} ${d.comment}`.toLowerCase();
+      const matchText = !state.filter || text.includes(state.filter.toLowerCase());
+      const matchStatus = !state.statusFilter || d.status === state.statusFilter;
+      return matchText && matchStatus;
+    });
+    orders = filtered;
+  }
+  const container = document.getElementById('orders_container');
+  if (!container) return;
+
+  if (state.loading) {
+    container.innerHTML = `<div class="loading"><div class="spinner"></div><p>Загрузка...</p></div>`;
+    return;
+  }
+
+  if (orders.length === 0) {
+    container.innerHTML = `
+      <div class="empty">
+        <h2>Заказов нет</h2>
+        <p>Новые заявки с сайта появятся здесь автоматически</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = `<div class="orders-list">` + orders.map(o => renderOrder(o)).join('') + `</div>`;
+}
+
+function renderOrder(o) {
+  const d = getOrderData(o);
+  const isExpanded = state.expanded.has(d.rowIndex);
+  const services = (d.services || '').split(', ').filter(Boolean);
+
+  return `
+    <div class="order ${isExpanded?'expanded':''}" id="order_${d.rowIndex}">
+      <div class="order-header" onclick="toggleOrder(${d.rowIndex})">
+        <div class="order-num">#${d.num || '—'}</div>
+        <div class="order-client">
+          ${escapeHtml(d.client || 'Без имени')}
+          <small>${escapeHtml(d.phone || '')} · ${escapeHtml(d.date || '')}</small>
+        </div>
+        <div class="order-kkm">
+          ${escapeHtml(d.kkm || '—')}
+          <small>${escapeHtml(condLabel(d.cond))}</small>
+        </div>
+        <div class="order-total">${fmtTotal(d.total)}</div>
+        <div><span class="order-status status-${escapeHtml(d.status || 'Новый')}">${escapeHtml(d.status || 'Новый')}</span></div>
+        <div class="order-toggle">▶</div>
+      </div>
+      <div class="order-details">
+        <div class="details-grid">
+          ${renderManagerPanel(d, services)}
+          ${renderEngineerPanel(d, services)}
+        </div>
+        <div class="actions-row">
+          <select class="status-select" id="status_${d.rowIndex}" onchange="patchOrder(${d.rowIndex}, {'Статус': this.value}); this.dataset.val=this.value;" data-val="${escapeHtml(d.status||'Новый')}">
+            <option value="Новый" ${d.status==='Новый'?'selected':''}>📌 Новый</option>
+            <option value="В работе" ${d.status==='В работе'?'selected':''}>🔧 В работе</option>
+            <option value="Ожидает" ${d.status==='Ожидает'?'selected':''}>⏳ Ожидает</option>
+            <option value="Готово" ${d.status==='Готово'?'selected':''}>✅ Готово</option>
+            <option value="Закрыт" ${d.status==='Закрыт'?'selected':''}>📦 Закрыт</option>
+            <option value="Отказ" ${d.status==='Отказ'?'selected':''}>❌ Отказ</option>
+          </select>
+          <input class="note-input" id="note_${d.rowIndex}" placeholder="Комментарий менеджера..." value="${escapeHtml(d.note||'')}">
+          <button class="btn primary" onclick="saveNote(${d.rowIndex})">💾 Сохранить</button>
+          <a class="btn" href="tel:${(d.phone||'').replace(/\D/g,'')}">📞 Позвонить</a>
+          ${d.email ? `<a class="btn" href="mailto:${escapeHtml(d.email)}">✉️ Письмо</a>` : ''}
+          <a class="btn" href="https://wa.me/${(d.phone||'').replace(/\D/g,'').replace(/^8/,'7')}" target="_blank">💬 WhatsApp</a>
+          <button class="btn" onclick="copyOrder(${d.rowIndex})">📋 Копировать</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderManagerPanel(d, services) {
+  return `
+    <div class="panel manager">
+      <h3>👤 Для менеджера</h3>
+      <div class="body">
+        <div class="kv">
+          <div class="k">№ заказа</div><div class="v">${escapeHtml(d.num||'—')}</div>
+          <div class="k">Дата</div><div class="v">${escapeHtml(d.date||'—')}</div>
+          <div class="k">Клиент</div><div class="v">${escapeHtml(d.client||'—')}</div>
+          <div class="k">Телефон</div><div class="v"><a href="tel:${(d.phone||'').replace(/\D/g,'')}">${escapeHtml(d.phone||'—')}</a></div>
+          <div class="k">Email</div><div class="v">${d.email ? `<a href="mailto:${escapeHtml(d.email)}">${escapeHtml(d.email)}</a>` : '—'}</div>
+          <div class="k">Сумма</div><div class="v"><b>${fmtTotal(d.total)}</b></div>
+          <div class="k">Комментарий</div><div class="v">${escapeHtml(d.comment||'—')}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderEngineerPanel(d, services) {
+  // Подбираем релевантные пункты чек-листа на основе услуг
+  const allServices = (d.services || '').toLowerCase();
+  const isMarking = allServices.includes('маркиров') || allServices.includes('честный');
+  const isFn = allServices.includes('фн') || allServices.includes('фискальн');
+  const isReg = allServices.includes('регистрац') || allServices.includes('перерегистрац');
+  const isRepair = allServices.includes('ремонт') || allServices.includes('обслуживан');
+
+  let checklist = ENGINEER_CHECKLIST;
+  if (isFn) checklist = checklist.filter(x => x.id.includes('fn'));
+  else if (isRepair) checklist = checklist.filter(x => ['check_kkm','check_fn','check_firmware','check_ofd','check_training','check_docs'].includes(x.id));
+  else if (!isMarking) checklist = checklist.filter(x => !['check_cryptographer','check_chestnyznak','check_tspiot','check_scanner','check_goods','check_inventory'].includes(x.id));
+
+  return `
+    <div class="panel engineer">
+      <h3>🔧 Для инженера — чек-лист работ</h3>
+      <div class="body">
+        <div class="kv" style="margin-bottom:12px">
+          <div class="k">Модель ККМ</div><div class="v"><b>${escapeHtml(d.kkm||'—')}</b></div>
+          <div class="k">Состояние</div><div class="v">${escapeHtml(condLabel(d.cond))}</div>
+          <div class="k">Услуги</div><div class="v">${services.map(s => `<div>• ${escapeHtml(s)}</div>`).join('') || '—'}</div>
+        </div>
+        <ul class="checklist">
+          ${checklist.map(item => `
+            <li onclick="toggleCheck(this)" data-row="${d.rowIndex}" data-check="${item.id}">
+              <input type="checkbox" id="${item.id}_${d.rowIndex}">
+              <div class="check-label">
+                ${escapeHtml(item.label)}
+                ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
+              </div>
+            </li>
+          `).join('')}
+        </ul>
+        <div style="margin-top:10px;font-size:11px;color:#92400e;padding:8px 10px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b">
+          ⚠️ Перед выездом уточнить наличие ФН нужного типа и актуальность ПО кассы
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ════════════════════════════════════════════════════════════════
+// ACTIONS
+// ════════════════════════════════════════════════════════════════
+function toggleOrder(rowIndex) {
+  if (state.expanded.has(rowIndex)) state.expanded.delete(rowIndex);
+  else state.expanded.add(rowIndex);
+  const el = document.getElementById('order_' + rowIndex);
+  if (el) el.classList.toggle('expanded');
+}
+
+function toggleCheck(li) {
+  const cb = li.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+  li.classList.toggle('done', cb.checked);
+  // Чек-лист не сохраняется на сервер (нет колонки), только визуально
+  // Можно расширить: добавить колонку "Чек-лист инженера" и PATCH
+}
+
+function saveNote(rowIndex) {
+  const input = document.getElementById('note_' + rowIndex);
+  if (!input) return;
+  patchOrder(rowIndex, { 'Комментарий менеджера': input.value });
+}
+
+function copyOrder(rowIndex) {
+  const o = state.orders.find(x => x._rowIndex === rowIndex);
+  if (!o) return;
+  const d = getOrderData(o);
+  const text = `Заказ #${d.num}
+Клиент: ${d.client}
+Телефон: ${d.phone}
+Email: ${d.email || '—'}
+ККМ: ${d.kkm} (${condLabel(d.cond)})
+Услуги: ${d.services}
+Сумма: ${fmtTotal(d.total)}
+Комментарий: ${d.comment || '—'}
+Статус: ${d.status || 'Новый'}`;
+  navigator.clipboard.writeText(text).then(() => toast('Скопировано в буфер', 'success'));
+}
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+async function init() {
+  // Проверяем, авторизованы ли (cookie admin_jwt)
+  try {
+    await api('/admin/orders');
+    state.authed = true;
+    await loadOrders();
+  } catch (e) {
+    state.authed = false;
+    await loadCaptcha();
+    render();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
