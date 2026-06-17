@@ -39,6 +39,26 @@ header {
   box-shadow: 0 1px 3px rgba(0,0,0,.1);
 }
 header h1 { font-size: 18px; font-weight: 600; }
+header .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #fff;
+}
+header .brand img {
+  height: 32px;
+  width: auto;
+  border-radius: 4px;
+}
+header .brand .brand-text { display: flex; flex-direction: column; }
+header .brand .brand-text small {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255,255,255,.6);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
 header .actions { display: flex; gap: 10px; align-items: center; }
 header .actions button {
   background: rgba(255,255,255,.15);
@@ -49,8 +69,22 @@ header .actions button {
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 header .actions button:hover { background: rgba(255,255,255,.25); }
+header .actions a.btn-link {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+header .actions a.btn-link:hover { background: rgba(255,255,255,.25); }
 
 .filters {
   background: var(--card);
@@ -139,6 +173,80 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 .status-Готово { background: #dcfce7; color: #166534; }
 .status-Закрыт { background: #e5e7eb; color: #4b5563; }
 .status-Отказ { background: #fee2e2; color: #991b1b; }
+
+/* ─── Воронка статусов ─── */
+.funnel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: linear-gradient(to right, #f8fafc, #f1f5f9);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.funnel-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all .12s;
+  white-space: nowrap;
+}
+.funnel-step:hover { border-color: var(--primary); color: var(--primary); }
+.funnel-step.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.funnel-step.done {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+.funnel-step.done::before { content: '✓ '; }
+.funnel-step.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+.funnel-arrow { color: var(--text-soft); align-self: center; font-size: 14px; }
+.funnel-label {
+  font-size: 11px;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* ─── Сворачиваемая панель инженера ─── */
+.collapsible-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px 14px;
+  background: var(--warning);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.collapsible-toggle:hover { background: #92400e; }
+.collapsible-toggle .toggle-icon { transition: transform .15s; font-size: 14px; }
+.collapsible.expanded .toggle-icon { transform: rotate(180deg); }
+.collapsible-content { display: none; }
+.collapsible.expanded .collapsible-content { display: block; }
 .order-toggle {
   width: 32px;
   height: 32px;
@@ -386,24 +494,18 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 // ════════════════════════════════════════════════════════════════
 const API_BASE = '/api';
 
-// ─── Чек-лист МЕНЕДЖЕРА: продажи и оформление ───────────────────
+// ─── Чек-лист МЕНЕДЖЕРА: обобщённая воронка ЦТО касс ───────────────
+// Не продажу ФН/ОФД по пунктам, а этапы работы с заявкой.
 const MANAGER_CHECKLIST = [
-  { id: 'm_fn_sale',        label: 'Продать ФН (15/36 мес)',           hint: 'Уточнить тип под задачи клиента,маркировка → 36 мес (ФН-1.1М)' },
-  { id: 'm_fn_in_stock',    label: 'Подтвердить наличие ФН на складе',  hint: 'Связаться со складом, забронировать' },
-  { id: 'm_ofd_sale',       label: 'Продлить/продать ОФД',              hint: 'Такском/Портал-ОФД/Первый ОФД — на 13/15 мес' },
-  { id: 'm_ofd_renewal',    label: 'Проверить срок действующего ОФД',   hint: 'Если <30 дней — предложить продление' },
-  { id: 'm_edo_sale',       label: 'Продать ЭДО (Диадок/СБИС/Тензор)',  hint: 'Для приёма кодов маркировки от поставщика' },
-  { id: 'm_ecp_sale',       label: 'Продать/продлить ЭЦП',              hint: 'Для работы с Честным ЗНАКом и ГИС МТ' },
-  { id: 'm_chestnyznak',    label: 'Оформить кабинет Честный ЗНАК',     hint: 'Зарегистрировать компанию, получить доступ' },
-  { id: 'm_tspiot_sale',    label: 'Продать лицензию ТС ПИоТ',          hint: 'Программа для сканирования кодов маркировки' },
-  { id: 'm_scanner_sale',   label: 'Продать 2D-сканер',                 hint: 'Если у клиента нет — Honeywell/Zebra' },
-  { id: 'm_service_contract', label: 'Продать договор ТО',              hint: 'Скидка на работы, приоритетный выезд' },
-  { id: 'm_extras',         label: 'Продать допы (кабель, лоток и т.д.)', hint: 'Зависит от кассы и задачи' },
-  { id: 'm_contract',       label: 'Подписать договор с клиентом',      hint: 'Скан → в дело' },
-  { id: 'm_invoice',        label: 'Выставить счёт',                    hint: '1С → отправить на email клиента' },
-  { id: 'm_payment',        label: 'Получить оплату',                   hint: 'Отметить в 1С, передать инженеру' },
-  { id: 'm_schedule',       label: 'Назначить выезд инженера',          hint: 'Согласовать дату/время с клиентом' },
-  { id: 'm_brief_engineer', label: 'Передать заявку инженеру',          hint: 'Распечатать чек-лист, обсудить нюансы' },
+  { id: 'm_accept',         label: 'Принять заявку',                       hint: 'Заявка получена с сайта/телефона, проверены контакты' },
+  { id: 'm_call',           label: 'Связаться с клиентом',                 hint: 'Позвонить в течение 30 минут, подтвердить получение заявки' },
+  { id: 'm_clarify',        label: 'Уточнить задачу и модель кассы',       hint: 'Что нужно: маркировка / регистрация / ремонт / замена ФН / ТО. Какая касса, состояние, ФФД, ФН' },
+  { id: 'm_estimate',       label: 'Согласовать смету и сроки',            hint: 'Расчёт в калькуляторе, отправить КП на email/WhatsApp' },
+  { id: 'm_extras',         label: 'Предложить допы (ФН, ОФД, ЭДО, ТО)',   hint: 'Сопутствующие услуги под задачу — без жёсткого списка' },
+  { id: 'm_contract',       label: 'Подписать договор/счёт',               hint: 'Отправить на подпись, получить обратно скан' },
+  { id: 'm_payment',        label: 'Получить оплату (аванс/полностью)',    hint: 'Отметить в 1С, приложить платёжку' },
+  { id: 'm_schedule',       label: 'Назначить выезд инженера',             hint: 'Согласовать дату/время с клиентом и инженером' },
+  { id: 'm_brief_engineer', label: 'Передать заявку инженеру',             hint: 'Раскрыть чек-лист инженера, обсудить нюансы кассы и задачи' },
 ];
 
 // ─── Чек-лист ИНЖЕНЕРА: технические работы ──────────────────────
@@ -666,10 +768,17 @@ function renderMain(root) {
 
   root.innerHTML = `
     <header>
-      <h1>📋 Заказы — kassa-cto.ru</h1>
+      <a href="/" class="brand" title="На главную">
+        <img src="/logo.webp" alt="Теллур-Интех" onerror="this.style.display='none'">
+        <span class="brand-text">
+          <strong>Теллур-Интех</strong>
+          <small>CRM · kassa-cto.ru</small>
+        </span>
+      </a>
       <div class="actions">
-        <button onclick="loadOrders()">↻ Обновить</button>
-        <button onclick="logout()">Выйти</button>
+        <button onclick="loadOrders()" title="Обновить список">↻ Обновить</button>
+        <a href="/" class="btn-link" title="На главную">🏠 На сайт</a>
+        <button onclick="logout()" title="Выйти из CRM">Выйти</button>
       </div>
     </header>
     <div class="filters">
@@ -752,19 +861,12 @@ function renderOrder(o) {
         <div class="order-toggle">▶</div>
       </div>
       <div class="order-details">
+        ${renderFunnel(d)}
         <div class="details-grid">
           ${renderManagerPanel(d, services)}
           ${renderEngineerPanel(d, services)}
         </div>
         <div class="actions-row">
-          <select class="status-select" id="status_${d.rowIndex}" onchange="patchOrder(${d.rowIndex}, {'Статус': this.value}); this.dataset.val=this.value;" data-val="${escapeHtml(d.status||'Новый')}">
-            <option value="Новый" ${d.status==='Новый'?'selected':''}>📌 Новый</option>
-            <option value="В работе" ${d.status==='В работе'?'selected':''}>🔧 В работе</option>
-            <option value="Ожидает" ${d.status==='Ожидает'?'selected':''}>⏳ Ожидает</option>
-            <option value="Готово" ${d.status==='Готово'?'selected':''}>✅ Готово</option>
-            <option value="Закрыт" ${d.status==='Закрыт'?'selected':''}>📦 Закрыт</option>
-            <option value="Отказ" ${d.status==='Отказ'?'selected':''}>❌ Отказ</option>
-          </select>
           <input class="note-input" id="note_${d.rowIndex}" placeholder="Комментарий менеджера..." value="${escapeHtml(d.note||'')}">
           <button class="btn primary" onclick="saveNote(${d.rowIndex})">💾 Сохранить</button>
           <a class="btn" href="tel:${(d.phone||'').replace(/\D/g,'')}">📞 Позвонить</a>
@@ -777,11 +879,56 @@ function renderOrder(o) {
   `;
 }
 
+// ─── Воронка статусов: Новый → В работе → Ожидает → Готово → Закрыт ───
+const FUNNEL_STATUSES = [
+  { value: 'Новый',    label: 'Новый',    icon: '📌' },
+  { value: 'В работе', label: 'В работе', icon: '🔧' },
+  { value: 'Ожидает',  label: 'Ожидает',  icon: '⏳' },
+  { value: 'Готово',   label: 'Готово',   icon: '✅' },
+  { value: 'Закрыт',   label: 'Закрыт',   icon: '📦' },
+];
+const REJECTED_STATUS = 'Отказ';
+
+function renderFunnel(d) {
+  const currentStatus = d.status || 'Новый';
+  const isRejected = currentStatus === REJECTED_STATUS;
+  const currentIdx = FUNNEL_STATUSES.findIndex(s => s.value === currentStatus);
+
+  return `
+    <div style="padding:14px 18px 0">
+      <div class="funnel-label">Воронка статусов</div>
+      <div class="funnel">
+        ${FUNNEL_STATUSES.map((s, idx) => {
+          let cls = 'funnel-step';
+          if (isRejected) {
+            // Если отказ — все шаги серые
+          } else if (idx < currentIdx) {
+            cls += ' done';
+          } else if (idx === currentIdx) {
+            cls += ' active';
+          }
+          return `<div class="${cls}" onclick="setStatus(${d.rowIndex}, '${s.value}')" title="Установить статус: ${s.label}">
+            ${s.icon} ${s.label}
+          </div>`;
+        }).join('<span class="funnel-arrow">→</span>')}
+        <span style="flex:1"></span>
+        <div class="funnel-step ${isRejected?'rejected':''}" onclick="setStatus(${d.rowIndex}, '${REJECTED_STATUS}')" title="Отметить как отказ" style="${isRejected?'':'color:#dc2626;border-color:#fca5a5'}">
+          ❌ Отказ
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function setStatus(rowIndex, status) {
+  patchOrder(rowIndex, { 'Статус': status });
+}
+
 function renderManagerPanel(d, services) {
   const checkedSet = d.managerChecklist || new Set();
   return `
     <div class="panel manager">
-      <h3>👤 Менеджер — продажи и оформление</h3>
+      <h3>👤 Менеджер — воронка работы с заявкой</h3>
       <div class="body">
         <div class="kv" style="margin-bottom:14px">
           <div class="k">№ заказа</div><div class="v">${escapeHtml(d.num||'—')}</div>
@@ -790,8 +937,9 @@ function renderManagerPanel(d, services) {
           <div class="k">Телефон</div><div class="v"><a href="tel:${(d.phone||'').replace(/\D/g,'')}">${escapeHtml(d.phone||'—')}</a></div>
           <div class="k">Email</div><div class="v">${d.email ? `<a href="mailto:${escapeHtml(d.email)}">${escapeHtml(d.email)}</a>` : '—'}</div>
           <div class="k">Сумма</div><div class="v"><b>${fmtTotal(d.total)}</b></div>
-          <div class="k">Комментарий</div><div class="v">${escapeHtml(d.comment||'—')}</div>
+          <div class="k">Комментарий клиента</div><div class="v">${escapeHtml(d.comment||'—')}</div>
         </div>
+        <div class="funnel-label" style="margin-top:6px">Этапы работы менеджера</div>
         <ul class="checklist">
           ${MANAGER_CHECKLIST.map(item => {
             const checked = checkedSet.has(item.id);
@@ -815,37 +963,53 @@ function renderManagerPanel(d, services) {
 
 function renderEngineerPanel(d, services) {
   const checkedSet = d.engineerChecklist || new Set();
+  const doneCount = ENGINEER_CHECKLIST.filter(item => checkedSet.has(item.id)).length;
+  const totalCount = ENGINEER_CHECKLIST.length;
+  // Сворачиваемая панель — по умолчанию свёрнута. ID нужен для toggle.
+  const panelId = `eng_${d.rowIndex}`;
   return `
     <div class="panel engineer">
-      <h3>🔧 Инженер — технические работы</h3>
-      <div class="body">
-        <div class="kv" style="margin-bottom:14px">
-          <div class="k">Модель ККМ</div><div class="v"><b>${escapeHtml(d.kkm||'—')}</b></div>
-          <div class="k">Состояние</div><div class="v">${escapeHtml(condLabel(d.cond))}</div>
-          <div class="k">Услуги</div><div class="v">${services.map(s => `<div>• ${escapeHtml(s)}</div>`).join('') || '—'}</div>
+      <div class="collapsible" id="${panelId}">
+        <div class="collapsible-toggle" onclick="toggleEngineer('${panelId}')">
+          <span>🔧 Инженер — технические работы ${doneCount>0 ? `<span style="opacity:.8;font-weight:400">(${doneCount}/${totalCount})</span>` : ''}</span>
+          <span class="toggle-icon">▼</span>
         </div>
-        <ul class="checklist">
-          ${ENGINEER_CHECKLIST.map(item => {
-            const checked = checkedSet.has(item.id);
-            return `
-            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="engineer" class="${checked?'done':''}">
-              <input type="checkbox" id="e_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'engineer', this.checked)">
-              <div class="check-label" onclick="document.getElementById('e_${item.id}_${d.rowIndex}').click()">
-                ${escapeHtml(item.label)}
-                ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
-              </div>
-            </li>`;
-          }).join('')}
-        </ul>
-        <div style="margin-top:10px;font-size:11px;color:#92400e;padding:8px 10px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b">
-          ⚠️ Перед выездом уточнить наличие ФН нужного типа и актуальность ПО кассы
-        </div>
-        <div style="margin-top:8px;font-size:11px;color:var(--text-soft)">
-          Отмеченные пункты сохраняются в Google Sheets автоматически
+        <div class="collapsible-content">
+          <div class="body">
+            <div class="kv" style="margin-bottom:14px">
+              <div class="k">Модель ККМ</div><div class="v"><b>${escapeHtml(d.kkm||'—')}</b></div>
+              <div class="k">Состояние</div><div class="v">${escapeHtml(condLabel(d.cond))}</div>
+              <div class="k">Услуги</div><div class="v">${services.map(s => `<div>• ${escapeHtml(s)}</div>`).join('') || '—'}</div>
+            </div>
+            <ul class="checklist">
+              ${ENGINEER_CHECKLIST.map(item => {
+                const checked = checkedSet.has(item.id);
+                return `
+                <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="engineer" class="${checked?'done':''}">
+                  <input type="checkbox" id="e_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'engineer', this.checked)">
+                  <div class="check-label" onclick="document.getElementById('e_${item.id}_${d.rowIndex}').click()">
+                    ${escapeHtml(item.label)}
+                    ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
+                  </div>
+                </li>`;
+              }).join('')}
+            </ul>
+            <div style="margin-top:10px;font-size:11px;color:#92400e;padding:8px 10px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b">
+              ⚠️ Перед выездом уточнить наличие ФН нужного типа и актуальность ПО кассы
+            </div>
+            <div style="margin-top:8px;font-size:11px;color:var(--text-soft)">
+              Отмеченные пункты сохраняются в Google Sheets автоматически
+            </div>
+          </div>
         </div>
       </div>
     </div>
   `;
+}
+
+function toggleEngineer(panelId) {
+  const el = document.getElementById(panelId);
+  if (el) el.classList.toggle('expanded');
 }
 
 function escapeHtml(s) {
