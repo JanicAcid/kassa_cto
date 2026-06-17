@@ -273,13 +273,12 @@ function sendOrderEmail(string $to, string $orderNum, string $clientName,
     emailLog("Recipients: " . implode(', ', $recipients));
 
     $anyOk = false;
+    $lastError = '';
 
     // ── Способ 1: SMTP smtp.beget.com:465 (SSL) — PRIMARY ─────────────
-    //    Авторизованная отправка от admin@kassa-cto.ru с DKIM-подписью Beget.
-    //    Beget шлёт валидный sender, Gmail принимает без переписывания From.
     foreach ($recipients as $rcpt) {
         emailLog("Trying SMTP:465 → {$rcpt}");
-        $smtpOk = smtpSend(
+        $r = smtpSend(
             host:    'smtp.beget.com',
             port:    465,
             user:    'admin@kassa-cto.ru',
@@ -291,22 +290,21 @@ function sendOrderEmail(string $to, string $orderNum, string $clientName,
             html:    $html,
             plain:   $plain
         );
-        emailLog("SMTP:465 result for {$rcpt}: " . ($smtpOk ? 'OK' : 'FAIL'));
-        if ($smtpOk) $anyOk = true;
+        emailLog("SMTP:465 result for {$rcpt}: " . ($r['ok'] ? 'OK' : 'FAIL [' . $r['step'] . '] ' . $r['error']));
+        if (!$r['ok']) $lastError = "465/{$rcpt}/{$r['step']}: {$r['error']}";
+        if ($r['ok']) $anyOk = true;
     }
 
-    // Если SMTP сработал хотя бы для одного получателя — считаем успешным
     if ($anyOk) {
-        emailLog("SUCCESS via SMTP for order #{$orderNum}");
+        emailLog("SUCCESS via SMTP:465 for order #{$orderNum}");
         return true;
     }
 
     // ── Способ 2: SMTP smtp.beget.com:587 (STARTTLS) — fallback ───────
-    //    На случай если порт 465 заблокирован файрволом shared-хостинга.
     emailLog("Port 465 failed for all recipients, trying 587 STARTTLS...");
     foreach ($recipients as $rcpt) {
         emailLog("Trying SMTP:587 → {$rcpt}");
-        $smtpOk = smtpSend(
+        $r = smtpSend(
             host:    'smtp.beget.com',
             port:    587,
             user:    'admin@kassa-cto.ru',
@@ -318,8 +316,9 @@ function sendOrderEmail(string $to, string $orderNum, string $clientName,
             html:    $html,
             plain:   $plain
         );
-        emailLog("SMTP:587 result for {$rcpt}: " . ($smtpOk ? 'OK' : 'FAIL'));
-        if ($smtpOk) $anyOk = true;
+        emailLog("SMTP:587 result for {$rcpt}: " . ($r['ok'] ? 'OK' : 'FAIL [' . $r['step'] . '] ' . $r['error']));
+        if (!$r['ok']) $lastError = "587/{$rcpt}/{$r['step']}: {$r['error']}";
+        if ($r['ok']) $anyOk = true;
     }
     if ($anyOk) {
         emailLog("SUCCESS via SMTP:587 for order #{$orderNum}");
@@ -327,17 +326,14 @@ function sendOrderEmail(string $to, string $orderNum, string $clientName,
     }
 
     // ── Способ 3: PHP mail() — LAST RESORT ────────────────────────────
-    //    ВНИМАНИЕ: на Beget shared mail() переписывает From на
-    //    noreply@unverified.beget.ru → Gmail кладёт в Спам.
-    //    Используем только если оба SMTP-порта не сработали.
-    emailLog("Both SMTP ports failed, trying mail() as last resort...");
+    emailLog("Both SMTP ports failed (last error: {$lastError}), trying mail()...");
     foreach ($recipients as $rcpt) {
         $mailOk = sendViaMail('admin@kassa-cto.ru', 'Теллур-Интех', $rcpt, $subject, $html, $plain);
         emailLog("mail() result for {$rcpt}: " . ($mailOk ? 'true' : 'false'));
         if ($mailOk) $anyOk = true;
     }
 
-    emailLog("FINAL for order #{$orderNum}: " . ($anyOk ? 'SUCCESS (some method worked)' : 'ALL FAILED'));
+    emailLog("FINAL for order #{$orderNum}: " . ($anyOk ? 'SUCCESS via mail() (но Gmail скорее всего в Спам)' : 'ALL FAILED. Last SMTP error: ' . $lastError));
     return $anyOk;
 }
 
@@ -379,10 +375,11 @@ function sendViaMail(string $from, string $fromName, string $to,
 }
 
 // ── SMTP клиент (465 SSL / 587 STARTTLS, без библиотек) ───────────
+// Возвращает ['ok' => bool, 'error' => string] для диагностики.
 
 function smtpSend(string $host, int $port, string $user, string $pass,
                   string $from, string $fromName, string $to,
-                  string $subject, string $html, string $plain = ''): bool {
+                  string $subject, string $html, string $plain = ''): array {
 
     $log = function(string $m) { emailLog("  [smtp {$port}] {$m}"); };
     $log("connect to {$host}:{$port}");
@@ -393,16 +390,15 @@ function smtpSend(string $host, int $port, string $user, string $pass,
         'allow_self_signed' => true,
     ]]);
 
-    // 465 = SSL с самого начала, 587 = STARTTLS после EHLO
     $scheme = ($port == 465) ? 'ssl://' : 'tcp://';
     $sock = @stream_socket_client(
         "{$scheme}{$host}:{$port}", $errno, $errstr, 15,
         STREAM_CLIENT_CONNECT, $ctx
     );
     if (!$sock) {
-        $log("connect FAILED: {$errno} {$errstr}");
-        error_log("SMTP {$port} connect failed: {$errno} {$errstr}");
-        return false;
+        $err = "connect FAILED: {$errno} {$errstr}";
+        $log($err);
+        return ['ok' => false, 'error' => $err, 'step' => 'connect'];
     }
     $log("connected");
 
@@ -427,41 +423,59 @@ function smtpSend(string $host, int $port, string $user, string $pass,
 
     $r = $cmd("EHLO kassa-cto.ru");
     $log("EHLO: " . trim($r));
-    if (!str_contains($r, '250')) { fclose($sock); return false; }
+    if (!str_contains($r, '250')) {
+        fclose($sock);
+        return ['ok' => false, 'error' => 'EHLO: ' . trim($r), 'step' => 'EHLO'];
+    }
 
-    // Для порта 587 (tcp://) — нужно поднять STARTTLS перед AUTH
     if ($port == 587) {
         $r = $cmd("STARTTLS");
         $log("STARTTLS: " . trim($r));
-        if (!str_contains($r, '220')) { fclose($sock); return false; }
+        if (!str_contains($r, '220')) {
+            fclose($sock);
+            return ['ok' => false, 'error' => 'STARTTLS: ' . trim($r), 'step' => 'STARTTLS'];
+        }
         if (!@stream_socket_enable_crypto($sock, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
             $log("TLS handshake FAILED");
             fclose($sock);
-            return false;
+            return ['ok' => false, 'error' => 'TLS handshake failed', 'step' => 'STARTTLS'];
         }
         $log("TLS handshake OK");
-        // После STARTTLS нужно ещё раз EHLO
         $r = $cmd("EHLO kassa-cto.ru");
         $log("EHLO after TLS: " . trim($r));
-        if (!str_contains($r, '250')) { fclose($sock); return false; }
+        if (!str_contains($r, '250')) {
+            fclose($sock);
+            return ['ok' => false, 'error' => 'EHLO after TLS: ' . trim($r), 'step' => 'EHLO'];
+        }
     }
 
-    $r = $cmd("AUTH LOGIN");
-    $log("AUTH LOGIN: " . trim($r));
-    $r = $cmd(base64_encode($user));
+    $cmd("AUTH LOGIN");
+    $cmd(base64_encode($user));
     $r = $cmd(base64_encode($pass));
     $log("AUTH result: " . trim($r));
-    if (!str_contains($r, '235')) { fclose($sock); return false; }
+    if (!str_contains($r, '235')) {
+        fclose($sock);
+        return ['ok' => false, 'error' => 'AUTH: ' . trim($r), 'step' => 'AUTH'];
+    }
 
     $r = $cmd("MAIL FROM:<{$from}>");
     $log("MAIL FROM: " . trim($r));
-    if (!str_contains($r, '250')) { fclose($sock); return false; }
+    if (!str_contains($r, '250')) {
+        fclose($sock);
+        return ['ok' => false, 'error' => 'MAIL FROM: ' . trim($r), 'step' => 'MAIL FROM'];
+    }
     $r = $cmd("RCPT TO:<{$to}>");
     $log("RCPT TO: " . trim($r));
-    if (!str_contains($r, '250') && !str_contains($r, '251')) { fclose($sock); return false; }
+    if (!str_contains($r, '250') && !str_contains($r, '251')) {
+        fclose($sock);
+        return ['ok' => false, 'error' => 'RCPT TO: ' . trim($r), 'step' => 'RCPT TO'];
+    }
     $r = $cmd("DATA");
     $log("DATA: " . trim($r));
-    if (!str_contains($r, '354')) { fclose($sock); return false; }
+    if (!str_contains($r, '354')) {
+        fclose($sock);
+        return ['ok' => false, 'error' => 'DATA: ' . trim($r), 'step' => 'DATA'];
+    }
 
     $boundary   = 'b2_' . md5(uniqid('', true));
     $subjectB64 = '=?UTF-8?B?' . base64_encode($subject) . '?=';
@@ -503,7 +517,7 @@ function smtpSend(string $host, int $port, string $user, string $pass,
     fclose($sock);
 
     $ok = str_contains($r, '250');
-    return $ok;
+    return ['ok' => $ok, 'error' => $ok ? '' : 'DATA response: ' . trim($r), 'step' => 'DATA'];
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -734,6 +748,29 @@ function handleTest(array $config): void {
 
     // 4. Email — детальный тест всех методов
     $out .= '<h3>4. Email → '.$notify.' (полный тест всех методов)</h3>';
+
+    // 4.0 Проверка DNS MX — критична для Beget SMTP
+    $domain = 'kassa-cto.ru';
+    $mxRecords = @dns_get_record($domain, DNS_MX);
+    $out .= '<div class=box><b>4.0 DNS MX-записи домена '.$domain.'</b><br>';
+    if (empty($mxRecords)) {
+        $out .= '<span class=err>❌ MX-записей НЕТ — Beget SMTP запретит отправку от admin@'.$domain.'</span><br>'
+              . '<b style="color:#b45309">⚠️ ЧТО ДЕЛАТЬ:</b><br>'
+              . '1. Зайди в панель Beget → <a href="https://cp.beget.com/domains" target="_blank">Домены</a> → kassa-cto.ru → DNS-записи<br>'
+              . '2. Добавь 2 записи:<br>'
+              . '&nbsp;&nbsp;&nbsp;• Тип: <b>MX</b>, Хост: <b>@</b>, Приоритет: <b>10</b>, Значение: <b>mx1.beget.com</b><br>'
+              . '&nbsp;&nbsp;&nbsp;• Тип: <b>MX</b>, Хост: <b>@</b>, Приоритет: <b>20</b>, Значение: <b>mx2.beget.com</b><br>'
+              . '3. (Опционально) Добавь SPF: Тип <b>TXT</b>, Хост: <b>@</b>, Значение: <b>v=spf1 include:_spf.beget.com ~all</b><br>'
+              . '4. Подожди 5–30 минут (DNS кешируется).<br>'
+              . '5. Обнови эту страницу — MX должны появиться, SMTP заработает.';
+    } else {
+        $out .= '<span class=ok>✅ MX-записи найдены:</span><br>';
+        foreach ($mxRecords as $mx) {
+            $out .= '&nbsp;&nbsp;• ' . $mx['pri'] . ' ' . $mx['target'] . '<br>';
+        }
+    }
+    $out .= '</div>';
+
     $testHtml  = '<div style="font-family:Arial;padding:20px"><h2 style="color:#1e3a5f">🔧 Тест kassa-cto.ru</h2>'
                . '<p><b>Время:</b> ' . date('d.m.Y H:i:s') . '</p>'
                . '<p>Это тестовое письмо от /api/test. Если оно пришло — заявки тоже будут приходить.</p>'
@@ -744,28 +781,40 @@ function handleTest(array $config): void {
 
     // 4a. SMTP :465
     $out .= '<div class=box><b>4a. SMTP smtp.beget.com:465 (SSL) → '.$notify.'</b><br>';
-    $smtp465 = smtpSend(
+    $r465 = smtpSend(
         host: 'smtp.beget.com', port: 465,
         user: 'admin@kassa-cto.ru', pass: 'K1slotn1k!',
         from: 'admin@kassa-cto.ru', fromName: 'Теллур-Интех (SMTP 465 тест)',
         to: $notify, subject: 'Тест kassa-cto SMTP:465',
         html: $testHtml, plain: $testPlain
     );
-    $out .= $smtp465 ? '<span class=ok>✅ SMTP:465 → письмо отправлено (From: admin@kassa-cto.ru, проверь ящик)</span>'
-                     : '<span class=err>❌ SMTP:465 не смог (см. лог ниже)</span>';
+    if ($r465['ok']) {
+        $out .= '<span class=ok>✅ SMTP:465 → письмо отправлено (From: admin@kassa-cto.ru, проверь ящик)</span>';
+    } else {
+        $out .= '<span class=err>❌ SMTP:465 failed at step [' . htmlspecialchars($r465['step']) . ']: '
+              . htmlspecialchars($r465['error']) . '</span>';
+        if (str_contains($r465['error'], 'MX records')) {
+            $out .= '<br><b style="color:#b45309">⚠️ Причина:</b> у домена kassa-cto.ru нет MX-записей Beget. '
+                  . 'Нужно добавить в DNS: MX 10 mx1.beget.com, MX 20 mx2.beget.com (в панели Beget → Домены → DNS).';
+        }
+    }
     $out .= '</div>';
 
     // 4b. SMTP :587 STARTTLS
     $out .= '<div class=box><b>4b. SMTP smtp.beget.com:587 (STARTTLS) → '.$notify.'</b><br>';
-    $smtp587 = smtpSend(
+    $r587 = smtpSend(
         host: 'smtp.beget.com', port: 587,
         user: 'admin@kassa-cto.ru', pass: 'K1slotn1k!',
         from: 'admin@kassa-cto.ru', fromName: 'Теллур-Интех (SMTP 587 тест)',
         to: $notify, subject: 'Тест kassa-cto SMTP:587',
         html: $testHtml, plain: $testPlain
     );
-    $out .= $smtp587 ? '<span class=ok>✅ SMTP:587 → письмо отправлено</span>'
-                     : '<span class=err>❌ SMTP:587 не смог</span>';
+    if ($r587['ok']) {
+        $out .= '<span class=ok>✅ SMTP:587 → письмо отправлено</span>';
+    } else {
+        $out .= '<span class=err>❌ SMTP:587 failed at step [' . htmlspecialchars($r587['step']) . ']: '
+              . htmlspecialchars($r587['error']) . '</span>';
+    }
     $out .= '</div>';
 
     // 4c. mail() (last resort — будет от noreply@unverified.beget.ru)
