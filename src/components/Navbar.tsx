@@ -13,7 +13,6 @@ import { Phone, Menu, X, ChevronRight } from 'lucide-react'
 
 const NAV_ITEMS = [
   { label: 'Главная', href: '/' },
-  { label: 'Диагностика', href: '/diagnostika' },
   { label: 'Калькуляторы', href: '/kalkulyatory' },
   { label: 'База знаний', href: '/instructions' },
   { label: 'Услуги', href: '/services' },
