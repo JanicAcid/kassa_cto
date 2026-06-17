@@ -121,7 +121,7 @@ ${checklist.map(item => `<tr><td style="border:1px solid #bbf7d0;padding:6px 8px
 
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Заказ-наряд</title><style>
 body{font-family:Arial,Helvetica,sans-serif;padding:20px;max-width:800px;margin:0 auto;color:#1e293b}
-h1{text-align:center;margin:0 0 5px}h2{color:#334155;border-bottom:2px solid #1e3a5f;padding-bottom:6px;font-size:15px}
+h1{text-align:center;margin:0 0 5px}h2{color:#334155;border-bottom:2px solid #163A5F;padding-bottom:6px;font-size:15px}
 table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #cbd5e1;padding:8px;text-align:left;font-size:13px}th{background:#f1f5f9}
 .total{font-size:17px;font-weight:bold;text-align:right;margin:16px 0}
 .footer{margin-top:30px;display:flex;justify-content:space-between}
@@ -283,10 +283,10 @@ export function DoneScreen({
         </button>
       </div>
       <div className="text-center py-4">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#1e3a5f]/10 mb-3">
-          <CheckCheck className="w-9 h-9 text-[#1e3a5f]" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#163A5F]/10 mb-3">
+          <CheckCheck className="w-9 h-9 text-[#163A5F]" />
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-[#1e3a5f]">{isConsultation ? 'Заявка на консультацию!' : isCorrection ? 'Заявка скорректирована!' : 'Заявка сформирована!'}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-[#163A5F]">{isConsultation ? 'Заявка на консультацию!' : isCorrection ? 'Заявка скорректирована!' : 'Заявка сформирована!'}</h2>
         <p className="text-sm text-slate-500 mt-0.5">Заказ-наряд №{safeOrderNum} от {orderDate}</p>
         {isConsultation && (
           <div className="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full">
@@ -302,9 +302,9 @@ export function DoneScreen({
         )}
       </div>
 
-      <Card className="border-[#1e3a5f]/20">
+      <Card className="border-[#163A5F]/20">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-[#1e3a5f]">
+          <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-[#163A5F]">
             <CreditCard className="w-5 h-5" />
             Заказ-наряд
           </CardTitle>
@@ -350,9 +350,9 @@ export function DoneScreen({
           {totalCalc.items.length > 0 && (
             <>
               <Separator />
-              <div className="flex justify-between items-center bg-[#e8a817]/10 py-3 rounded-lg">
+              <div className="flex justify-between items-center bg-[#F59E0B]/10 py-3 rounded-lg">
                 <span className="font-bold text-base sm:text-lg">Итого:</span>
-                <span className="font-bold text-xl sm:text-2xl text-[#1e3a5f]">{totalCalc.total.toLocaleString('ru-RU')} руб.</span>
+                <span className="font-bold text-xl sm:text-2xl text-[#163A5F]">{totalCalc.total.toLocaleString('ru-RU')} руб.</span>
               </div>
             </>
           )}
@@ -362,8 +362,8 @@ export function DoneScreen({
               <p className="text-sm text-slate-600">{clientData.comment}</p>
             </div></>
           )}
-          <div className="p-3 bg-[#e8a817]/10 border border-[#e8a817]/30 rounded-lg">
-            <p className="text-xs text-[#1e3a5f]">
+          <div className="p-3 bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded-lg">
+            <p className="text-xs text-[#163A5F]">
               {kkmType === 'evotor' || effectiveKkm === 'sigma'
                 ? <>ТС ПИоТ — лицензия оплачивается отдельно на сайте <a href="https://ao-esp.ru/#ESM" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold">ao-esp.ru</a>. Подписка на смарт-терминал (Эвотор, Сигма и др.) оплачивается самостоятельно через магазин производителя.</>
                 : <>ТС ПИоТ — лицензия оплачивается отдельно на сайте <a href="https://ao-esp.ru/#ESM" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold">ao-esp.ru</a>.</>
@@ -412,7 +412,7 @@ export function DoneScreen({
         <CardContent className="space-y-3">
           <div className="flex flex-col sm:flex-row gap-2">
             <Button
-              className="flex-1 bg-[#1e3a5f] hover:bg-[#1e3a5f]/90 py-3.5 text-sm font-semibold"
+              className="flex-1 bg-[#163A5F] hover:bg-[#163A5F]/90 py-3.5 text-sm font-semibold"
               size="lg"
               onClick={handleSaveFile}
             >
@@ -426,7 +426,7 @@ export function DoneScreen({
           </div>
           <Separator />
           <div className="flex flex-col sm:flex-row gap-2 text-sm">
-            <a href="tel:+78124659457" className="flex items-center gap-2 justify-center py-2 text-[#1e3a5f] font-medium hover:underline">
+            <a href="tel:+78124659457" className="flex items-center gap-2 justify-center py-2 text-[#163A5F] font-medium hover:underline">
               <Phone className="w-4 h-4" />
               {PHONES[0].label}
             </a>
@@ -434,7 +434,7 @@ export function DoneScreen({
               href={MAX_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 justify-center py-2 text-[#1e3a5f] font-medium hover:underline">
+              className="flex items-center gap-2 justify-center py-2 text-[#163A5F] font-medium hover:underline">
               <MessageSquare className="w-4 h-4" />
               Написать в Max
             </a>
@@ -453,7 +453,7 @@ export function DoneScreen({
       {!isConsultation && (
         <div className="space-y-4 animate-fade-in-up">
           {/* Navy CTA card */}
-          <div className="bg-[#1e3a5f] rounded-2xl p-5 sm:p-6 text-white shadow-lg">
+          <div className="bg-[#163A5F] rounded-2xl p-5 sm:p-6 text-white shadow-lg">
             <div className="flex items-start gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                 <Headphones className="w-5 h-5 text-white" />
@@ -468,7 +468,7 @@ export function DoneScreen({
                 href={MAX_PROFILE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold px-6 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#e8a817]/30 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold px-6 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#F59E0B]/30 flex items-center justify-center gap-2"
               >
                 <MessageSquare className="w-4 h-4" />
                 Написать в Max
@@ -496,8 +496,8 @@ export function DoneScreen({
                 key={label}
                 className="flex flex-col items-center gap-2 bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-slate-100"
               >
-                <div className="w-9 h-9 rounded-full bg-[#1e3a5f]/10 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-[#1e3a5f]" />
+                <div className="w-9 h-9 rounded-full bg-[#163A5F]/10 flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-[#163A5F]" />
                 </div>
                 <span className="text-xs sm:text-sm font-semibold text-slate-700 text-center leading-tight">{label}</span>
               </div>
@@ -511,7 +511,7 @@ export function DoneScreen({
       {/* ============================================================ */}
       {isConsultation && (
         <div className="animate-fade-in-up">
-          <div className="bg-[#1e3a5f] rounded-2xl p-5 sm:p-6 text-center text-white shadow-lg">
+          <div className="bg-[#163A5F] rounded-2xl p-5 sm:p-6 text-center text-white shadow-lg">
             <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center mx-auto mb-3">
               <Clock className="w-5 h-5 text-white" />
             </div>
@@ -520,7 +520,7 @@ export function DoneScreen({
             </p>
             <Link
               href="/kalkulyatory/markirovka"
-              className="inline-flex items-center gap-2 bg-[#e8a817] hover:bg-[#d49a12] text-white font-bold px-6 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#e8a817]/30"
+              className="inline-flex items-center gap-2 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold px-6 py-3 rounded-xl transition-all hover:shadow-lg hover:shadow-[#F59E0B]/30"
             >
               Рассчитать стоимость
               <ChevronRight className="w-4 h-4" />

@@ -218,7 +218,7 @@ export default function TellurServiceCalculator() {
   }, [kkmType, effectiveKkm, evotorTradeType, evotorAppsSelected, kkmCondition, clientData.sellsExcise, alreadyMarking, unsureFnsRegistration])
 
   const markingDesc = useMemo(() => {
-    const chestnyznakLink = <a href="https://честныйзнак.рф" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-slate-600 hover:text-[#1e3a5f] transition-colors">Честный ЗНАК<img src="/chestnyznak.png" alt="" className="w-3.5 h-3.5" /></a>
+    const chestnyznakLink = <a href="https://честныйзнак.рф" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-slate-600 hover:text-[#163A5F] transition-colors">Честный ЗНАК<img src="/chestnyznak.png" alt="" className="w-3.5 h-3.5" /></a>
     if (kkmType === 'evotor') return <>Связываем ЭДО, {chestnyznakLink}, кассу Эвотор, ТС ПИоТ и личный кабинет Эвотор в единую цепочку — от приёмки товара до пробития чека</>
     return <>Связываем ЭДО, {chestnyznakLink}, Вашу кассу и ТС ПИоТ в единую цепочку — от приёмки товара до пробития чека</>
   }, [kkmType])
@@ -406,12 +406,12 @@ export default function TellurServiceCalculator() {
 .animate-green-pulse { animation: greenPulse 1.5s ease-out 2; }
 .animate-green-slide { animation: greenSlideIn 0.4s ease-out forwards; opacity: 0; }
 [data-slot=checkbox]{width:34px;height:34px;min-width:34px;min-height:34px;border:2.5px solid #334155;border-radius:8px;cursor:pointer;transition:all .15s ease;margin-top:0;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-[data-slot=checkbox]:hover{border-color:#1e3a5f;box-shadow:0 0 0 3px rgba(30,58,95,.15)}
-[data-slot=checkbox][data-state=checked]{background-color:#1e3a5f;border-color:#1e3a5f}
-[data-slot=checkbox][data-state=checked]:hover{background-color:#162d4a}
+[data-slot=checkbox]:hover{border-color:#163A5F;box-shadow:0 0 0 3px rgba(22,58,95,.15)}
+[data-slot=checkbox][data-state=checked]{background-color:#163A5F;border-color:#163A5F}
+[data-slot=checkbox][data-state=checked]:hover{background-color:#0F2740}
 [data-slot=radio-group-item]{border:2.5px solid #334155;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-[data-slot=radio-group-item]:hover{border-color:#1e3a5f;box-shadow:0 0 0 3px rgba(30,58,95,.15)}
-[data-slot=radio-group-item][data-state=checked]{border-color:#1e3a5f;background:#fff}
+[data-slot=radio-group-item]:hover{border-color:#163A5F;box-shadow:0 0 0 3px rgba(22,58,95,.15)}
+[data-slot=radio-group-item][data-state=checked]{border-color:#163A5F;background:#fff}
 .space-y-3 .flex.items-start.gap-3,.space-y-4 .flex.items-start.gap-3,.space-y-5 .flex.items-start.gap-3{flex-wrap:wrap}`}</style>
         <main ref={mainRef} className="flex-1 max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-4 w-full">
           <Breadcrumbs items={[{ label: 'Калькуляторы', href: '/kalkulyatory' }, { label: 'Маркировка' }]} />
@@ -433,9 +433,28 @@ export default function TellurServiceCalculator() {
               </div>
             )}
 
-            {/* STEP INDICATOR */}
-            {!isConsultation && (
+            {/* STEP INDICATOR + прогресс-бар "Шаг N из M" */}
+            {!isConsultation && !isDone && (
             <div className="max-w-lg mx-auto mb-3 sm:mb-5">
+              {/* Текстовая метка прогресса */}
+              <div className="flex items-center justify-between mb-2 text-xs sm:text-sm">
+                <span className="font-semibold text-[#163A5F]">
+                  Шаг {currentStep} из 4
+                </span>
+                <span className="text-slate-500">
+                  {currentStep === 1 && 'Выбор кассы'}
+                  {currentStep === 2 && 'Услуги'}
+                  {currentStep === 3 && 'Доп. услуги'}
+                  {currentStep === 4 && 'Контакты'}
+                </span>
+              </div>
+              {/* Прогресс-бар */}
+              <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mb-4">
+                <div
+                  className="h-full bg-[#F59E0B] rounded-full transition-all duration-300 ease-out"
+                  style={{ width: `${(currentStep / 4) * 100}%` }}
+                />
+              </div>
               <div className="flex items-center">
                 {[
                   { num: 1, label: 'Касса' },
@@ -443,16 +462,15 @@ export default function TellurServiceCalculator() {
                   { num: 3, label: 'Дополнительно' },
                   { num: 4, label: 'Готово' }
                 ].map((step, idx) => {
-                  const isActive = currentStep === step.num || (isDone && step.num === 4)
-                  const isVisited = isDone || currentStep > step.num
+                  const isActive = currentStep === step.num
+                  const isVisited = currentStep > step.num
                   const isForward = step.num > currentStep
                   const isNextStep = step.num === currentStep + 1
-                  // Назад — всегда можно. Вперёд — только на следующий (+1) и только если текущий шаг заполнен
                   const canGoNext =
                     (currentStep === 1 && canGoStep2) ||
                     (currentStep === 2 && canGoStep3) ||
                     (currentStep === 3 && step2Selections.length > 0 && contactValid)
-                  const isDisabled = isDone || (isForward && !(isNextStep && canGoNext))
+                  const isDisabled = isForward && !(isNextStep && canGoNext)
                   return (
                     <React.Fragment key={step.num}>
                       <div className="flex flex-col items-center gap-1">
@@ -463,14 +481,14 @@ export default function TellurServiceCalculator() {
                             goToStep(step.num as Step)
                           }}
                           disabled={isDisabled}
-                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 shrink-0 ${isVisited && !isActive ? 'bg-[#1e3a5f] text-white shadow-md cursor-pointer hover:bg-[#1e3a5f]/90' : isActive ? 'bg-[#e8a817] text-white ring-4 ring-[#e8a817]/20 shadow-md' : isDisabled ? 'bg-white border-2 border-slate-200 text-slate-300 cursor-not-allowed opacity-50' : 'bg-white border-2 border-slate-300 text-slate-500 cursor-pointer hover:border-[#1e3a5f] hover:text-[#1e3a5f]'}`}
+                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 shrink-0 ${isVisited ? 'bg-[#163A5F] text-white shadow-md cursor-pointer hover:bg-[#1E4A78]' : isActive ? 'bg-[#F59E0B] text-white ring-4 ring-[#F59E0B]/20 shadow-md' : isDisabled ? 'bg-white border-2 border-slate-200 text-slate-300 cursor-not-allowed opacity-50' : 'bg-white border-2 border-slate-300 text-slate-500 cursor-pointer hover:border-[#163A5F] hover:text-[#163A5F]'}`}
                         >
-                          {isVisited && !isActive ? <Check className="w-4 h-4" /> : step.num}
+                          {isVisited ? <Check className="w-4 h-4" /> : step.num}
                         </button>
-                        <span className={`text-[10px] sm:text-xs font-medium transition-colors whitespace-nowrap ${isActive ? 'text-[#1e3a5f] font-bold' : isVisited ? 'text-[#1e3a5f]/70' : isDisabled ? 'text-slate-300' : 'text-slate-500'}`}>{step.label}</span>
+                        <span className={`text-[10px] sm:text-xs font-medium transition-colors whitespace-nowrap ${isActive ? 'text-[#163A5F] font-bold' : isVisited ? 'text-[#163A5F]/70' : isDisabled ? 'text-slate-300' : 'text-slate-500'}`}>{step.label}</span>
                       </div>
                       {idx < 3 && (
-                        <div className={`flex-1 h-1 rounded-full transition-colors duration-300 mx-1 ${isVisited || (step.num === currentStep) ? 'bg-[#1e3a5f]' : 'bg-slate-200'}`} />
+                        <div className={`flex-1 h-1 rounded-full transition-colors duration-300 mx-1 ${isVisited ? 'bg-[#163A5F]' : 'bg-slate-200'}`} />
                       )}
                     </React.Fragment>
                   )
@@ -616,8 +634,8 @@ export default function TellurServiceCalculator() {
             {/* ============================================================ */}
             {isConsultation && !isDone && (
               <div className="max-w-2xl mx-auto space-y-3">
-                <Card className="border-[#1e3a5f]/20 overflow-hidden">
-                  <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] px-4 sm:px-5 py-4">
+                <Card className="border-[#163A5F]/20 overflow-hidden">
+                  <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] px-4 sm:px-5 py-4">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                         <MessageSquare className="w-5 h-5 text-white" />
@@ -642,7 +660,7 @@ export default function TellurServiceCalculator() {
                       <select
                         value={consultManufacturer}
                         onChange={(e) => { setConsultManufacturer(e.target.value); setConsultModel(''); setClientData({ ...clientData, kkmModel: '' }) }}
-                        className="mt-1.5 w-full h-11 px-3 text-sm text-slate-700 bg-white border-2 border-slate-100 rounded-lg focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all appearance-none cursor-pointer"
+                        className="mt-1.5 w-full h-11 px-3 text-sm text-slate-700 bg-white border-2 border-slate-100 rounded-lg focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all appearance-none cursor-pointer"
                       >
                         <option value="">Выберите производителя...</option>
                         {KKT_CATALOG.map(m => (
@@ -662,7 +680,7 @@ export default function TellurServiceCalculator() {
                             const display = mfr && val ? `${mfr.name} ${val}` : (val || '')
                             setClientData({ ...clientData, kkmModel: display })
                           }}
-                          className="mt-1.5 w-full h-11 px-3 text-sm text-slate-700 bg-white border-2 border-slate-100 rounded-lg focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all appearance-none cursor-pointer"
+                          className="mt-1.5 w-full h-11 px-3 text-sm text-slate-700 bg-white border-2 border-slate-100 rounded-lg focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all appearance-none cursor-pointer"
                         >
                           <option value="">Выберите модель...</option>
                           {consultModels.map(m => (
@@ -677,7 +695,7 @@ export default function TellurServiceCalculator() {
                       <Input value={clientData.comment} onChange={(e) => setClientData({ ...clientData, comment: e.target.value })} placeholder="Что случилось с кассой или что нужно настроить" className="mt-1.5 text-sm h-11" autoComplete="off" />
                     </div>
                     <Button
-                      className={`w-full py-4 sm:py-5 text-base sm:text-lg font-bold transition-all ${clientData.name.trim() !== '' && isPhoneValid(clientData.phone) && clientData.kkmModel.trim() !== '' ? 'bg-[#e8a817] hover:bg-[#d49a12] hover:shadow-lg hover:shadow-[#e8a817]/20 text-white' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`}
+                      className={`w-full py-4 sm:py-5 text-base sm:text-lg font-bold transition-all ${clientData.name.trim() !== '' && isPhoneValid(clientData.phone) && clientData.kkmModel.trim() !== '' ? 'bg-[#F59E0B] hover:bg-[#d49a12] hover:shadow-lg hover:shadow-[#F59E0B]/20 text-white' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`}
                       size="lg"
                       disabled={clientData.name.trim() === '' || !isPhoneValid(clientData.phone) || clientData.kkmModel.trim() === ''}
                       onClick={handleDone}
@@ -736,21 +754,21 @@ export default function TellurServiceCalculator() {
             )}
             <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center px-20 sm:px-4 pb-3 sm:pb-5 pointer-events-none">
               <div className={`transition-all duration-300 origin-bottom-center mb-3 pointer-events-auto ${showConsultSlide ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
-                <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-[#e8a817]/30 p-5 sm:p-7 w-full max-w-md">
+                <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-[#F59E0B]/30 p-5 sm:p-7 w-full max-w-md">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#e8a817] to-[#d49a12] flex items-center justify-center shrink-0 shadow-lg shadow-[#e8a817]/30">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#d49a12] flex items-center justify-center shrink-0 shadow-lg shadow-[#F59E0B]/30">
                       <Phone className="w-6 h-6 text-white" />
                     </div>
                     <div className="min-w-0">
-                      <p className="font-extrabold text-lg sm:text-xl text-[#1e3a5f] leading-tight">Перезвоните мне!</p>
+                      <p className="font-extrabold text-lg sm:text-xl text-[#163A5F] leading-tight">Перезвоните мне!</p>
                       <p className="text-sm text-slate-500 mt-0.5">Оставьте телефон — мы вам поможем</p>
                     </div>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">Не хотите разбираться в калькуляторе или не нашли свою кассу в списке? Менеджер перезвонит за <span className="font-bold text-[#e8a817]">15 минут</span>, поможет подобрать решение и рассчитает стоимость.</p>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-4">Не хотите разбираться в калькуляторе или не нашли свою кассу в списке? Менеджер перезвонит за <span className="font-bold text-[#F59E0B]">15 минут</span>, поможет подобрать решение и рассчитает стоимость.</p>
                   <button
                     type="button"
                     onClick={() => { setShowConsultSlide(false); startConsultation() }}
-                    className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-[#e8a817] to-[#d49a12] hover:from-[#d49a12] hover:to-[#c08b0d] text-white text-base sm:text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#e8a817]/25 hover:shadow-xl hover:shadow-[#e8a817]/30 active:scale-[0.98]"
+                    className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-[#F59E0B] to-[#d49a12] hover:from-[#d49a12] hover:to-[#c08b0d] text-white text-base sm:text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:shadow-[#F59E0B]/30 active:scale-[0.98]"
                   >
                     Оставить телефон
                   </button>
@@ -759,7 +777,7 @@ export default function TellurServiceCalculator() {
               <button
                 type="button"
                 onClick={() => setShowConsultSlide(v => !v)}
-                className="pointer-events-auto w-full max-w-sm sm:max-w-md flex items-center justify-center gap-2.5 py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#e8a817] to-[#d49a12] hover:from-[#d49a12] hover:to-[#c08b0d] text-white shadow-xl shadow-[#e8a817]/30 hover:shadow-2xl hover:shadow-[#e8a817]/40 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                className="pointer-events-auto w-full max-w-sm sm:max-w-md flex items-center justify-center gap-2.5 py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#F59E0B] to-[#d49a12] hover:from-[#d49a12] hover:to-[#c08b0d] text-white shadow-xl shadow-[#F59E0B]/30 hover:shadow-2xl hover:shadow-[#F59E0B]/40 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
                 <span className="font-bold text-base sm:text-lg">Перезвоните мне!</span>

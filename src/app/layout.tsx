@@ -96,7 +96,7 @@ export default function RootLayout({
         <SiteFooter />
         <noscript>
           <div style={{ padding: '16px', maxWidth: '768px', margin: '0 auto', fontFamily: 'sans-serif', fontSize: '14px', lineHeight: '1.6', color: '#334155' }}>
-            <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1e3a5f', marginBottom: '12px' }}>
+            <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#163A5F', marginBottom: '12px' }}>
               Теллур-Интех — Поддержка пользователей ККТ
             </h1>
             <p>Центр технического обслуживания кассового оборудования в Санкт-Петербурге и Ленинградской области. ООО «Теллур-Интех» — с 1995 года. Более 5000 касс настроено, 300+ клиентов. Подключение маркировки, регистрация ККТ, настройка Честного ЗНАК, ЭДО, ТС ПИоТ. Меркурий, Атол, Сигма, Эвотор, Штрих-М, Пионер, AQSI.</p>

@@ -9,8 +9,8 @@
 :root {
   --bg: #f0f2f5;
   --card: #ffffff;
-  --primary: #1e3a5f;
-  --primary-hover: #2a4f7f;
+  --primary: #163A5F;
+  --primary-hover: #1E4A78;
   --accent: #f59e0b;
   --success: #16a34a;
   --danger: #dc2626;
@@ -133,11 +133,11 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 .order {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  transition: box-shadow .15s;
+  transition: box-shadow .2s ease, transform .2s ease;
 }
-.order:hover { box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.order:hover { box-shadow: 0 10px 30px rgba(0,0,0,.06); }
 .order-header {
   padding: 14px 18px;
   display: grid;
@@ -167,12 +167,13 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   text-align: center;
   white-space: nowrap;
 }
-.status-Новый { background: #dbeafe; color: #1e40af; }
-.status-В работе { background: #fef3c7; color: #92400e; }
-.status-Ожидает { background: #f3e8ff; color: #6b21a8; }
-.status-Готово { background: #dcfce7; color: #166534; }
-.status-Закрыт { background: #e5e7eb; color: #4b5563; }
-.status-Отказ { background: #fee2e2; color: #991b1b; }
+/* Статусы — новая палитра по требованиям арт-директора */
+.status-Новый { background: #DBEAFE; color: #2563EB; }
+.status-В работе { background: #FEF3C7; color: #F59E0B; }
+.status-Ожидает { background: #F3E8FF; color: #9333EA; }
+.status-Готово { background: #DCFCE7; color: #16A34A; }
+.status-Закрыт { background: #E5E7EB; color: #64748B; }
+.status-Отказ { background: #FEE2E2; color: #DC2626; }
 
 /* ─── Воронка статусов ─── */
 .funnel {
@@ -276,7 +277,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   display: inline-block;
   padding: 1px 5px;
   background: #e0e7ff;
-  color: #1e3a5f;
+  color: #163A5F;
   border-radius: 3px;
   font-size: 9px;
   font-weight: 600;
@@ -1082,11 +1083,11 @@ function renderManagerPanel(d, services) {
             const cls = checked ? 'done' : (current ? 'current' : '');
             const arrow = idx < MANAGER_CHECKLIST.length - 1 ? '<span class="funnel-arrow">↓</span>' : '';
             return `
-            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${cls}" style="flex-direction:column;align-items:stretch;border-left:3px solid ${checked?'#16a34a':(current?'#1e3a5f':'#e5e7eb')};background:${checked?'#f0fdf4':(current?'#eff6ff':'#fff')};padding:10px 14px">
+            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${cls}" style="flex-direction:column;align-items:stretch;border-left:3px solid ${checked?'#16a34a':(current?'#163A5F':'#e5e7eb')};background:${checked?'#f0fdf4':(current?'#eff6ff':'#fff')};padding:10px 14px">
               <div style="display:flex;align-items:flex-start;gap:10px">
                 <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)" style="margin-top:3px">
                 <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()" style="flex:1">
-                  <div style="font-weight:600;color:#111">${item.icon} ${escapeHtml(item.label)} <span style="font-size:10px;color:${current?'#1e3a5f':'#9ca3af'};background:${current?'#dbeafe':'#f3f4f6'};padding:2px 6px;border-radius:8px">→ ${escapeHtml(item.status)}</span></div>
+                  <div style="font-weight:600;color:#111">${item.icon} ${escapeHtml(item.label)} <span style="font-size:10px;color:${current?'#163A5F':'#9ca3af'};background:${current?'#dbeafe':'#f3f4f6'};padding:2px 6px;border-radius:8px">→ ${escapeHtml(item.status)}</span></div>
                   ${item.hint ? `<small style="display:block;color:#6b7280;font-size:11px;margin-top:3px;font-weight:400">${escapeHtml(item.hint)}</small>` : ''}
                 </div>
               </div>

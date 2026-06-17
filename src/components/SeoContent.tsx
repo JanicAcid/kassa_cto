@@ -39,8 +39,8 @@ function scrollToFaqItem(targetId: string) {
     const el = document.getElementById(targetId)
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     if (el) {
-      el.classList.add('ring-2', 'ring-[#e8a817]/50', 'rounded-lg')
-      setTimeout(() => el.classList.remove('ring-2', 'ring-[#e8a817]/50', 'rounded-lg'), 3000)
+      el.classList.add('ring-2', 'ring-[#F59E0B]/50', 'rounded-lg')
+      setTimeout(() => el.classList.remove('ring-2', 'ring-[#F59E0B]/50', 'rounded-lg'), 3000)
     }
   }, 600)
 }
@@ -106,12 +106,12 @@ export function SeoContent() {
         className="flex flex-col items-center w-full cursor-pointer select-none py-3"
         aria-expanded={open}
       >
-        <h2 className="text-base sm:text-lg font-bold text-[#1e3a5f] text-center leading-snug">
+        <h2 className="text-base sm:text-lg font-bold text-[#163A5F] text-center leading-snug">
           Центр технического обслуживания кассового оборудования<br className="hidden sm:block" />
           {' '}в&nbsp;Санкт-Петербурге и&nbsp;Ленинградской области
         </h2>
         <p className="text-[11px] sm:text-xs text-slate-400 mt-1">Подробнее о нас</p>
-        <ChevronDown className={`w-5 h-5 text-[#1e3a5f]/60 mt-1 transition-transform shrink-0 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-5 h-5 text-[#163A5F]/60 mt-1 transition-transform shrink-0 ${open ? 'rotate-180' : ''}`} />
       </button>
       {/* Контент всегда в DOM для краулеров. max-h-0 + overflow-hidden = свёрнут визуально */}
       <div
@@ -126,7 +126,7 @@ export function SeoContent() {
               <button
                 type="button"
                 onClick={() => { setOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1e3a5f] hover:bg-[#1e3a5f]/90 text-white text-sm font-medium transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#163A5F] hover:bg-[#163A5F]/90 text-white text-sm font-medium transition-colors"
               >
                 <ArrowUp className="w-4 h-4" />
                 Наверх

@@ -16,9 +16,9 @@ export function StepSummary({ totalCalc, effectiveKkm, effectiveKkmInfo, kkmType
   return (
     <>
       {/* ИТОГО */}
-      <Card className="border-[#1e3a5f]/20 bg-white">
+      <Card className="border-[#163A5F]/20 bg-white">
         <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-[#1e3a5f] text-sm sm:text-base"><CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />Расчёт стоимости</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-[#163A5F] text-sm sm:text-base"><CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />Расчёт стоимости</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2 mb-4">
@@ -34,7 +34,7 @@ export function StepSummary({ totalCalc, effectiveKkm, effectiveKkmInfo, kkmType
           <Separator className="my-3" />
           <div className="flex justify-between items-center">
             <span className="font-bold text-base sm:text-lg">Итого:</span>
-            <span className="font-bold text-xl sm:text-2xl text-[#1e3a5f]">{totalCalc.total.toLocaleString('ru-RU')} ₽</span>
+            <span className="font-bold text-xl sm:text-2xl text-[#163A5F]">{totalCalc.total.toLocaleString('ru-RU')} ₽</span>
           </div>
           <p className="text-sm text-slate-400 mt-2">Касса: {effectiveKkmInfo.name}</p>
           <p className="text-xs text-slate-400">
@@ -46,12 +46,12 @@ export function StepSummary({ totalCalc, effectiveKkm, effectiveKkmInfo, kkmType
         </CardContent>
       </Card>
 
-      <Card className="bg-[#1e3a5f]/5">
+      <Card className="bg-[#163A5F]/5">
         <CardContent className="pt-4">
-          <h4 className="font-semibold mb-2 text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-[#e8a817] shrink-0" />Важно знать</h4>
+          <h4 className="font-semibold mb-2 text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-[#F59E0B] shrink-0" />Важно знать</h4>
           <div className="space-y-2 text-xs sm:text-sm text-slate-600">
             <p>С <strong>01.07.2026</strong> продажа маркированных товаров без ТС ПИоТ запрещена (<strong>ст. 15.12 КоАП РФ</strong>)</p>
-            <p>Лицензия ТС ПИоТ — на сайте <a href="https://ao-esp.ru/#ESM" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold text-[#1e3a5f]">ao-esp.ru</a></p>
+            <p>Лицензия ТС ПИоТ — на сайте <a href="https://ao-esp.ru/#ESM" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline font-semibold text-[#163A5F]">ao-esp.ru</a></p>
           </div>
         </CardContent>
       </Card>

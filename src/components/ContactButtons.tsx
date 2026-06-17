@@ -63,7 +63,7 @@ export function ContactButtons({ variant = 'full', className = '' }: ContactButt
             key={c.label}
             href={c.href}
             {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-[#1e3a5f] hover:text-[#e8a817] transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-[#163A5F] hover:text-[#F59E0B] transition-colors"
           >
             {c.icon}
             {c.short}

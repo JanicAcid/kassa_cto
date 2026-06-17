@@ -26,8 +26,8 @@ export function FaqHashScroller() {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
     // Подсветка
-    el.classList.add('ring-2', 'ring-[#e8a817]/50', 'rounded-lg')
-    setTimeout(() => el.classList.remove('ring-2', 'ring-[#e8a817]/50', 'rounded-lg'), 3000)
+    el.classList.add('ring-2', 'ring-[#F59E0B]/50', 'rounded-lg')
+    setTimeout(() => el.classList.remove('ring-2', 'ring-[#F59E0B]/50', 'rounded-lg'), 3000)
   }
 
   // Скролл при первоначальной загрузке / навигации на страницу

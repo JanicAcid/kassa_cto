@@ -58,8 +58,8 @@ export function StepServices({
 
       {/* Баннер: обязательные услуги для новой и б/у кассы */}
       {(kkmCondition === 'new' || kkmCondition === 'used') && (
-        <div className="p-2.5 bg-[#e8a817]/10 border border-[#e8a817]/40 rounded-xl">
-          <p className="text-xs sm:text-sm text-[#1e3a5f] font-semibold">
+        <div className="p-2.5 bg-[#F59E0B]/10 border border-[#F59E0B]/40 rounded-xl">
+          <p className="text-xs sm:text-sm text-[#163A5F] font-semibold">
             Для {kkmCondition === 'new' ? 'новой' : 'б/у'} кассы обязательны: <strong>регистрация ККТ в ФНС</strong> и <strong>подключение ОФД</strong> — учтены ниже в&nbsp;расчёте
           </p>
         </div>
@@ -155,7 +155,7 @@ export function StepServices({
         const isLockedPartial = isPartialMode && service.id === 'partial_marketing_setup'
         const isLocked = isLockedFns || isLockedMarking || isLockedPartial
         return (
-          <Card key={service.id} className={selected || isLocked ? 'border-[#1e3a5f] bg-[#1e3a5f]/[0.03]' : 'border-slate-200'}>
+          <Card key={service.id} className={selected || isLocked ? 'border-[#163A5F] bg-[#163A5F]/[0.03]' : 'border-slate-200'}>
             <CardContent className="animate-fade-in-up" style={{ animationDelay: `${idx * 50}ms` }}>
               <div className="flex items-start gap-2">
                 {service.hintKey && <HintButton hintKey={service.hintKey} {...hintProps} />}
@@ -178,10 +178,10 @@ export function StepServices({
                   className="w-8 h-8 sm:w-9 sm:h-9 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <Label htmlFor={service.id} className={`font-bold text-sm leading-snug ${isLocked ? 'cursor-default text-[#1e3a5f]/70' : 'cursor-pointer'}`}>{serviceDisplayName}</Label>
+                    <Label htmlFor={service.id} className={`font-bold text-sm leading-snug ${isLocked ? 'cursor-default text-[#163A5F]/70' : 'cursor-pointer'}`}>{serviceDisplayName}</Label>
                     <div className="flex items-center gap-1.5 shrink-0">
                       {isLockedFns && <Badge className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0">включено</Badge>}
-                      <span className={`font-bold whitespace-nowrap text-sm ${isLocked ? 'text-[#1e3a5f]/70' : 'text-[#1e3a5f]'}`}>{service.price.toLocaleString('ru-RU')} руб.</span>
+                      <span className={`font-bold whitespace-nowrap text-sm ${isLocked ? 'text-[#163A5F]/70' : 'text-[#163A5F]'}`}>{service.price.toLocaleString('ru-RU')} руб.</span>
                     </div>
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{desc}</p>
@@ -234,7 +234,7 @@ export function StepServices({
           : OFD_PROVIDERS
         const selectedProvider = OFD_PROVIDERS.find(p => p.id === ofdProvider) || OFD_PROVIDERS[0]
         return (
-          <Card className={ofdEffective ? 'border-[#1e3a5f] bg-[#1e3a5f]/[0.03]' : 'border-slate-200'}>
+          <Card className={ofdEffective ? 'border-[#163A5F] bg-[#163A5F]/[0.03]' : 'border-slate-200'}>
             <CardContent className="">
               <div className="flex items-start gap-2">
                 <HintButton hintKey="ofd_takskom" {...hintProps} />
@@ -246,10 +246,10 @@ export function StepServices({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0 flex-wrap">
-                      <Label htmlFor="ofd_check" className={`font-bold text-sm cursor-pointer leading-snug ${ofdLocked ? 'text-[#1e3a5f]' : ''}`}>
+                      <Label htmlFor="ofd_check" className={`font-bold text-sm cursor-pointer leading-snug ${ofdLocked ? 'text-[#163A5F]' : ''}`}>
                         ОФД (оператор фискальных данных)
                       </Label>
-                      {selectedProvider.partner && <Badge className="bg-[#e8a817]/20 text-[#1e3a5f] text-xs shrink-0">Партнёр</Badge>}
+                      {selectedProvider.partner && <Badge className="bg-[#F59E0B]/20 text-[#163A5F] text-xs shrink-0">Партнёр</Badge>}
                     </div>
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">
@@ -260,11 +260,11 @@ export function StepServices({
                       {visibleProviders.length > 1 && (
                         <RadioGroup value={ofdProvider} onValueChange={setOfdProvider} className="space-y-1.5">
                           {visibleProviders.map(provider => (
-                            <div key={provider.id} className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#1e3a5f]/10">
+                            <div key={provider.id} className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#163A5F]/10">
                               <RadioGroupItem value={provider.id} id={`ofd_${provider.id}`} />
                               <Label htmlFor={`ofd_${provider.id}`} className="flex-1 cursor-pointer text-xs">
-                                <span className="font-medium text-[#1e3a5f]">{provider.name}</span>
-                                {provider.partner && <Badge className="bg-[#e8a817]/20 text-[#1e3a5f] text-xs ml-2">Партнёр</Badge>}
+                                <span className="font-medium text-[#163A5F]">{provider.name}</span>
+                                {provider.partner && <Badge className="bg-[#F59E0B]/20 text-[#163A5F] text-xs ml-2">Партнёр</Badge>}
                               </Label>
                             </div>
                           ))}
@@ -274,12 +274,12 @@ export function StepServices({
                         {(['15', '36'] as const).map(period => {
                           const info = selectedProvider.periods[period]
                           return (
-                            <div key={period} className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#1e3a5f]/10">
+                            <div key={period} className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#163A5F]/10">
                               <RadioGroupItem value={period} id={`ofd_period_${period}`} />
                               <Label htmlFor={`ofd_period_${period}`} className="flex-1 cursor-pointer text-xs">
-                                <span className="font-medium text-[#1e3a5f]">Договор на {period === '15' ? '15' : '36'} мес.</span>
+                                <span className="font-medium text-[#163A5F]">Договор на {period === '15' ? '15' : '36'} мес.</span>
                                 <span className="ml-2 inline-flex items-center gap-1.5 flex-wrap">
-                                  <span className="font-bold text-[#1e3a5f] text-xs">{info.price.toLocaleString('ru-RU')} ₽</span>
+                                  <span className="font-bold text-[#163A5F] text-xs">{info.price.toLocaleString('ru-RU')} ₽</span>
                                   <span className="text-slate-400 line-through text-xs">{info.originalPrice.toLocaleString('ru-RU')} ₽</span>
                                   <span className="text-xs text-green-600 font-medium">скидка</span>
                                 </span>
@@ -299,7 +299,7 @@ export function StepServices({
 
       <div className="flex gap-4">
         <Button variant="outline" className="flex-1 py-4 text-base font-bold" size="lg" onClick={() => { setCurrentStep(1); setTimeout(() => mainRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50) }}><ArrowLeft className="w-5 h-5 mr-2" /> Назад</Button>
-        <Button className="flex-1 bg-[#1e3a5f] hover:bg-[#1e3a5f]/90 py-4 text-base font-bold" size="lg" onClick={() => goToStep(3)} disabled={!canGoStep3}>Далее <ArrowRight className="w-5 h-5 ml-2" /></Button>
+        <Button className="flex-1 bg-[#163A5F] hover:bg-[#163A5F]/90 py-4 text-base font-bold" size="lg" onClick={() => goToStep(3)} disabled={!canGoStep3}>Далее <ArrowRight className="w-5 h-5 ml-2" /></Button>
       </div>
     </div>
   )

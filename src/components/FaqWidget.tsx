@@ -51,8 +51,8 @@ export function FaqWidget() {
           }
           el.scrollIntoView({ behavior: 'smooth', block: 'center' })
           // Подсветка
-          el.classList.add('ring-2', 'ring-[#e8a817]/50', 'rounded-lg')
-          setTimeout(() => el.classList.remove('ring-2', 'ring-[#e8a817]/50', 'rounded-lg'), 3000)
+          el.classList.add('ring-2', 'ring-[#F59E0B]/50', 'rounded-lg')
+          setTimeout(() => el.classList.remove('ring-2', 'ring-[#F59E0B]/50', 'rounded-lg'), 3000)
         }
       }, 100)
     } else {
@@ -74,7 +74,7 @@ export function FaqWidget() {
       >
         <div
           className="flex items-center justify-between px-5 py-4 shrink-0"
-          style={{ backgroundColor: '#1e3a5f' }}
+          style={{ backgroundColor: '#163A5F' }}
         >
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
@@ -94,10 +94,10 @@ export function FaqWidget() {
             <button
               key={item.id}
               onClick={() => handleFaqClick(item)}
-              className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-[#1e3a5f]/[0.04] transition-colors text-left group"
+              className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-[#163A5F]/[0.04] transition-colors text-left group"
             >
-              <ChevronRight className="w-4 h-4 text-[#e8a817] shrink-0 group-hover:translate-x-0.5 transition-transform" />
-              <span className="text-sm text-slate-700 group-hover:text-[#1e3a5f] font-medium leading-snug transition-colors">{item.question}</span>
+              <ChevronRight className="w-4 h-4 text-[#F59E0B] shrink-0 group-hover:translate-x-0.5 transition-transform" />
+              <span className="text-sm text-slate-700 group-hover:text-[#163A5F] font-medium leading-snug transition-colors">{item.question}</span>
             </button>
           ))}
         </div>
@@ -107,7 +107,7 @@ export function FaqWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
-        style={{ backgroundColor: '#e8a817' }}
+        style={{ backgroundColor: '#F59E0B' }}
         aria-label={isOpen ? 'Закрыть FAQ' : 'Открыть FAQ'}
       >
         {isOpen ? <X className="w-6 h-6 text-white" /> : <HelpCircle className="w-6 h-6 text-white" />}

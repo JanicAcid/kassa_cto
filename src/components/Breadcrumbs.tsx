@@ -13,7 +13,7 @@ interface BreadcrumbsProps {
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <nav aria-label="Хлебные крошки" className="flex items-center gap-1 text-sm text-slate-400 py-3 flex-wrap">
-      <Link href="/" className="flex items-center gap-1 hover:text-[#1e3a5f] transition-colors">
+      <Link href="/" className="flex items-center gap-1 hover:text-[#163A5F] transition-colors">
         <Home className="w-3.5 h-3.5" />
         <span>Главная</span>
       </Link>
@@ -21,7 +21,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         <span key={i} className="flex items-center gap-1">
           <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
           {item.href ? (
-            <Link href={item.href} className="hover:text-[#1e3a5f] transition-colors">
+            <Link href={item.href} className="hover:text-[#163A5F] transition-colors">
               {item.label}
             </Link>
           ) : (

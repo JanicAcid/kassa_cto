@@ -27,7 +27,7 @@ const SERVICE_LINKS = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[#1e3a5f] text-white">
+    <footer className="bg-[#163A5F] text-white">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 py-8 sm:py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Лого + описание */}

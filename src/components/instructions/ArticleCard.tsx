@@ -23,7 +23,7 @@ export function ArticleCard({ slug, title, description, category, readingTime, c
 
   return (
     <Link href={`/instructions/${slug}`} className="group block">
-      <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:border-[#1e3a5f]/20 transition-all duration-300">
+      <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-lg hover:border-[#163A5F]/20 transition-all duration-300">
         {/* Обложка — градиент */}
         <div className={`h-40 bg-gradient-to-br ${coverColor} relative overflow-hidden`}>
           <div className="absolute inset-0 bg-black/5" />
@@ -33,7 +33,7 @@ export function ArticleCard({ slug, title, description, category, readingTime, c
             </span>
           </div>
           <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-[#1e3a5f] text-xs font-bold shadow-md">
+            <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white text-[#163A5F] text-xs font-bold shadow-md">
               Читать →
             </span>
           </div>
@@ -41,7 +41,7 @@ export function ArticleCard({ slug, title, description, category, readingTime, c
 
         {/* Контент */}
         <div className="p-4">
-          <h3 className="text-base sm:text-lg font-bold text-[#1e3a5f] leading-snug group-hover:text-[#1e3a5f]/80 transition-colors line-clamp-2">
+          <h3 className="text-base sm:text-lg font-bold text-[#163A5F] leading-snug group-hover:text-[#163A5F]/80 transition-colors line-clamp-2">
             {title}
           </h3>
           <p className="text-sm text-slate-500 mt-2 line-clamp-3 leading-relaxed">

@@ -121,10 +121,10 @@ export default function KassaConsultWidget() {
 
   return (
     <section className="mb-10 sm:mb-12">
-      <div className="bg-gradient-to-br from-[#1e3a5f] to-[#2a5080] rounded-2xl p-5 sm:p-6 mb-4">
+      <div className="bg-gradient-to-br from-[#163A5F] to-[#1E4A78] rounded-2xl p-5 sm:p-6 mb-4">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl bg-[#e8a817]/20 flex items-center justify-center">
-            <Store className="w-5 h-5 text-[#e8a817]" />
+          <div className="w-10 h-10 rounded-xl bg-[#F59E0B]/20 flex items-center justify-center">
+            <Store className="w-5 h-5 text-[#F59E0B]" />
           </div>
           <div>
             <h2 className="text-lg sm:text-xl font-bold text-white">Консультация по вашей кассе</h2>
@@ -143,7 +143,7 @@ export default function KassaConsultWidget() {
           <button
             type="button"
             onClick={() => setStep(1)}
-            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#e8a817] hover:bg-[#d49a12] text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-[#e8a817]/25 hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:scale-[1.02] active:scale-[0.98]"
           >
             Подобрать кассу <ArrowRight className="w-5 h-5" />
           </button>
@@ -153,7 +153,7 @@ export default function KassaConsultWidget() {
       {/* ── Step 1: Business type ───────────────────── */}
       {step === 1 && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <h3 className="text-base sm:text-lg font-bold text-[#1e3a5f] mb-1">Чем вы занимаетесь?</h3>
+          <h3 className="text-base sm:text-lg font-bold text-[#163A5F] mb-1">Чем вы занимаетесь?</h3>
           <p className="text-xs text-slate-400 mb-4">Выберите наиболее подходящий вариант</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {BIZ_TYPES.map(b => (
@@ -161,13 +161,13 @@ export default function KassaConsultWidget() {
                 key={b.id}
                 type="button"
                 onClick={() => { setBizType(b.id); setStep(2) }}
-                className="flex items-center gap-2.5 px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-[#1e3a5f] hover:bg-[#1e3a5f]/5 text-slate-700 hover:text-[#1e3a5f] text-sm font-medium transition-all"
+                className="flex items-center gap-2.5 px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-[#163A5F] hover:bg-[#163A5F]/5 text-slate-700 hover:text-[#163A5F] text-sm font-medium transition-all"
               >
                 <span>{b.icon}</span> {b.label}
               </button>
             ))}
           </div>
-          <button type="button" onClick={() => setStep(0)} className="mt-4 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#1e3a5f] transition-colors">
+          <button type="button" onClick={() => setStep(0)} className="mt-4 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#163A5F] transition-colors">
             <ChevronLeft className="w-4 h-4" /> Назад
           </button>
         </div>
@@ -176,7 +176,7 @@ export default function KassaConsultWidget() {
       {/* ── Step 2: Format ─────────────────────────── */}
       {step === 2 && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <h3 className="text-base sm:text-lg font-bold text-[#1e3a5f] mb-1">Какой формат кассы предпочитаете?</h3>
+          <h3 className="text-base sm:text-lg font-bold text-[#163A5F] mb-1">Какой формат кассы предпочитаете?</h3>
           <p className="text-xs text-slate-400 mb-4">Не уверены — выберите последний вариант</p>
           <div className="space-y-2.5">
             {FORMAT_OPTIONS.map(f => (
@@ -184,14 +184,14 @@ export default function KassaConsultWidget() {
                 key={f.id}
                 type="button"
                 onClick={() => { setKassaFormat(f.id); setStep(3) }}
-                className="w-full text-left px-4 py-3.5 rounded-xl border-2 border-slate-100 hover:border-[#1e3a5f] hover:bg-[#1e3a5f]/5 text-slate-700 transition-all"
+                className="w-full text-left px-4 py-3.5 rounded-xl border-2 border-slate-100 hover:border-[#163A5F] hover:bg-[#163A5F]/5 text-slate-700 transition-all"
               >
-                <span className="text-sm font-semibold text-[#1e3a5f]">{f.label}</span>
+                <span className="text-sm font-semibold text-[#163A5F]">{f.label}</span>
                 <span className="block text-xs text-slate-400 mt-0.5">{f.desc}</span>
               </button>
             ))}
           </div>
-          <button type="button" onClick={() => setStep(1)} className="mt-4 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#1e3a5f] transition-colors">
+          <button type="button" onClick={() => setStep(1)} className="mt-4 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#163A5F] transition-colors">
             <ChevronLeft className="w-4 h-4" /> Назад
           </button>
         </div>
@@ -200,7 +200,7 @@ export default function KassaConsultWidget() {
       {/* ── Step 3: Budget ─────────────────────────── */}
       {step === 3 && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <h3 className="text-base sm:text-lg font-bold text-[#1e3a5f] mb-1">Какой бюджет на кассу?</h3>
+          <h3 className="text-base sm:text-lg font-bold text-[#163A5F] mb-1">Какой бюджет на кассу?</h3>
           <p className="text-xs text-slate-400 mb-4">Учитывается только стоимость кассы, без настройки и ФН</p>
           <div className="grid grid-cols-2 gap-2.5">
             {BUDGET_OPTIONS.map(b => (
@@ -208,14 +208,14 @@ export default function KassaConsultWidget() {
                 key={b.id}
                 type="button"
                 onClick={() => { setBudget(b.id); setStep(4) }}
-                className="text-center px-4 py-4 rounded-xl border-2 border-slate-100 hover:border-[#e8a817] hover:bg-[#e8a817]/5 text-slate-700 transition-all"
+                className="text-center px-4 py-4 rounded-xl border-2 border-slate-100 hover:border-[#F59E0B] hover:bg-[#F59E0B]/5 text-slate-700 transition-all"
               >
-                <span className="block text-sm font-bold text-[#1e3a5f]">{b.label}</span>
+                <span className="block text-sm font-bold text-[#163A5F]">{b.label}</span>
                 <span className="block text-xs text-slate-400 mt-0.5">{b.desc}</span>
               </button>
             ))}
           </div>
-          <button type="button" onClick={() => setStep(2)} className="mt-4 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#1e3a5f] transition-colors">
+          <button type="button" onClick={() => setStep(2)} className="mt-4 inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#163A5F] transition-colors">
             <ChevronLeft className="w-4 h-4" /> Назад
           </button>
         </div>
@@ -225,22 +225,22 @@ export default function KassaConsultWidget() {
       {step === 4 && rec && (
         <div className="space-y-4">
           {/* Рекомендации */}
-          <div className="bg-white rounded-2xl border-2 border-[#e8a817]/30 shadow-sm p-5 sm:p-6">
+          <div className="bg-white rounded-2xl border-2 border-[#F59E0B]/30 shadow-sm p-5 sm:p-6">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-[#e8a817]/10 flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-[#e8a817]" />
+              <div className="w-9 h-9 rounded-lg bg-[#F59E0B]/10 flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-[#F59E0B]" />
               </div>
-              <h3 className="text-base font-bold text-[#1e3a5f]">Рекомендуемые модели</h3>
+              <h3 className="text-base font-bold text-[#163A5F]">Рекомендуемые модели</h3>
             </div>
             <div className="space-y-3">
               {rec.models.map((m, i) => (
-                <div key={i} className={`rounded-xl border p-4 ${i === 0 ? 'border-[#e8a817]/40 bg-[#e8a817]/5' : 'border-slate-100 bg-slate-50'}`}>
+                <div key={i} className={`rounded-xl border p-4 ${i === 0 ? 'border-[#F59E0B]/40 bg-[#F59E0B]/5' : 'border-slate-100 bg-slate-50'}`}>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
                     <div>
-                      <h4 className="text-sm font-bold text-[#1e3a5f]">{i === 0 && <span className="text-[#e8a817] mr-1">Лучший выбор</span>}{m.name}</h4>
+                      <h4 className="text-sm font-bold text-[#163A5F]">{i === 0 && <span className="text-[#F59E0B] mr-1">Лучший выбор</span>}{m.name}</h4>
                       <p className="text-xs text-slate-400">{m.vendor}</p>
                     </div>
-                    <span className="text-base font-extrabold text-[#e8a817]">{m.price}</span>
+                    <span className="text-base font-extrabold text-[#F59E0B]">{m.price}</span>
                   </div>
                   <p className="text-xs text-slate-500">{m.best}</p>
                 </div>
@@ -252,11 +252,11 @@ export default function KassaConsultWidget() {
           {/* Форма консультации */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-lg bg-[#1e3a5f]/5 flex items-center justify-center">
-                <User className="w-5 h-5 text-[#1e3a5f]" />
+              <div className="w-9 h-9 rounded-lg bg-[#163A5F]/5 flex items-center justify-center">
+                <User className="w-5 h-5 text-[#163A5F]" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-[#1e3a5f]">Получить консультацию</h3>
+                <h3 className="text-base font-bold text-[#163A5F]">Получить консультацию</h3>
                 <p className="text-xs text-slate-400">Специалист перезвонит за 15 минут</p>
               </div>
             </div>
@@ -267,7 +267,7 @@ export default function KassaConsultWidget() {
                 onChange={e => setClientName(e.target.value)}
                 placeholder="Ваше имя"
                 autoComplete="name"
-                className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all"
+                className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all"
               />
               <input
                 type="tel"
@@ -276,13 +276,13 @@ export default function KassaConsultWidget() {
                 placeholder="+7 (999) 123-45-67"
                 autoComplete="tel"
                 inputMode="tel"
-                className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10 transition-all"
+                className="w-full px-4 py-3 rounded-xl border-2 border-slate-100 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#163A5F] focus:ring-2 focus:ring-[#163A5F]/10 transition-all"
               />
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setStep(3)}
-                  className="inline-flex items-center gap-1.5 px-5 py-3 text-sm font-medium text-slate-500 hover:text-[#1e3a5f] rounded-xl hover:bg-slate-50 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-5 py-3 text-sm font-medium text-slate-500 hover:text-[#163A5F] rounded-xl hover:bg-slate-50 transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" /> Назад
                 </button>
@@ -292,14 +292,14 @@ export default function KassaConsultWidget() {
                   disabled={!clientName.trim() || !clientPhone.trim() || sending}
                   className={`flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold rounded-xl transition-all ${
                     clientName.trim() && clientPhone.trim() && !sending
-                      ? 'bg-[#e8a817] hover:bg-[#d49a12] text-white shadow-lg shadow-[#e8a817]/25'
+                      ? 'bg-[#F59E0B] hover:bg-[#D97706] text-white shadow-lg shadow-[#F59E0B]/25'
                       : 'bg-slate-100 text-slate-300 cursor-not-allowed'
                   }`}
                 >
                   {sending ? <><Loader2 className="w-4 h-4 animate-spin" /> Отправляем...</> : <><Send className="w-4 h-4" /> Получить консультацию</>}
                 </button>
               </div>
-              <a href="tel:+78124659457" className="block text-center text-xs text-slate-400 hover:text-[#1e3a5f] transition-colors mt-1">
+              <a href="tel:+78124659457" className="block text-center text-xs text-slate-400 hover:text-[#163A5F] transition-colors mt-1">
                 Или позвоните: +7 (812) 465-94-57
               </a>
             </div>
@@ -318,14 +318,14 @@ export default function KassaConsultWidget() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
               href="tel:+78124659457"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#e8a817] hover:bg-[#d49a12] text-white text-sm font-bold rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-sm font-bold rounded-xl transition-colors"
             >
               <Phone className="w-4 h-4" /> Позвонить сейчас
             </a>
             <button
               type="button"
               onClick={reset}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm text-slate-500 hover:text-[#1e3a5f] transition-colors"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm text-slate-500 hover:text-[#163A5F] transition-colors"
             >
               Пройти заново
             </button>

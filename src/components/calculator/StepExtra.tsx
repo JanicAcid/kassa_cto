@@ -74,7 +74,7 @@ export function StepExtra({
     <div className="max-w-3xl mx-auto space-y-2">
 
         {/* ФН — фискальный накопитель */}
-        <Card className={fnChecked ? 'border-[#1e3a5f] bg-[#1e3a5f]/[0.03]' : 'border-slate-200'}>
+        <Card className={fnChecked ? 'border-[#163A5F] bg-[#163A5F]/[0.03]' : 'border-slate-200'}>
           <CardContent className="">
             <div className="flex items-start gap-2">
               <HintButton hintKey="fn_product" {...hintProps} />
@@ -95,14 +95,14 @@ export function StepExtra({
                         setFnActivityType(v as string)
                         setFnPeriod(v === 'excise' ? '36' : '15')
                       }} className="space-y-1.5">
-                        <div className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#1e3a5f]/10">
+                        <div className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#163A5F]/10">
                           <RadioGroupItem value="general" id="fn_general" />
                           <Label htmlFor="fn_general" className="flex-1 cursor-pointer text-xs">
                             <span className="font-medium">Общая торговля</span>
                             <span className="ml-2 text-xs text-slate-400">— ФН на 15 мес.</span>
                           </Label>
                         </div>
-                        <div className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#1e3a5f]/10">
+                        <div className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#163A5F]/10">
                           <RadioGroupItem value="excise" id="fn_excise" />
                           <Label htmlFor="fn_excise" className="flex-1 cursor-pointer text-xs">
                             <span className="font-medium">Подакцизная продукция</span>
@@ -124,7 +124,7 @@ export function StepExtra({
         </Card>
 
         {/* Сканер */}
-        <Card className={scannerChecked ? 'border-[#1e3a5f] bg-[#1e3a5f]/[0.03]' : 'border-slate-200'}>
+        <Card className={scannerChecked ? 'border-[#163A5F] bg-[#163A5F]/[0.03]' : 'border-slate-200'}>
           <CardContent className="">
             <div className="flex items-start gap-2">
               <HintButton hintKey="scanner_2d" {...hintProps} />
@@ -132,7 +132,7 @@ export function StepExtra({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <Label htmlFor="scanner" className="font-bold text-sm cursor-pointer leading-snug">Сканер 2D для считывания кодов маркировки</Label>
-                  <span className="font-bold text-[#1e3a5f] whitespace-nowrap shrink-0 text-sm">{scannerPrices[effectiveKkm]?.toLocaleString('ru-RU') ?? '…'} руб.</span>
+                  <span className="font-bold text-[#163A5F] whitespace-nowrap shrink-0 text-sm">{scannerPrices[effectiveKkm]?.toLocaleString('ru-RU') ?? '…'} руб.</span>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">Читает квадратные коды (Data Matrix) на маркированных товарах. Обычный сканер не подойдёт.</p>
               </div>
@@ -141,7 +141,7 @@ export function StepExtra({
         </Card>
 
         {/* Карточки товаров */}
-        <Card className={productCardCount > 0 ? 'border-[#1e3a5f] bg-[#1e3a5f]/[0.03]' : 'border-slate-200'}>
+        <Card className={productCardCount > 0 ? 'border-[#163A5F] bg-[#163A5F]/[0.03]' : 'border-slate-200'}>
           <CardContent className="">
             <div className="flex items-start gap-2">
               <HintButton hintKey="product_cards" {...hintProps} />
@@ -149,7 +149,7 @@ export function StepExtra({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <Label htmlFor="product_cards" className="font-bold text-sm cursor-pointer leading-snug">Создание карточек товаров</Label>
-                  <span className="font-bold text-[#1e3a5f] whitespace-nowrap shrink-0 text-sm">
+                  <span className="font-bold text-[#163A5F] whitespace-nowrap shrink-0 text-sm">
                     {productCardCount > 0 ? `${(getProductCardPrice(productCardCount) * productCardCount).toLocaleString('ru-RU')} руб.` : ''}
                   </span>
                 </div>
@@ -178,7 +178,7 @@ export function StepExtra({
         {step3Services.map((service, idx) => {
           const selected = step3Selections.includes(service.id)
           return (
-            <Card key={service.id} className={selected ? 'border-[#1e3a5f] bg-[#1e3a5f]/[0.03]' : 'border-slate-200'}>
+            <Card key={service.id} className={selected ? 'border-[#163A5F] bg-[#163A5F]/[0.03]' : 'border-slate-200'}>
               <CardContent className="">
                 <div className="flex items-start gap-2">
                   {service.hintKey && <HintButton hintKey={service.hintKey} {...hintProps} />}
@@ -188,7 +188,7 @@ export function StepExtra({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                       <Label htmlFor={service.id} className="font-bold text-sm cursor-pointer leading-snug">{service.name}</Label>
-                      <span className="font-bold text-[#1e3a5f] whitespace-nowrap shrink-0 text-sm">{service.price.toLocaleString('ru-RU')} руб.</span>
+                      <span className="font-bold text-[#163A5F] whitespace-nowrap shrink-0 text-sm">{service.price.toLocaleString('ru-RU')} руб.</span>
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">{service.description}</p>
                     {service.id === 'training' && selected && (
@@ -207,7 +207,7 @@ export function StepExtra({
         })}
 
         {/* Договор обслуживания */}
-        <Card className={serviceContractChecked ? 'border-[#1e3a5f] bg-[#1e3a5f]/[0.03]' : 'border-slate-200'}>
+        <Card className={serviceContractChecked ? 'border-[#163A5F] bg-[#163A5F]/[0.03]' : 'border-slate-200'}>
           <CardContent className="">
             <div className="flex items-start gap-2">
               <HintButton hintKey="service_contract" {...hintProps} />
@@ -217,30 +217,30 @@ export function StepExtra({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <Label htmlFor="service_contract" className="font-bold text-sm cursor-pointer leading-snug">Договор обслуживания</Label>
-                  <span className="font-bold text-[#1e3a5f] whitespace-nowrap shrink-0 text-sm">1 000 руб./мес.</span>
+                  <span className="font-bold text-[#163A5F] whitespace-nowrap shrink-0 text-sm">1 000 руб./мес.</span>
                 </div>
                 <p className="text-xs text-slate-500 mt-0.5">Регулярное обслуживание кассы — визиты мастера, профилактика, приоритетная поддержка</p>
                 {serviceContractChecked && (
                   <div className="mt-1.5 space-y-1.5">
                     <RadioGroup value={serviceContractPeriod} onValueChange={(v) => setServiceContractPeriod(v as 'month' | 'year')} className="space-y-1.5">
-                      <div className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#1e3a5f]/10">
+                      <div className="flex items-center gap-2 p-1.5 bg-white rounded border border-[#163A5F]/10">
                         <RadioGroupItem value="month" id="sc_month" />
                         <Label htmlFor="sc_month" className="flex-1 cursor-pointer text-xs">
-                          <span className="font-medium text-[#1e3a5f]">Помесячная оплата</span>
-                          <span className="ml-2 font-bold text-[#1e3a5f]">1 000 ₽/мес.</span>
+                          <span className="font-medium text-[#163A5F]">Помесячная оплата</span>
+                          <span className="ml-2 font-bold text-[#163A5F]">1 000 ₽/мес.</span>
                         </Label>
                       </div>
                       <div className="flex items-center gap-2 p-1.5 bg-white rounded border border-green-200">
                         <RadioGroupItem value="year" id="sc_year" />
                         <Label htmlFor="sc_year" className="flex-1 cursor-pointer text-xs">
-                          <span className="font-medium text-[#1e3a5f]">Подписка на 12 мес.</span>
-                          <span className="ml-2 font-bold text-[#1e3a5f]">10 000 ₽/год</span>
+                          <span className="font-medium text-[#163A5F]">Подписка на 12 мес.</span>
+                          <span className="ml-2 font-bold text-[#163A5F]">10 000 ₽/год</span>
                           <Badge className="bg-green-100 text-green-700 text-xs ml-2">выгодно</Badge>
                         </Label>
                       </div>
                     </RadioGroup>
-                    <div className="p-1.5 bg-[#1e3a5f]/5 border border-[#1e3a5f]/10 rounded space-y-1">
-                      <p className="text-xs font-bold text-[#1e3a5f] uppercase tracking-wide">Что входит:</p>
+                    <div className="p-1.5 bg-[#163A5F]/5 border border-[#163A5F]/10 rounded space-y-1">
+                      <p className="text-xs font-bold text-[#163A5F] uppercase tracking-wide">Что входит:</p>
                       <ul className="text-xs text-slate-600 space-y-0.5 list-disc list-inside">
                         <li>Вызов мастера без доплаты</li>
                         <li>Ежемесячный визит с ревизией и профилактикой</li>
@@ -260,16 +260,16 @@ export function StepExtra({
         </div>
 
         {/* ПРОДАЮЩАЯ ФОРМА ЗАЯВКИ */}
-        <Card id="lead-form-section" className="border-[#1e3a5f]/20 overflow-hidden">
+        <Card id="lead-form-section" className="border-[#163A5F]/20 overflow-hidden">
           {/* Верхняя акцентная полоска */}
-          <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2a5080] px-4 sm:px-5 py-4 sm:py-5">
+          <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] px-4 sm:px-5 py-4 sm:py-5">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/15 flex items-center justify-center shrink-0">
                 <Send className="w-5 h-5 text-white" />
               </div>
               <div className="min-w-0">
                 <h3 className="text-white font-extrabold text-base sm:text-lg leading-tight">Оставьте заявку — получите расчёт</h3>
-                <p className="text-white/70 text-xs sm:text-sm mt-1">Менеджер перезвонит в течение <span className="text-[#e8a817] font-semibold">15 минут</span> и подготовит точную смету</p>
+                <p className="text-white/70 text-xs sm:text-sm mt-1">Менеджер перезвонит в течение <span className="text-[#F59E0B] font-semibold">15 минут</span> и подготовит точную смету</p>
               </div>
             </div>
           </div>
@@ -292,9 +292,9 @@ export function StepExtra({
             <button
               type="button"
               onClick={() => setShowDetails(!showDetails)}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-[#1e3a5f]/30 hover:bg-[#1e3a5f]/[0.02] transition-all text-left group"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg border border-slate-200 hover:border-[#163A5F]/30 hover:bg-[#163A5F]/[0.02] transition-all text-left group"
             >
-              <span className="text-xs sm:text-sm font-medium text-slate-600 group-hover:text-[#1e3a5f] transition-colors">
+              <span className="text-xs sm:text-sm font-medium text-slate-600 group-hover:text-[#163A5F] transition-colors">
                 Дополнительные сведения
                 {!showDetails && <span className="text-slate-400 font-normal ml-1 hidden sm:inline">— ИНН, адрес, модель кассы</span>}
               </span>
@@ -305,7 +305,7 @@ export function StepExtra({
             </button>
 
             {showDetails && (
-              <div className="space-y-3 animate-fade-in-up border-l-2 border-[#1e3a5f]/10 pl-3.5 ml-1">
+              <div className="space-y-3 animate-fade-in-up border-l-2 border-[#163A5F]/10 pl-3.5 ml-1">
                 <div className="grid sm:grid-cols-2 gap-2.5">
                   <div>
                     <Label className="text-xs">ИНН <span className="text-slate-400 font-normal">(если знаете)</span></Label>
@@ -334,8 +334,8 @@ export function StepExtra({
                   </div>
                 </div>
                 {kkmType === 'evotor' && (
-                  <div className="p-2.5 bg-[#1e3a5f]/5 rounded-lg space-y-2">
-                    <p className="text-xs text-[#1e3a5f] font-medium flex items-center gap-2">
+                  <div className="p-2.5 bg-[#163A5F]/5 rounded-lg space-y-2">
+                    <p className="text-xs text-[#163A5F] font-medium flex items-center gap-2">
                       <AlertTriangle className="w-3.5 h-3.5 shrink-0" />Данные от ЛК Эвотор
                     </p>
                     <div className="grid sm:grid-cols-2 gap-2">
@@ -348,9 +348,9 @@ export function StepExtra({
                         <Input type="password" value={clientData.evotorPassword} onChange={(e) => setClientData({ ...clientData, evotorPassword: e.target.value })} className="mt-1 text-sm" autoComplete="current-password" />
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 p-1.5 bg-[#e8a817]/10 border border-[#e8a817]/30 rounded">
+                    <div className="flex items-center gap-2 p-1.5 bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded">
                       <Checkbox id="evotor_restore_r" checked={evotorRestore} onCheckedChange={(c) => setEvotorRestore(c as boolean)} className="w-5 h-5 shrink-0" />
-                      <Label htmlFor="evotor_restore_r" className="cursor-pointer text-xs text-[#1e3a5f]">Нет данных ЛК — помощь с восстановлением <span className="font-semibold">500 руб.</span></Label>
+                      <Label htmlFor="evotor_restore_r" className="cursor-pointer text-xs text-[#163A5F]">Нет данных ЛК — помощь с восстановлением <span className="font-semibold">500 руб.</span></Label>
                     </div>
                   </div>
                 )}
@@ -364,7 +364,7 @@ export function StepExtra({
             {/* Траст-блок: время ответа + конфиденциальность */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <div className="flex items-center gap-2 text-xs text-slate-500">
-                <Clock className="w-3.5 h-3.5 text-[#1e3a5f] shrink-0" />
+                <Clock className="w-3.5 h-3.5 text-[#163A5F] shrink-0" />
                 <span>Ответ в течение <strong className="text-slate-700">15 минут</strong> в рабочее время</span>
               </div>
               <div className="hidden sm:block w-px bg-slate-200" />
@@ -404,7 +404,7 @@ export function StepExtra({
               </div>
             </div>
             <Button
-              className={`w-full py-4 sm:py-5 text-base sm:text-lg font-bold transition-all ${canSubmit ? 'bg-[#e8a817] hover:bg-[#d49a12] hover:shadow-lg hover:shadow-[#e8a817]/20 text-white' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`}
+              className={`w-full py-4 sm:py-5 text-base sm:text-lg font-bold transition-all ${canSubmit ? 'bg-[#F59E0B] hover:bg-[#D97706] hover:shadow-lg hover:shadow-[#F59E0B]/20 text-white' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`}
               size="lg"
               disabled={!canSubmit}
               onClick={handleDone}
