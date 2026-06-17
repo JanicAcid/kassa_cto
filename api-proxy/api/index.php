@@ -268,73 +268,65 @@ function sendOrderEmail(string $to, string $orderNum, string $clientName,
            . "Работы: " . ($services ?: '—') . "\n\n"
            . "—\nООО «Теллур-Интех» · kassa-cto.ru · ИНН 7806044498";
 
-    // Список получателей: основной + копия на доменный ящик (для надёжности)
-    $recipients = array_unique(array_filter([$to, 'admin@kassa-cto.ru']));
-    emailLog("Recipients: " . implode(', ', $recipients));
+    // ─── YANDEX SMTP — PRIMARY ─────────────────────────────────────────
+    // Beget SMTP отбрасывает письма как спам без DKIM, поэтому шлём через Яндекс.
+    // Яндекс-аккаунт: janicacid@yandex.ru + пароль приложения.
+    // Получатель: только тот, что в NOTIFY_EMAIL (без копии на admin@kassa-cto.ru,
+    // т.к. Beget-ящик всё равно отбрасывает).
+    emailLog("Recipients: {$to}");
 
     $anyOk = false;
     $lastError = '';
 
-    // ── Способ 1: SMTP smtp.beget.com:465 (SSL) — PRIMARY ─────────────
-    foreach ($recipients as $rcpt) {
-        emailLog("Trying SMTP:465 → {$rcpt}");
-        $r = smtpSend(
-            host:    'smtp.beget.com',
-            port:    465,
-            user:    'admin@kassa-cto.ru',
-            pass:    'K1slotn1k!',
-            from:    'admin@kassa-cto.ru',
-            fromName: 'Теллур-Интех',
-            to:      $rcpt,
-            subject: $subject,
-            html:    $html,
-            plain:   $plain
-        );
-        emailLog("SMTP:465 result for {$rcpt}: " . ($r['ok'] ? 'OK' : 'FAIL [' . $r['step'] . '] ' . $r['error']));
-        if (!$r['ok']) $lastError = "465/{$rcpt}/{$r['step']}: {$r['error']}";
-        if ($r['ok']) $anyOk = true;
-    }
-
-    if ($anyOk) {
-        emailLog("SUCCESS via SMTP:465 for order #{$orderNum}");
+    // ── Способ 1: SMTP smtp.yandex.ru:465 (SSL) — PRIMARY ─────────────
+    emailLog("Trying Yandex SMTP:465 → {$to}");
+    $r = smtpSend(
+        host:    'smtp.yandex.ru',
+        port:    465,
+        user:    'janicacid@yandex.ru',
+        pass:    'hsfsceftrmpzozqa',
+        from:    'janicacid@yandex.ru',
+        fromName: 'Теллур-Интех',  // не используется в MAIL FROM, только в заголовке
+        to:      $to,
+        subject: $subject,
+        html:    $html,
+        plain:   $plain
+    );
+    emailLog("Yandex SMTP:465 result: " . ($r['ok'] ? 'OK' : 'FAIL [' . $r['step'] . '] ' . $r['error']));
+    if ($r['ok']) {
+        emailLog("SUCCESS via Yandex SMTP for order #{$orderNum}");
         return true;
     }
+    $lastError = "465/{$r['step']}: {$r['error']}";
 
-    // ── Способ 2: SMTP smtp.beget.com:587 (STARTTLS) — fallback ───────
-    emailLog("Port 465 failed for all recipients, trying 587 STARTTLS...");
-    foreach ($recipients as $rcpt) {
-        emailLog("Trying SMTP:587 → {$rcpt}");
-        $r = smtpSend(
-            host:    'smtp.beget.com',
-            port:    587,
-            user:    'admin@kassa-cto.ru',
-            pass:    'K1slotn1k!',
-            from:    'admin@kassa-cto.ru',
-            fromName: 'Теллур-Интех',
-            to:      $rcpt,
-            subject: $subject,
-            html:    $html,
-            plain:   $plain
-        );
-        emailLog("SMTP:587 result for {$rcpt}: " . ($r['ok'] ? 'OK' : 'FAIL [' . $r['step'] . '] ' . $r['error']));
-        if (!$r['ok']) $lastError = "587/{$rcpt}/{$r['step']}: {$r['error']}";
-        if ($r['ok']) $anyOk = true;
-    }
-    if ($anyOk) {
-        emailLog("SUCCESS via SMTP:587 for order #{$orderNum}");
+    // ── Способ 2: SMTP smtp.yandex.ru:587 (STARTTLS) — fallback ───────
+    emailLog("Port 465 failed, trying 587 STARTTLS...");
+    $r = smtpSend(
+        host:    'smtp.yandex.ru',
+        port:    587,
+        user:    'janicacid@yandex.ru',
+        pass:    'hsfsceftrmpzozqa',
+        from:    'janicacid@yandex.ru',
+        fromName: 'Теллур-Интех',
+        to:      $to,
+        subject: $subject,
+        html:    $html,
+        plain:   $plain
+    );
+    emailLog("Yandex SMTP:587 result: " . ($r['ok'] ? 'OK' : 'FAIL [' . $r['step'] . '] ' . $r['error']));
+    if ($r['ok']) {
+        emailLog("SUCCESS via Yandex SMTP:587 for order #{$orderNum}");
         return true;
     }
+    $lastError = "587/{$r['step']}: {$r['error']}";
 
-    // ── Способ 3: PHP mail() — LAST RESORT ────────────────────────────
-    emailLog("Both SMTP ports failed (last error: {$lastError}), trying mail()...");
-    foreach ($recipients as $rcpt) {
-        $mailOk = sendViaMail('admin@kassa-cto.ru', 'Теллур-Интех', $rcpt, $subject, $html, $plain);
-        emailLog("mail() result for {$rcpt}: " . ($mailOk ? 'true' : 'false'));
-        if ($mailOk) $anyOk = true;
-    }
+    // ── Способ 3: PHP mail() — LAST RESORT (Beget, придёт от unverified) ─
+    emailLog("Yandex SMTP failed ({$lastError}), trying mail()...");
+    $mailOk = sendViaMail('admin@kassa-cto.ru', 'Теллур-Интех', $to, $subject, $html, $plain);
+    emailLog("mail() result: " . ($mailOk ? 'true' : 'false'));
 
-    emailLog("FINAL for order #{$orderNum}: " . ($anyOk ? 'SUCCESS via mail() (но Gmail скорее всего в Спам)' : 'ALL FAILED. Last SMTP error: ' . $lastError));
-    return $anyOk;
+    emailLog("FINAL for order #{$orderNum}: " . ($mailOk ? 'SUCCESS via mail() (но Gmail в Спам)' : 'ALL FAILED. Last SMTP error: ' . $lastError));
+    return $mailOk;
 }
 
 // ── PHP mail() с multipart/alternative + envelope sender (-f) ──────
@@ -479,18 +471,21 @@ function smtpSend(string $host, int $port, string $user, string $pass,
 
     $boundary   = 'b2_' . md5(uniqid('', true));
     $subjectB64 = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-    $fromB64    = '=?UTF-8?B?' . base64_encode($fromName) . '?=';
     $msgId      = '<' . uniqid('order@', true) . '>';
     $date       = date('r');
 
+    // ВАЖНО для Yandex: From должен быть БЕЗ display name (просто email),
+    // иначе Yandex выдаёт "550 Sender address rejected: not owned by authorized user".
+    // display name кодируем только в Sender header (не критично).
     $headers = "Date: {$date}\r\n"
-         . "From: {$fromB64} <{$from}>\r\n"
+         . "From: {$from}\r\n"
          . "To: {$to}\r\n"
          . "Subject: {$subjectB64}\r\n"
          . "Message-ID: {$msgId}\r\n"
          . "MIME-Version: 1.0\r\n"
          . "Reply-To: {$from}\r\n"
-         . "Auto-Submitted: auto-generated\r\n";
+         . "Auto-Submitted: auto-generated\r\n"
+         . "X-Mailer: kassa-cto.ru/PHP" . PHP_VERSION . "\r\n";
 
     if ($plain !== '') {
         $headers .= "Content-Type: multipart/alternative; boundary=\"{$boundary}\"\r\n\r\n";
@@ -746,83 +741,43 @@ function handleTest(array $config): void {
         else $out .= '<div class=box><span class=err>❌ HTTP '.($resp['code']??0).'</span><br>'.htmlspecialchars(substr($resp['body']??'',0,400)).'</div>';
     } else { $out .= '<div class=box>⏭ Пропущено</div>'; }
 
-    // 4. Email — детальный тест всех методов
-    $out .= '<h3>4. Email → '.$notify.' (полный тест всех методов)</h3>';
-
-    // 4.0 Проверка DNS MX — критична для Beget SMTP
-    $domain = 'kassa-cto.ru';
-    $mxRecords = @dns_get_record($domain, DNS_MX);
-    $out .= '<div class=box><b>4.0 DNS MX-записи домена '.$domain.'</b><br>';
-    if (empty($mxRecords)) {
-        $out .= '<span class=err>❌ MX-записей НЕТ — Beget SMTP запретит отправку от admin@'.$domain.'</span><br>'
-              . '<b style="color:#b45309">⚠️ ЧТО ДЕЛАТЬ:</b><br>'
-              . '1. Зайди в панель Beget → <a href="https://cp.beget.com/domains" target="_blank">Домены</a> → kassa-cto.ru → DNS-записи<br>'
-              . '2. Добавь 2 записи:<br>'
-              . '&nbsp;&nbsp;&nbsp;• Тип: <b>MX</b>, Хост: <b>@</b>, Приоритет: <b>10</b>, Значение: <b>mx1.beget.com</b><br>'
-              . '&nbsp;&nbsp;&nbsp;• Тип: <b>MX</b>, Хост: <b>@</b>, Приоритет: <b>20</b>, Значение: <b>mx2.beget.com</b><br>'
-              . '3. (Опционально) Добавь SPF: Тип <b>TXT</b>, Хост: <b>@</b>, Значение: <b>v=spf1 include:_spf.beget.com ~all</b><br>'
-              . '4. Подожди 5–30 минут (DNS кешируется).<br>'
-              . '5. Обнови эту страницу — MX должны появиться, SMTP заработает.';
-    } else {
-        $out .= '<span class=ok>✅ MX-записи найдены:</span><br>';
-        foreach ($mxRecords as $mx) {
-            $out .= '&nbsp;&nbsp;• ' . $mx['pri'] . ' ' . $mx['target'] . '<br>';
-        }
-    }
-    $out .= '</div>';
+    // 4. Email — детальный тест через Яндекс SMTP
+    $out .= '<h3>4. Email → '.$notify.' (через Яндекс SMTP)</h3>';
 
     $testHtml  = '<div style="font-family:Arial;padding:20px"><h2 style="color:#1e3a5f">🔧 Тест kassa-cto.ru</h2>'
                . '<p><b>Время:</b> ' . date('d.m.Y H:i:s') . '</p>'
-               . '<p>Это тестовое письмо от /api/test. Если оно пришло — заявки тоже будут приходить.</p>'
-               . '<p>From: admin@kassa-cto.ru (SMTP)</p></div>';
-    $testPlain = "Тест kassa-cto.ru\nВремя: " . date('d.m.Y H:i:s');
+               . '<p>Это тестовое письмо от /api/test через Яндекс SMTP.</p>'
+               . '<p>From: janicacid@yandex.ru (DKIM Яндекса)</p></div>';
+    $testPlain = "Тест kassa-cto.ru (Яндекс SMTP)\nВремя: " . date('d.m.Y H:i:s');
 
     emailLog("=== /api/test START ===");
 
-    // 4a. SMTP :465
-    $out .= '<div class=box><b>4a. SMTP smtp.beget.com:465 (SSL) → '.$notify.'</b><br>';
+    // 4a. Yandex SMTP :465
+    $out .= '<div class=box><b>4a. SMTP smtp.yandex.ru:465 (SSL) → '.$notify.'</b><br>';
     $r465 = smtpSend(
-        host: 'smtp.beget.com', port: 465,
-        user: 'admin@kassa-cto.ru', pass: 'K1slotn1k!',
-        from: 'admin@kassa-cto.ru', fromName: 'Теллур-Интех (SMTP 465 тест)',
-        to: $notify, subject: 'Тест kassa-cto SMTP:465',
+        host: 'smtp.yandex.ru', port: 465,
+        user: 'janicacid@yandex.ru', pass: 'hsfsceftrmpzozqa',
+        from: 'janicacid@yandex.ru', fromName: 'Теллур-Интех',
+        to: $notify, subject: 'Тест kassa-cto (Яндекс 465)',
         html: $testHtml, plain: $testPlain
     );
-    if ($r465['ok']) {
-        $out .= '<span class=ok>✅ SMTP:465 → письмо отправлено (From: admin@kassa-cto.ru, проверь ящик)</span>';
-    } else {
-        $out .= '<span class=err>❌ SMTP:465 failed at step [' . htmlspecialchars($r465['step']) . ']: '
-              . htmlspecialchars($r465['error']) . '</span>';
-        if (str_contains($r465['error'], 'MX records')) {
-            $out .= '<br><b style="color:#b45309">⚠️ Причина:</b> у домена kassa-cto.ru нет MX-записей Beget. '
-                  . 'Нужно добавить в DNS: MX 10 mx1.beget.com, MX 20 mx2.beget.com (в панели Beget → Домены → DNS).';
-        }
-    }
+    $out .= $r465['ok']
+        ? '<span class=ok>✅ Yandex SMTP:465 → письмо отправлено (From: janicacid@yandex.ru, проверь ящик + Спам)</span>'
+        : '<span class=err>❌ SMTP:465 failed [' . htmlspecialchars($r465['step']) . ']: ' . htmlspecialchars($r465['error']) . '</span>';
     $out .= '</div>';
 
-    // 4b. SMTP :587 STARTTLS
-    $out .= '<div class=box><b>4b. SMTP smtp.beget.com:587 (STARTTLS) → '.$notify.'</b><br>';
+    // 4b. Yandex SMTP :587 STARTTLS
+    $out .= '<div class=box><b>4b. SMTP smtp.yandex.ru:587 (STARTTLS) → '.$notify.'</b><br>';
     $r587 = smtpSend(
-        host: 'smtp.beget.com', port: 587,
-        user: 'admin@kassa-cto.ru', pass: 'K1slotn1k!',
-        from: 'admin@kassa-cto.ru', fromName: 'Теллур-Интех (SMTP 587 тест)',
-        to: $notify, subject: 'Тест kassa-cto SMTP:587',
+        host: 'smtp.yandex.ru', port: 587,
+        user: 'janicacid@yandex.ru', pass: 'hsfsceftrmpzozqa',
+        from: 'janicacid@yandex.ru', fromName: 'Теллур-Интех',
+        to: $notify, subject: 'Тест kassa-cto (Яндекс 587)',
         html: $testHtml, plain: $testPlain
     );
-    if ($r587['ok']) {
-        $out .= '<span class=ok>✅ SMTP:587 → письмо отправлено</span>';
-    } else {
-        $out .= '<span class=err>❌ SMTP:587 failed at step [' . htmlspecialchars($r587['step']) . ']: '
-              . htmlspecialchars($r587['error']) . '</span>';
-    }
-    $out .= '</div>';
-
-    // 4c. mail() (last resort — будет от noreply@unverified.beget.ru)
-    $out .= '<div class=box><b>4c. PHP mail() → '.$notify.'</b><br>';
-    $mailOk = sendViaMail('admin@kassa-cto.ru', 'Теллур-Интех (mail тест)', $notify,
-                          'Тест kassa-cto mail()', $testHtml, $testPlain);
-    $out .= $mailOk ? '<span class=ok>✅ mail() → true (ВНИМАНИЕ: придёт от noreply@unverified.beget.ru → Спам)</span>'
-                    : '<span class=err>❌ mail() → false</span>';
+    $out .= $r587['ok']
+        ? '<span class=ok>✅ Yandex SMTP:587 → письмо отправлено</span>'
+        : '<span class=err>❌ SMTP:587 failed [' . htmlspecialchars($r587['step']) . ']: ' . htmlspecialchars($r587['error']) . '</span>';
     $out .= '</div>';
 
     emailLog("=== /api/test END ===");
