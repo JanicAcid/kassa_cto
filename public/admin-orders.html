@@ -987,7 +987,7 @@ function renderOrder(o) {
           <button class="btn primary" onclick="saveNote(${d.rowIndex})">💾 Сохранить</button>
           <a class="btn" href="tel:${(d.phone||'').replace(/\D/g,'')}">📞 Позвонить</a>
           ${d.email ? `<a class="btn" href="mailto:${escapeHtml(d.email)}">✉️ Письмо</a>` : ''}
-          <a class="btn" href="https://max.ru/join/6q1XPw9nhCsBsOAZo4JqMZBWDyN9ysPmT-jkWFl9Z_4" target="_blank" title="Группа в Max">💬 Max</a>
+          <button class="btn" onclick="openMax('${(d.phone||'').replace(/\D/g,'')}')" title="Открыть Max с номером клиента">💬 Max</button>
           <button class="btn" onclick="copyOrder(${d.rowIndex})">📋 Копировать</button>
         </div>
         ${renderEngineerPanel(d, services)}
@@ -1259,6 +1259,46 @@ Email: ${d.email || '—'}
 Комментарий: ${d.comment || '—'}
 Статус: ${d.status || 'Новый'}`;
   navigator.clipboard.writeText(text).then(() => toast('Скопировано в буфер', 'success'));
+}
+
+// Открыть Max для связи с клиентом по номеру телефона.
+// Max не поддерживает прямые ссылки по номеру (как wa.me), поэтому:
+// 1. Копируем номер в буфер обмена
+// 2. Открываем приложение Max (или веб-версию)
+// 3. Показываем подсказку: куда вставить номер в Max
+// Документация Max: https://dev.max.ru/help/deeplinks
+function openMax(phoneRaw) {
+  if (!phoneRaw) {
+    toast('Нет номера телефона', 'error');
+    return;
+  }
+  // Нормализуем: оставляем только цифры, 8 в начале → 7
+  let phone = phoneRaw.replace(/\D/g, '');
+  if (phone.startsWith('8')) phone = '7' + phone.slice(1);
+  const phonePlus = '+' + phone;
+
+  // Копируем в буфер обмена
+  navigator.clipboard.writeText(phonePlus).then(() => {
+    toast(`📞 ${phonePlus} скопирован, открываю Max...`, 'success');
+  }).catch(() => {
+    toast('Не удалось скопировать номер', 'error');
+  });
+
+  // Открываем Max (на десктопе — веб-версия, на мобиле — приложение)
+  window.open('https://max.ru', '_blank');
+
+  // Подсказка для менеджера
+  setTimeout(() => {
+    alert(
+      '📞 Номер скопирован в буфер: ' + phonePlus + '\n\n' +
+      'В Max:\n' +
+      '1. Открой вкладку «Чаты»\n' +
+      '2. Нажми на иконку поиска (🔍)\n' +
+      '3. Вставь номер (Ctrl+V)\n' +
+      '4. Выбери «Найти по номеру»\n' +
+      '5. Откроется чат с клиентом (если он в Max)'
+    );
+  }, 500);
 }
 
 // ════════════════════════════════════════════════════════════════
