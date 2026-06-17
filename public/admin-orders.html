@@ -258,6 +258,91 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   font-size: 16px;
 }
 .order.expanded .order-toggle { transform: rotate(90deg); }
+
+/* ─── Превью услуг в списке заказов ─── */
+.order-services-preview {
+  font-size: 11px;
+  color: var(--text-soft);
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.order-services-preview .service-chip {
+  display: inline-block;
+  padding: 1px 6px;
+  margin-right: 4px;
+  background: #e0e7ff;
+  color: #1e3a5f;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.order-services-preview .service-more {
+  color: var(--text-soft);
+  font-style: italic;
+  font-size: 10px;
+}
+
+/* ─── Отдельная секция услуг в развёрнутой карточке ─── */
+.services-block {
+  margin: 0 18px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.services-block h3 {
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: #0f766e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.services-block h3 .count {
+  background: rgba(255,255,255,.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.services-block .body { padding: 12px 14px; }
+.services-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.services-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 10px;
+  background: #f0fdfa;
+  border-left: 3px solid #14b8a6;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #134e4a;
+}
+.services-list li::before {
+  content: '▸';
+  color: #14b8a6;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 .order-details {
   display: none;
   border-top: 1px solid var(--border);
@@ -844,6 +929,10 @@ function renderOrder(o) {
   const isExpanded = state.expanded.has(d.rowIndex);
   const services = (d.services || '').split(', ').filter(Boolean);
 
+  // Превью услуг для списка — короткие чипы, не больше 3 + "+N ещё"
+  const previewServices = services.slice(0, 3);
+  const moreCount = services.length - previewServices.length;
+
   return `
     <div class="order ${isExpanded?'expanded':''}" id="order_${d.rowIndex}">
       <div class="order-header" onclick="toggleOrder(${d.rowIndex})">
@@ -851,6 +940,12 @@ function renderOrder(o) {
         <div class="order-client">
           ${escapeHtml(d.client || 'Без имени')}
           <small>${escapeHtml(d.phone || '')} · ${escapeHtml(d.date || '')}</small>
+          ${services.length ? `
+            <div class="order-services-preview">
+              ${previewServices.map(s => `<span class="service-chip">${escapeHtml(s)}</span>`).join('')}
+              ${moreCount > 0 ? `<span class="service-more">+${moreCount} ещё</span>` : ''}
+            </div>
+          ` : ''}
         </div>
         <div class="order-kkm">
           ${escapeHtml(d.kkm || '—')}
@@ -862,6 +957,7 @@ function renderOrder(o) {
       </div>
       <div class="order-details">
         ${renderFunnel(d)}
+        ${renderServicesBlock(d, services)}
         <div class="details-grid">
           ${renderManagerPanel(d, services)}
           ${renderEngineerPanel(d, services)}
@@ -888,6 +984,24 @@ const FUNNEL_STATUSES = [
   { value: 'Закрыт',   label: 'Закрыт',   icon: '📦' },
 ];
 const REJECTED_STATUS = 'Отказ';
+
+// ─── Блок услуг — отдельная секция, не привязанная к менеджеру/инженеру ───
+function renderServicesBlock(d, services) {
+  if (!services || services.length === 0) return '';
+  return `
+    <div class="services-block">
+      <h3>
+        <span>📋 Услуги в заказе</span>
+        <span class="count">${services.length} ${services.length === 1 ? 'услуга' : (services.length < 5 ? 'услуги' : 'услуг')}</span>
+      </h3>
+      <div class="body">
+        <ul class="services-list">
+          ${services.map(s => `<li>${escapeHtml(s)}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
+}
 
 function renderFunnel(d) {
   const currentStatus = d.status || 'Новый';
@@ -979,7 +1093,6 @@ function renderEngineerPanel(d, services) {
             <div class="kv" style="margin-bottom:14px">
               <div class="k">Модель ККМ</div><div class="v"><b>${escapeHtml(d.kkm||'—')}</b></div>
               <div class="k">Состояние</div><div class="v">${escapeHtml(condLabel(d.cond))}</div>
-              <div class="k">Услуги</div><div class="v">${services.map(s => `<div>• ${escapeHtml(s)}</div>`).join('') || '—'}</div>
             </div>
             <ul class="checklist">
               ${ENGINEER_CHECKLIST.map(item => {
