@@ -261,32 +261,35 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 
 /* ─── Превью услуг в списке заказов ─── */
 .order-services-preview {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-soft);
-  margin-top: 4px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  margin-top: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  max-width: 100%;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  line-height: 1.3;
+  max-height: 18px;
+  line-height: 1.2;
 }
 .order-services-preview .service-chip {
   display: inline-block;
-  padding: 1px 6px;
-  margin-right: 4px;
+  padding: 1px 5px;
   background: #e0e7ff;
   color: #1e3a5f;
   border-radius: 3px;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
 }
 .order-services-preview .service-more {
   color: var(--text-soft);
   font-style: italic;
-  font-size: 10px;
+  font-size: 9px;
+  white-space: nowrap;
 }
 
 /* ─── Отдельная секция услуг в развёрнутой карточке ─── */
@@ -364,6 +367,11 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   }
   .order-header > .order-kkm,
   .order-header > .order-total { display: none; }
+}
+
+/* Панель инженера внизу карточки — на всю ширину */
+.order-details > .panel.engineer {
+  margin: 0 18px 18px;
 }
 
 .panel {
@@ -620,26 +628,13 @@ const MANAGER_CHECKLIST = [
   },
 ];
 
-// ─── Чек-лист ИНЖЕНЕРА: технические работы ──────────────────────
+// ─── Чек-лист ИНЖЕНЕРА: 5 ключевых этапов технических работ ────
 const ENGINEER_CHECKLIST = [
-  { id: 'e_kkm_check',     label: 'Проверить ККМ: включение, печать чека, дисплей',  hint: 'Включить кассу, проверить тестовый чек' },
-  { id: 'e_fn_check',      label: 'Проверить ФН: срок действия, остаток записей',    hint: 'Меню → Информация → ФН' },
-  { id: 'e_fn_install',    label: 'Установить/заменить ФН',                          hint: 'Снять старый, установить новый, активировать' },
-  { id: 'e_fn_report',     label: 'Снять отчёт о закрытии ФН (если замена)',         hint: 'Сохранить отчёт, передать менеджеру' },
-  { id: 'e_firmware',      label: 'Обновить прошивку ККМ до ФФД 1.2+',               hint: 'Маркировка требует ФФД 1.2, скачать с сайта производителя' },
-  { id: 'e_ofd_setup',     label: 'Настроить/продлить ОФД в кассе',                  hint: 'Ввести параметры ОФД, проверить отправку чеков' },
-  { id: 'e_fns_reg',       label: 'Регистрация/перерегистрация ККТ в ФНС',           hint: 'Через ЛК ФНС или оператора ОФД' },
-  { id: 'e_edo_setup',     label: 'Настроить ЭДО (Диадок/СБИС)',                     hint: 'Установить клиент, настроить роутинг документов' },
-  { id: 'e_crypto',        label: 'Настроить криптопровайдер (VipNet/GroCrypt)',     hint: 'Для работы с ГИС МТ' },
-  { id: 'e_chestnyznak',   label: 'Настроить интеграцию Честный ЗНАК',               hint: 'Привязать токен, проверить обмен' },
-  { id: 'e_tspiot',        label: 'Установить и настроить ТС ПИоТ',                  hint: 'Программа для сканирования кодов маркировки' },
-  { id: 'e_scanner',       label: 'Подключить и настроить 2D-сканер',                hint: 'Проверить чтение DataMatrix, настроить префиксы' },
-  { id: 'e_goods_load',    label: 'Загрузить товарную номенклатуру с кодами',        hint: 'Через 1С или вручную, проверить коды' },
-  { id: 'e_inventory',     label: 'Провести инвентаризацию остатков (маркировка)',   hint: 'Для маркировки остатков до ввода в оборот' },
-  { id: 'e_test_sale',     label: 'Провести тестовую продажу маркированного товара', hint: 'Проверить вывод кода в чеке (тег 1162/1163)' },
-  { id: 'e_test_return',   label: 'Провести тестовый возврат',                       hint: 'Проверить обработку возврата с маркировкой' },
-  { id: 'e_training',      label: 'Обучить персонал работе с маркировкой',           hint: 'Сканирование, возвраты, обработка ошибок' },
-  { id: 'e_act',           label: 'Подписать акт выполненных работ',                 hint: 'Передать менеджеру скан' },
+  { id: 'e_prepare',  label: 'Подготовка кассы и проверка состояния', hint: 'Включить, проверить ККМ, ФН (срок, остаток), версию прошивки (ФФД 1.2+)' },
+  { id: 'e_setup',    label: 'Установить/настроить компоненты',       hint: 'ФН, ОФД, ЭДО, криптопровайдер, ТС ПИоТ, 2D-сканер — что нужно под задачу' },
+  { id: 'e_register', label: 'Регистрация в ФНС и Честный ЗНАК',      hint: 'Перерегистрация ККТ (если нужно), интеграция с ГИС МТ' },
+  { id: 'e_test',     label: 'Тестовые операции',                     hint: 'Тестовая продажа + возврат маркированного товара, проверка кода в чеке' },
+  { id: 'e_handover', label: 'Сдача клиенту и обучение',              hint: 'Обучить персонал, подписать акт, передать менеджеру' },
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -986,16 +981,16 @@ function renderOrder(o) {
         ${renderServicesBlock(d, services)}
         <div class="details-grid">
           ${renderManagerPanel(d, services)}
-          ${renderEngineerPanel(d, services)}
         </div>
         <div class="actions-row">
           <input class="note-input" id="note_${d.rowIndex}" placeholder="Комментарий менеджера..." value="${escapeHtml(d.note||'')}">
           <button class="btn primary" onclick="saveNote(${d.rowIndex})">💾 Сохранить</button>
           <a class="btn" href="tel:${(d.phone||'').replace(/\D/g,'')}">📞 Позвонить</a>
           ${d.email ? `<a class="btn" href="mailto:${escapeHtml(d.email)}">✉️ Письмо</a>` : ''}
-          <a class="btn" href="https://wa.me/${(d.phone||'').replace(/\D/g,'').replace(/^8/,'7')}" target="_blank">💬 WhatsApp</a>
+          <a class="btn" href="https://max.ru/join/6q1XPw9nhCsBsOAZo4JqMZBWDyN9ysPmT-jkWFl9Z_4" target="_blank" title="Группа в Max">💬 Max</a>
           <button class="btn" onclick="copyOrder(${d.rowIndex})">📋 Копировать</button>
         </div>
+        ${renderEngineerPanel(d, services)}
       </div>
     </div>
   `;
