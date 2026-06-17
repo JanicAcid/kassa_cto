@@ -79,7 +79,7 @@ RewriteRule ^(.*)$ https://kassa-cto.ru/$1 [R=301,L]
 </IfModule>
 
 # ─── Запрет доступа к служебным файлам ──────────────────────────────────────
-<FilesMatch "^(config\.php|\.env|\.htaccess)$">
+<FilesMatch "^(config\.php|\.env|\.htaccess|email-debug\.log)$">
   Require all denied
 </FilesMatch>
 
