@@ -48,6 +48,9 @@ export interface SeoServicePageProps {
 
   // Гео (для Schema.org)
   areaServed?: string[]   // список городов/регионов
+
+  // Скрыть калькулятор из CTA (для хаб-страниц и страниц, где он неуместен)
+  hideCalculator?: boolean
 }
 
 export function SeoServicePage({
@@ -58,6 +61,7 @@ export function SeoServicePage({
   faq = [],
   breadcrumbs = [],
   areaServed = ['Санкт-Петербург', 'Ленинградская область'],
+  hideCalculator = false,
 }: SeoServicePageProps) {
   const canonical = `${SITE_URL}/${slug}`
 
@@ -142,20 +146,42 @@ export function SeoServicePage({
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              href={heroCta?.href || '/kalkulyatory/markirovka'}
-              className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base font-bold rounded-xl transition-all duration-200 shadow-lg shadow-[#F59E0B]/25 hover:-translate-y-0.5"
-            >
-              <Calculator className="w-5 h-5" />
-              {heroCta?.label || 'Рассчитать стоимость'}
-            </Link>
-            <a
-              href={CITY_PHONE_HREF}
-              className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white text-base font-medium rounded-xl transition-all duration-200 border border-white/20"
-            >
-              <Phone className="w-5 h-5" />
-              {CITY_PHONE}
-            </a>
+            {hideCalculator ? (
+              // Без калькулятора: основная CTA — звонок, вторая — все услуги
+              <>
+                <a
+                  href={CITY_PHONE_HREF}
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base font-bold rounded-xl transition-all duration-200 shadow-lg shadow-[#F59E0B]/25 hover:-translate-y-0.5"
+                >
+                  <Phone className="w-5 h-5" />
+                  Получить консультацию
+                </a>
+                <Link
+                  href={heroCta?.href || '/services'}
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white text-base font-medium rounded-xl transition-all duration-200 border border-white/20"
+                >
+                  {heroCta?.label || 'Все услуги'}
+                </Link>
+              </>
+            ) : (
+              // С калькулятором (по умолчанию)
+              <>
+                <Link
+                  href={heroCta?.href || '/kalkulyatory/markirovka'}
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base font-bold rounded-xl transition-all duration-200 shadow-lg shadow-[#F59E0B]/25 hover:-translate-y-0.5"
+                >
+                  <Calculator className="w-5 h-5" />
+                  {heroCta?.label || 'Рассчитать стоимость'}
+                </Link>
+                <a
+                  href={CITY_PHONE_HREF}
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white text-base font-medium rounded-xl transition-all duration-200 border border-white/20"
+                >
+                  <Phone className="w-5 h-5" />
+                  {CITY_PHONE}
+                </a>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -249,13 +275,23 @@ export function SeoServicePage({
               <Phone className="w-5 h-5" />
               {CITY_PHONE}
             </a>
-            <Link
-              href="/kalkulyatory/markirovka"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
-            >
-              <Calculator className="w-5 h-5" />
-              Калькулятор стоимости
-            </Link>
+            {!hideCalculator && (
+              <Link
+                href="/kalkulyatory/markirovka"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
+              >
+                <Calculator className="w-5 h-5" />
+                Калькулятор стоимости
+              </Link>
+            )}
+            {hideCalculator && (
+              <Link
+                href="/services"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
+              >
+                Все услуги
+              </Link>
+            )}
           </div>
           <div className="mt-6 flex items-center justify-center gap-2 text-sm text-white/60">
             <MapPin className="w-4 h-4" />
