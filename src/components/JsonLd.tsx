@@ -546,3 +546,14 @@ export function JsonLd() {
     </>
   )
 }
+
+// Компонент для инлайн JSON-LD на конкретных SEO-страницах
+// Принимает любой объект схемы schema.org и рендерит его в <script type="application/ld+json">
+export function JsonLdData({ data }: { data: Record<string, unknown> }) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}
