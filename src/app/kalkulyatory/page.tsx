@@ -8,7 +8,7 @@ const CALCULATORS = [
   {
     title: 'Калькулятор маркировки товаров',
     desc: 'Расчёт стоимости подключения маркировки: Честный ЗНАК, ТС ПИоТ, ЭДО, ОФД, регистрация ККТ. Работает для всех основных брендов касс.',
-    price: 'от 5 300 ₽',
+    price: 'от 1 500 ₽',
     href: '/kalkulyatory/markirovka',
     active: true,
     icon: <Calculator className="w-7 h-7" />,
