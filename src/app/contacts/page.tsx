@@ -4,7 +4,7 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, Phone, Mail, Clock, ExternalLink, MessageCircle, Calculator } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, ExternalLink, MessageCircle } from 'lucide-react'
 import { BRANCHES } from '@/config/contacts'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { SITE_URL } from '@/config/site'
@@ -110,18 +110,18 @@ export default function ContactsPage() {
 
       {/* CTA Links */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <Link
-          href="/"
+        <a
+          href="tel:+78124659457"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#163A5F] hover:bg-[#163A5F]/90 text-white text-sm font-bold rounded-xl transition-colors"
         >
-          <Calculator className="w-4 h-4" />
-          Калькулятор маркировки
-        </Link>
+          <Phone className="w-4 h-4" />
+          Позвонить
+        </a>
         <Link
-          href="/instructions"
+          href="/services"
           className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#163A5F]/20 text-[#163A5F] text-sm font-medium rounded-xl hover:bg-[#163A5F]/5 transition-colors"
         >
-          Инструкции
+          Все услуги
         </Link>
       </div>
     </div>

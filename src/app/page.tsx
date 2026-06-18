@@ -152,28 +152,28 @@ export default function HomePage() {
           </p>
 
           <div className="anim-fade-in-up anim-delay-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <Link
-              href="/kalkulyatory/markirovka"
+            <a
+              href="tel:+78124659457"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base sm:text-lg font-bold rounded-xl transition-all duration-200 shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:shadow-[#F59E0B]/35 hover:-translate-y-0.5 active:scale-[0.98]"
             >
+              <Phone className="w-5 h-5" />
+              Позвонить
+            </a>
+            <Link
+              href="/services"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/15 hover:bg-white/25 text-white text-base sm:text-lg font-medium rounded-xl transition-all duration-200 border border-white/20 hover:border-white/30"
+            >
               <Calculator className="w-5 h-5" />
-              Рассчитать стоимость
+              Все услуги
             </Link>
             <a
               href={MAX_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/15 hover:bg-white/25 text-white text-base sm:text-lg font-medium rounded-xl transition-all duration-200 border border-white/20 hover:border-white/30"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 text-white text-base sm:text-lg font-medium rounded-xl transition-all duration-200 border border-white/15 hover:border-white/25"
             >
               <MessageCircle className="w-5 h-5" />
               Написать в Max
-            </a>
-            <a
-              href="tel:+78124659457"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 text-white text-base sm:text-lg font-medium rounded-xl transition-all duration-200 border border-white/15 hover:border-white/25"
-            >
-              <Phone className="w-5 h-5" />
-              Позвонить
             </a>
           </div>
 

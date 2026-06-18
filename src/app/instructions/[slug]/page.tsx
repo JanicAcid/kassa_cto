@@ -254,7 +254,7 @@ export default async function ArticlePage({
                     +7 (812) 321-06-06
                   </a>
                   <Link
-                    href="/"
+                    href="/kalkulyatory/markirovka"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors w-full sm:w-auto justify-center"
                   >
                     <Calculator className="w-5 h-5" />

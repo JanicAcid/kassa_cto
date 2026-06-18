@@ -4,7 +4,7 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Wrench, FileText, ShieldCheck, GraduationCap, Tag, Settings, Phone, Calculator, CheckCircle2, ArrowLeftRight, Cog } from 'lucide-react'
+import { Wrench, FileText, ShieldCheck, GraduationCap, Tag, Settings, Phone, CheckCircle2, ArrowLeftRight, Cog } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { SITE_URL } from '@/config/site'
 
@@ -135,46 +135,47 @@ export default function ServicesPage() {
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
-            href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="tel:+78124659457"
             className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-colors shadow-md"
             style={{ backgroundColor: '#F59E0B' }}
           >
+            <Phone className="w-5 h-5" />
+            Позвонить
+          </a>
+          <a
+            href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors"
+          >
             Оставить заявку
           </a>
-          <Link
-            href="/kalkulyatory/markirovka"
-            className="text-white/80 hover:text-white text-sm font-medium underline underline-offset-4 transition-colors"
-          >
-            Рассчитать стоимость
-          </Link>
         </div>
       </div>
 
       {/* Bottom CTA */}
       <div className="mt-6 sm:mt-8 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
-          Рассчитайте стоимость онлайн
+          Нужна помощь с кассой?
         </h2>
         <p className="text-white/70 text-sm sm:text-base mb-4 max-w-xl mx-auto">
-          Бесплатный калькулятор — точная смета за 2 минуты. Без скрытых платежей.
+          Бесплатная консультация по телефону. Выезд инженера в день обращения.
+          Работаем с 1995 года, более 5000 касс настроено.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link
-            href="/kalkulyatory/markirovka"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
-          >
-            <Calculator className="w-5 h-5" />
-            Калькулятор маркировки
-          </Link>
           <a
             href="tel:+78124659457"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
           >
             <Phone className="w-5 h-5" />
             +7 (812) 465-94-57
           </a>
+          <Link
+            href="/kkt-spb"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors"
+          >
+            Все услуги ЦТО
+          </Link>
         </div>
       </div>
     </div>
