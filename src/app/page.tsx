@@ -41,7 +41,7 @@ const CALCULATORS = [
 const STATS = [
   { value: 'С 1995 года', label: '30+ лет опыта' },
   { value: '5 000+', label: 'касс настроено' },
-  { value: '300+', label: 'клиентов' },
+  { value: '3 000+', label: 'клиентов' },
   { value: '1–3 дня', label: 'срок подключения' },
 ]
 
