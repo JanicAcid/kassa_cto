@@ -6,11 +6,19 @@
  */
 
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
+
+// CORS — только с нашего домена (не *)
+$allowed_origins = ['https://kassa-cto.ru', 'https://www.kassa-cto.ru'];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowed_origins)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+}
 header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Credentials: true');
 header('Cache-Control: no-store, no-cache, must-revalidate');
+header('X-Content-Type-Options: nosniff');
+header('X-Robots-Tag: noindex, nofollow');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 
