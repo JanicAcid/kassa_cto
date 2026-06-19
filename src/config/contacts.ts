@@ -7,12 +7,12 @@ export const CITY_PHONE = '+7 (812) 465-94-57'
 export const CITY_PHONE_HREF = 'tel:+78124659457'
 
 // Мобильный — для блока контактов (3 канала связи)
-export const MOBILE_PHONE = '+7 (921) 940-38-70'
-export const MOBILE_PHONE_HREF = 'tel:+79219403870'
+export const MOBILE_PHONE = '+7 (921) 932-41-63'
+export const MOBILE_PHONE_HREF = 'tel:+79219324163'
 
 // Мессенджеры — привязаны к мобильному номеру
 export const MAX_PROFILE_URL = 'https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo'
-export const TELEGRAM_CHAT_URL = 'https://t.me/+79219403870'
+export const TELEGRAM_CHAT_URL = 'https://t.me/+79219324163'
 
 // Все городские телефоны (для страницы контактов)
 export const PHONES = [

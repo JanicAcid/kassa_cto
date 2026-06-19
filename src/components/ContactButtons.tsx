@@ -1,6 +1,6 @@
 // ============================================================================
 // ContactButtons — 3 канала связи: Телефон, Max, Telegram
-// Все привязаны к мобильному +7 (921) 940-38-70
+// Все привязаны к мобильному +7 (921) 932-41-63
 // ============================================================================
 
 'use client'
@@ -11,10 +11,10 @@ import { Phone, MessageCircle, Send } from 'lucide-react'
 // Константы контактов — единый источник правды
 // ============================================================================
 
-export const MOBILE_PHONE = '+7 (921) 940-38-70'
-export const MOBILE_PHONE_HREF = 'tel:+79219403870'
+export const MOBILE_PHONE = '+7 (921) 932-41-63'
+export const MOBILE_PHONE_HREF = 'tel:+79219324163'
 export const MAX_PROFILE_URL = 'https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo'
-export const TELEGRAM_CHAT_URL = 'https://t.me/+79219403870'
+export const TELEGRAM_CHAT_URL = 'https://t.me/+79219324163'
 
 // ============================================================================
 // Варианты отображения
