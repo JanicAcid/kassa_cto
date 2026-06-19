@@ -304,21 +304,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   .services-block .body { padding: 10px 12px; }
   .services-list li { font-size: 12px; padding: 6px 8px; }
 
-  /* Воронка менеджера */
-  .funnel-checklist li {
-    padding: 10px 12px !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-  }
-  .funnel-checklist li > div {
-    flex-direction: row !important;
-  }
-  .funnel-checklist .check-label {
-    font-size: 13px !important;
-  }
-  .funnel-checklist .check-label small {
-    font-size: 11px !important;
-  }
+  /* Воронка менеджера на мобильном */
+  .funnel-checklist li { padding: 10px 12px; }
+  .funnel-checklist .funnel-step-title { font-size: 13px; }
+  .funnel-checklist .check-label small { font-size: 11px; }
 
   /* Actions row */
   .actions-row {
@@ -631,6 +620,48 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 .checklist .check-label small { display: block; color: var(--text-soft); font-size: 11px; margin-top: 2px; }
 .checklist li.done { opacity: .55; }
 .checklist li.done .check-label { text-decoration: line-through; }
+
+/* ─── Воронка менеджера (funnel-checklist) ─── */
+.funnel-checklist li {
+  flex-direction: row;
+  align-items: flex-start;
+  border-left: 3px solid var(--border);
+  background: #fff;
+  padding: 10px 14px;
+}
+.funnel-checklist li.done {
+  border-left-color: var(--success);
+  background: #f0fdf4;
+}
+.funnel-checklist li.current {
+  border-left-color: var(--primary);
+  background: #eff6ff;
+}
+.funnel-checklist .funnel-step-title {
+  font-weight: 600;
+  color: #111;
+  font-size: 14px;
+}
+.funnel-status-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-soft);
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.funnel-status-badge.current {
+  color: var(--primary);
+  background: #dbeafe;
+}
+.funnel-checklist .check-label small {
+  color: #6b7280;
+  font-size: 11px;
+  margin-top: 3px;
+}
 
 .actions-row {
   display: flex;
@@ -1295,15 +1326,12 @@ function renderManagerPanel(d, services) {
             const checked = checkedSet.has(item.id);
             const current = (d.status || 'Новый') === item.status;
             const cls = checked ? 'done' : (current ? 'current' : '');
-            const arrow = idx < MANAGER_CHECKLIST.length - 1 ? '<span class="funnel-arrow">↓</span>' : '';
             return `
-            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${cls}" style="flex-direction:column;align-items:stretch;border-left:3px solid ${checked?'#16a34a':(current?'#163A5F':'#e5e7eb')};background:${checked?'#f0fdf4':(current?'#eff6ff':'#fff')};padding:10px 14px">
-              <div style="display:flex;align-items:flex-start;gap:10px">
-                <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)" style="margin-top:3px">
-                <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()" style="flex:1">
-                  <div style="font-weight:600;color:#111">${item.icon} ${escapeHtml(item.label)} <span style="font-size:10px;color:${current?'#163A5F':'#9ca3af'};background:${current?'#dbeafe':'#f3f4f6'};padding:2px 6px;border-radius:8px">→ ${escapeHtml(item.status)}</span></div>
-                  ${item.hint ? `<small style="display:block;color:#6b7280;font-size:11px;margin-top:3px;font-weight:400">${escapeHtml(item.hint)}</small>` : ''}
-                </div>
+            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${cls}">
+              <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)">
+              <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()">
+                <div class="funnel-step-title">${item.icon} ${escapeHtml(item.label)} <span class="funnel-status-badge ${current?'current':''}">→ ${escapeHtml(item.status)}</span></div>
+                ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
               </div>
             </li>`;
           }).join('')}
