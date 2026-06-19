@@ -11,6 +11,10 @@ RewriteEngine On
 # /diagnostika → /markirovka/diagnostika
 Redirect 301 /diagnostika /markirovka/diagnostika
 
+# Удалённые гео-страницы (выборг/тихвин — далеко, не обслуживаем)
+Redirect 301 /kassy-vyborg /kkt-spb
+Redirect 301 /kassy-tikhvin /kkt-spb
+
 # /admin (старая CRM) → /admin-orders (новая CRM с чек-листом инженера)
 # ВАЖНО: RedirectMatch ^/admin/?$ — точное совпадение, НЕ затрагивает /admin/login
 # (старая страница входа остаётся доступной для совместимости)
