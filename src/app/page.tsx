@@ -532,7 +532,7 @@ export default function HomePage() {
               Нужна помощь?
             </h2>
             <p className="text-white/70 text-sm sm:text-base max-w-lg mx-auto mb-6 leading-relaxed">
-              Позвоните или напишите нам — подключим маркировку под ключ, ответим на вопросы, поможем с кассой
+              Позвоните или напишите нам — поможем с кассой, ответим на вопросы, подберём решение
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6">
