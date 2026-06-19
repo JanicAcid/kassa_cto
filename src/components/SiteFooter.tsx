@@ -81,7 +81,7 @@ export function SiteFooter() {
                 <Phone className="w-4 h-4 shrink-0" />
                 +7 (812) 321-06-06
               </a>
-              <div className="flex items-center gap-3 mt-1">
+              <div className="flex flex-col gap-2 mt-1">
                 <a href={MAX_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors" title="Чат с нами в Max: +7 (999) 204-48-52">
                   <MessageCircle className="w-4 h-4 shrink-0" />
                   Max · +7 (999) 204-48-52
