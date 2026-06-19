@@ -67,7 +67,7 @@ export function FaqWidget() {
       <div
         className={`relative flex flex-col bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen
-            ? 'w-[340px] sm:w-[380px] max-h-[70vh] opacity-100 translate-y-0 scale-100'
+            ? 'w-[calc(100vw-2rem)] sm:w-[380px] max-h-[70vh] opacity-100 translate-y-0 scale-100'
             : 'w-0 h-0 opacity-0 translate-y-4 scale-95 pointer-events-none'
         }`}
         style={{ boxShadow: isOpen ? '0 25px 60px -12px rgba(0, 0, 0, 0.25)' : undefined }}
