@@ -167,6 +167,175 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   text-align: center;
   white-space: nowrap;
 }
+
+/* ─── МОБИЛЬНАЯ ВЕРСИЯ CRM (< 768px) ─── */
+@media (max-width: 767px) {
+  /* Header */
+  header { padding: 12px 16px; }
+  header .brand img { height: 28px; }
+  header .brand .brand-text strong { font-size: 14px; }
+  header .brand .brand-text small { font-size: 9px; }
+  header .actions { gap: 6px; }
+  header .actions button,
+  header .actions .btn-link { padding: 7px 10px; font-size: 12px; }
+
+  /* Filters */
+  .filters { padding: 10px 16px; gap: 8px; }
+  .filters input { font-size: 14px; padding: 10px 12px; min-width: 0; }
+  .filters select { font-size: 14px; padding: 10px 12px; min-width: 0; }
+
+  /* Stats */
+  .stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  main { padding: 12px 12px; }
+  .stat { padding: 10px 12px; }
+  .stat .value { font-size: 18px; }
+  .stat .label { font-size: 10px; }
+
+  /* Карточка заказа — вертикальная компоновка */
+  .order-header {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    gap: 6px 12px;
+    padding: 12px 14px;
+    align-items: start;
+  }
+  .order-num {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 13px;
+  }
+  .order-toggle {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: start;
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  .order-client {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 15px;
+  }
+  .order-client small {
+    font-size: 12px;
+    margin-top: 3px;
+  }
+  .order-services-preview {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 4px;
+  }
+  .order-services-preview .service-chip {
+    font-size: 10px;
+    padding: 2px 6px;
+    max-width: 100%;
+  }
+  /* Скрываем колонки ККМ и суммы на мобильном — они в превью услуг */
+  .order-header > .order-kkm,
+  .order-header > .order-total,
+  .order-header > .order-status { display: none; }
+
+  /* Статус в виде inline-бейджа на мобильном */
+  .order-status-mobile {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* Мобильная мета-строка: статус + ККМ + сумма */
+  .order-mobile-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .order-mobile-kkm {
+    font-size: 11px;
+    color: var(--text-soft);
+    background: var(--border-soft);
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .order-mobile-total {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-left: auto;
+  }
+
+  /* Развёрнутая карточка */
+  .order-details { padding: 0; }
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+  .services-block { margin: 0 14px 12px; }
+  .services-block .body { padding: 10px 12px; }
+  .services-list li { font-size: 12px; padding: 6px 8px; }
+
+  /* Воронка менеджера */
+  .funnel-checklist li {
+    padding: 10px 12px !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+  }
+  .funnel-checklist li > div {
+    flex-direction: row !important;
+  }
+  .funnel-checklist .check-label {
+    font-size: 13px !important;
+  }
+  .funnel-checklist .check-label small {
+    font-size: 11px !important;
+  }
+
+  /* Actions row */
+  .actions-row {
+    padding: 10px 14px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .actions-row .btn,
+  .actions-row .note-input {
+    width: 100%;
+    justify-content: center;
+  }
+  .actions-row .btn { font-size: 13px; padding: 10px 14px; }
+
+  /* Инженерная панель */
+  .order-details > .panel.engineer { margin: 0 14px 14px; }
+
+  /* kv пары */
+  .kv { grid-template-columns: 100px 1fr; gap: 6px 10px; font-size: 12px; }
+  .kv .k { font-size: 11px; }
+  .kv .v { font-size: 12px; }
+
+  /* Панели */
+  .panel h3 { font-size: 11px; padding: 8px 12px; }
+  .panel .body { padding: 10px 12px; }
+
+  /* Collapsible-toggle */
+  .collapsible-toggle { padding: 8px 12px; font-size: 11px; }
+
+  /* Toast */
+  .toast { left: 12px; right: 12px; bottom: 12px; text-align: center; font-size: 12px; }
+
+  /* Login */
+  .login-box { padding: 20px 18px; max-width: 100%; }
+  .login-box h1 { font-size: 18px; }
+  .login-box input { font-size: 16px; padding: 12px 14px; }
+  .login-box button { padding: 14px; font-size: 15px; }
+
+  /* Empty state */
+  .empty { padding: 40px 16px; }
+  .empty h2 { font-size: 16px; }
+}
 /* Статусы — новая палитра по требованиям арт-директора */
 .status-Новый { background: #DBEAFE; color: #2563EB; }
 .status-В работе { background: #FEF3C7; color: #F59E0B; }
@@ -259,6 +428,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   font-size: 16px;
 }
 .order.expanded .order-toggle { transform: rotate(90deg); }
+
+/* Мобильная мета — скрыта на десктопе, видна только на мобиле */
+.order-mobile-meta { display: none; }
+@media (max-width: 767px) {
+  .order-mobile-meta { display: flex; }
+}
 
 /* ─── Превью услуг в списке заказов ─── */
 .order-services-preview {
@@ -360,14 +535,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   gap: 16px;
   padding: 18px;
 }
-@media (max-width: 900px) {
+@media (max-width: 900px) and (min-width: 768px) {
   .details-grid { grid-template-columns: 1fr; }
-  .order-header {
-    grid-template-columns: 1fr 1fr 40px;
-    gap: 8px;
-  }
-  .order-header > .order-kkm,
-  .order-header > .order-total { display: none; }
 }
 
 /* Панель инженера внизу карточки — на всю ширину */
@@ -969,6 +1138,11 @@ function renderOrder(o) {
               ${moreCount > 0 ? `<span class="service-more">+${moreCount} ещё</span>` : ''}
             </div>
           ` : ''}
+          <div class="order-mobile-meta">
+            <span class="order-status-mobile status-${escapeHtml(d.status || 'Новый')}">${escapeHtml(d.status || 'Новый')}</span>
+            ${d.kkm ? `<span class="order-mobile-kkm">${escapeHtml(d.kkm)}</span>` : ''}
+            <span class="order-mobile-total">${fmtTotal(d.total)}</span>
+          </div>
         </div>
         <div class="order-kkm">
           ${escapeHtml(d.kkm || '—')}
