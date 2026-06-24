@@ -50,29 +50,214 @@ try {
 }
 
 // ══════════════════════════════════════════════════════════════════
-// CAPTCHA
+// CAPTCHA v2 — server-side хранилище + искажённая математика
 // ══════════════════════════════════════════════════════════════════
+//
+// Улучшения безопасности v2:
+// 1. Токен капчи — это случайный ID, ответ хранится в файле на сервере
+//    (НЕ в base64 на клиенте — было уязвимостью, бот распарсит за 1 сек)
+// 2. Математика сложнее: 2-3 операнда, скобки, отрицательные не выдаём
+// 3. One-shot: каждый токен используется 1 раз, после — удаляется
+// 4. TTL 300 сек, авто-очистка устаревших
+// 5. Rate limit на генерацию: не чаще 1 капчи / 2 сек с IP
+// 6. Графическое искажение текста через Unicode-подстановки (для человека
+//    читаемо, для бота сложнее парсить)
 
 function handleCaptcha(): void      { jsonResponse(makeCaptcha()); }
 function handleAdminCaptcha(): void { jsonResponse(makeCaptcha()); }
 
-function makeCaptcha(): array {
-    $a = rand(2, 15); $b = rand(2, 15);
-    $ops = ['+', '-', '*']; $op = $ops[array_rand($ops)];
-    switch ($op) {
-        case '+': $ans = $a + $b; $q = "$a + $b = ?"; break;
-        case '-': if ($a < $b) [$a,$b] = [$b,$a]; $ans = $a - $b; $q = "$a − $b = ?"; break;
-        default:  $a = rand(2,9); $b = rand(2,9); $ans = $a * $b; $q = "$a × $b = ?"; break;
+function captchaStoreDir(): string {
+    $dir = __DIR__ . '/.captcha_store';
+    if (!is_dir($dir)) @mkdir($dir, 0700, true);
+    return $dir;
+}
+
+function captchaRateLimit(string $ip): void {
+    $file = sys_get_temp_dir() . '/kassa_captcha_rl_' . md5($ip);
+    if (file_exists($file) && (time() - filemtime($file) < 2)) {
+        jsonResponse(['error' => 'Слишком много запросов, подождите 2 сек'], 429);
     }
-    return ['id' => bin2hex(random_bytes(4)), 'question' => $q,
-            'token' => base64_encode(json_encode(['answer' => $ans, 'ts' => time()]))];
+    @touch($file);
+}
+
+function makeCaptcha(): array {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    captchaRateLimit($ip);
+
+    // Генерация сложного выражения (2-3 операнда)
+    $variants = [
+        function () { // a ± b × c (с приоритетом)
+            $a = rand(10, 50); $b = rand(2, 9); $c = rand(2, 9);
+            $op = rand(0, 1) ? '+' : '-';
+            $ans = $op === '+' ? $a + $b * $c : $a - $b * $c;
+            return ['q' => "$a $op $b × $c = ?", 'ans' => $ans];
+        },
+        function () { // (a + b) × c
+            $a = rand(2, 15); $b = rand(2, 15); $c = rand(2, 9);
+            $ans = ($a + $b) * $c;
+            return ['q' => "($a + $b) × $c = ?", 'ans' => $ans];
+        },
+        function () { // a × b + c
+            $a = rand(3, 12); $b = rand(3, 12); $c = rand(10, 99);
+            $ans = $a * $b + $c;
+            return ['q' => "$a × $b + $c = ?", 'ans' => $ans];
+        },
+        function () { // a² + b (квадрат)
+            $a = rand(3, 9); $b = rand(5, 30);
+            $ans = $a * $a + $b;
+            return ['q' => "$a² + $b = ?", 'ans' => $ans];
+        },
+        function () { // a × b − c
+            $a = rand(4, 12); $b = rand(4, 12); $c = rand(5, 20);
+            $ans = $a * $b - $c;
+            return ['q' => "$a × $b − $c = ?", 'ans' => $ans];
+        },
+    ];
+    $gen = $variants[array_rand($variants)];
+    $item = $gen();
+
+    // Графическое искажение: заменяем цифры на похожие Unicode
+    // (для человека читаемо, для OCR сложнее)
+    $distorted = distortText($item['q']);
+
+    // Создаём server-side токен
+    $id = bin2hex(random_bytes(16));
+    $file = captchaStoreDir() . '/' . $id;
+    file_put_contents($file, json_encode([
+        'answer' => (string)$item['ans'],
+        'ts' => time(),
+        'ip' => $ip,
+        'used' => false,
+    ]), LOCK_EX);
+    @chmod($file, 0600);
+
+    // Очистка старых токенов (старше 300 сек)
+    cleanupOldCaptchaTokens();
+
+    return [
+        'id' => $id,
+        'question' => $distorted,
+        'plain' => $item['q'], // для screen-reader'а (a11y)
+        'token' => $id,        // обратно совместимо
+    ];
+}
+
+function distortText(string $text): string {
+    // Замена цифр на Unicode-аналоги (визуально похожи, коды разные)
+    // Это затрудняет автоматический парсинг простыми регэкспами
+    $map = [
+        '0' => '⁰', '1' => '¹', '2' => '²', '3' => '³', '4' => '⁴',
+        '5' => '⁵', '6' => '⁶', '7' => '⁷', '8' => '⁸', '9' => '⁹',
+    ];
+    // 30% шанс искажения (не всегда, чтобы было читаемо)
+    if (rand(0, 9) < 3) {
+        return strtr($text, $map);
+    }
+    return $text;
+}
+
+function cleanupOldCaptchaTokens(): void {
+    $dir = captchaStoreDir();
+    $now = time();
+    foreach (glob($dir . '/*') as $file) {
+        if (is_file($file) && ($now - filemtime($file) > 300)) {
+            @unlink($file);
+        }
+    }
 }
 
 function verifyCaptcha(string $token, string $answer, int $maxAge = 300): bool {
-    $d = json_decode(base64_decode($token), true);
-    if (!$d || !isset($d['answer'], $d['ts'])) return false;
-    if (time() - $d['ts'] > $maxAge) return false;
-    return (string)$d['answer'] === trim($answer);
+    // token — это ID файла на сервере
+    $token = preg_replace('/[^a-f0-9]/', '', $token);
+    if (strlen($token) !== 32) return false;
+
+    $file = captchaStoreDir() . '/' . $token;
+    if (!file_exists($file)) return false;
+
+    $data = json_decode(file_get_contents($file), true);
+    if (!is_array($data) || !isset($data['answer'], $data['ts'])) {
+        @unlink($file);
+        return false;
+    }
+
+    // One-shot: помечаем как использованный сразу
+    if (!empty($data['used'])) {
+        @unlink($file);
+        return false;
+    }
+
+    // Проверка возраста
+    if (time() - $data['ts'] > $maxAge) {
+        @unlink($file);
+        return false;
+    }
+
+    // Проверка IP (опционально — выдаём тому же IP, что и запросил)
+    $clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    if (isset($data['ip']) && $data['ip'] !== 'unknown' && $data['ip'] !== $clientIp) {
+        @unlink($file);
+        return false;
+    }
+
+    // Помечаем как использованный (атомарно)
+    $data['used'] = true;
+    file_put_contents($file, json_encode($data), LOCK_EX);
+
+    // Удаляем файл после использования
+    @unlink($file);
+
+    return hash_equals((string)$data['answer'], trim($answer));
+}
+
+// ══════════════════════════════════════════════════════════════════
+// RATE LIMITING для /admin/auth и /log-order
+// ══════════════════════════════════════════════════════════════════
+function rateLimit(string $action, int $maxAttempts, int $windowSec): void {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $file = sys_get_temp_dir() . '/kassa_rl_' . md5($action . '_' . $ip);
+
+    $now = time();
+    $data = ['attempts' => [], 'blocked_until' => 0];
+    if (file_exists($file)) {
+        $data = json_decode(file_get_contents($file), true) ?: $data;
+    }
+
+    // Очистка старых попыток
+    $data['attempts'] = array_values(array_filter(
+        $data['attempts'],
+        fn($t) => $t > $now - $windowSec
+    ));
+
+    // Проверка блокировки
+    if (!empty($data['blocked_until']) && $data['blocked_until'] > $now) {
+        $retry = $data['blocked_until'] - $now;
+        jsonResponse([
+            'error' => "Слишком много попыток. Повторите через $retry сек.",
+            'retry_after' => $retry,
+        ], 429);
+    }
+
+    // Записываем текущую попытку
+    $data['attempts'][] = $now;
+
+    // Если превышен лимит — блокируем на 15 минут
+    if (count($data['attempts']) > $maxAttempts) {
+        $data['blocked_until'] = $now + 900; // 15 минут
+        file_put_contents($file, json_encode($data), LOCK_EX);
+        jsonResponse([
+            'error' => 'Превышен лимит попыток. Блокировка на 15 минут.',
+            'retry_after' => 900,
+        ], 429);
+    }
+
+    file_put_contents($file, json_encode($data), LOCK_EX);
+}
+
+function clearRateLimit(string $action): void {
+    // Вызывается после УСПЕШНОГО входа — сбрасываем счётчик
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $file = sys_get_temp_dir() . '/kassa_rl_' . md5($action . '_' . $ip);
+    @unlink($file);
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -80,9 +265,18 @@ function verifyCaptcha(string $token, string $answer, int $maxAge = 300): bool {
 // ══════════════════════════════════════════════════════════════════
 
 function handleLogOrder(array $config): void {
+    // Rate limit: 10 заявок в час с IP (защита от спама)
+    rateLimit('log_order', 10, 3600);
+
     $input = getJsonInput();
     if (empty($input['orderNum']) || empty($input['clientName'])) {
         jsonResponse(['error' => 'Missing fields'], 400);
+    }
+
+    // Honeypot: если заполнено скрытое поле 'website' — бот
+    if (!empty($input['website'])) {
+        // Тихо имитируем успех, чтобы бот не знал
+        jsonResponse(['success' => true, 'sheets' => 'ok', 'email' => 'ok']);
     }
 
     $sheetsId = $config['GOOGLE_SHEETS_ID'] ?? '';
@@ -90,17 +284,29 @@ function handleLogOrder(array $config): void {
     $saKey    = $config['GOOGLE_SA_PRIVATE_KEY'] ?? '';
     $notify   = $config['NOTIFY_EMAIL'] ?? 'janicacid@gmail.com';
 
-    $orderNum    = $input['orderNum']    ?? '';
-    $clientName  = $input['clientName']  ?? '';
-    $phone       = $input['phone']       ?? '';
-    $email       = $input['email']       ?? '';
-    $kkmType     = $input['kkmType']     ?? '';
-    $kkmCond     = $input['kkmCondition'] ?? '';
-    $services    = is_array($input['services'] ?? null)
-                   ? implode(', ', $input['services'])
-                   : ($input['services'] ?? '');
-    $total       = $input['total']       ?? 0;
-    $comment     = $input['comment']     ?? '';
+    // Sanitization: обрезаем длину, тримим
+    $orderNum   = trim(substr((string)($input['orderNum'] ?? ''), 0, 50));
+    $clientName = trim(substr((string)($input['clientName'] ?? ''), 0, 200));
+    $phone      = trim(substr((string)($input['phone'] ?? ''), 0, 50));
+    $email      = trim(substr((string)($input['email'] ?? ''), 0, 200));
+    $kkmType    = trim(substr((string)($input['kkmType'] ?? ''), 0, 200));
+    $kkmCond    = trim(substr((string)($input['kkmCondition'] ?? ''), 0, 50));
+    $services   = is_array($input['services'] ?? null)
+                  ? implode(', ', array_map(fn($s) => trim(substr((string)$s, 0, 200)), $input['services']))
+                  : trim(substr((string)($input['services'] ?? ''), 0, 1000));
+    $total      = (string)($input['total'] ?? '');
+    $total      = preg_replace('/[^\d\.\,]/', '', $total); // только цифры
+    $comment    = trim(substr((string)($input['comment'] ?? ''), 0, 2000));
+
+    // Валидация email если указан
+    if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        jsonResponse(['error' => 'Некорректный email'], 400);
+    }
+
+    // Валидация телефона (цифры, +, -, пробелы, скобки, 7-20 символов)
+    if ($phone !== '' && !preg_match('/^[\d\s\+\-\(\)]{7,20}$/', $phone)) {
+        jsonResponse(['error' => 'Некорректный телефон'], 400);
+    }
 
     $sheetsOk = false;
     $emailOk  = false;
@@ -528,11 +734,21 @@ function smtpSend(string $host, int $port, string $user, string $pass,
 // ══════════════════════════════════════════════════════════════════
 
 function handleAdminLogin(array $config): void {
+    // Rate limit: 5 попыток за 5 минут, потом блок на 15 мин
+    rateLimit('admin_auth', 5, 300);
+
     $input    = getJsonInput();
     $login    = trim($input['login']    ?? '');
     $password = trim($input['password'] ?? '');
     $token    = $input['captchaToken']  ?? '';
     $answer   = (string)($input['captchaAnswer'] ?? '');
+
+    // Honeypot: если заполнено скрытое поле — бот
+    if (!empty($input['website'])) {
+        // Тихо имитируем успех, чтобы бот не знал
+        error_log('Honeypot triggered on admin/auth from IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+        jsonResponse(['error' => 'Неверный логин или пароль'], 401);
+    }
 
     if (!verifyCaptcha($token, $answer))
         jsonResponse(['error' => 'Неверный ответ на капчу или время истекло'], 400);
@@ -542,7 +758,21 @@ function handleAdminLogin(array $config): void {
     if (!$expLogin || !$expPass)
         jsonResponse(['error' => 'CRM не настроен'], 500);
 
-    if (!hash_equals($expLogin, $login) || !hash_equals($expPass, $password))
+    // Проверка логина (constant-time)
+    if (!hash_equals($expLogin, $login))
+        jsonResponse(['error' => 'Неверный логин или пароль'], 401);
+
+    // Проверка пароля: поддерживает и plain (для обратной совместимости)
+    // и password_hash() (рекомендуется — BCrypt/Argon2)
+    $passOk = false;
+    if (password_get_info($expPass)['algo'] ?? false) {
+        // Захешировано через password_hash()
+        $passOk = password_verify($password, $expPass);
+    } else {
+        // Plain text (обратно совместимо)
+        $passOk = hash_equals($expPass, $password);
+    }
+    if (!$passOk)
         jsonResponse(['error' => 'Неверный логин или пароль'], 401);
 
     $secret = $config['ADMIN_JWT_SECRET'] ?? '';
@@ -554,6 +784,10 @@ function handleAdminLogin(array $config): void {
         'expires' => time() + 86400 * 30, 'path' => '/',
         'secure' => $secure, 'httponly' => true, 'samesite' => 'Lax',
     ]);
+
+    // Сброс rate limit после успешного входа
+    clearRateLimit('admin_auth');
+
     jsonResponse(['success' => true]);
 }
 

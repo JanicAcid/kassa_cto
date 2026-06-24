@@ -15,8 +15,19 @@ return [
     'APPS_SCRIPT_URL'       => 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec',
 
     // ─── CRM Admin ──────────────────────────────────────────────────────────
+    // Логин администратора CRM
     'ADMIN_LOGIN'           => 'tellur',
+    //
+    // ПАРОЛЬ — рекомендуется захешировать через password_hash()
+    // Например: php -r "echo password_hash('Tellur2026!', PASSWORD_DEFAULT);"
+    // Возвращает: $2y$10$xxxxx...
+    //
+    // Можно оставить plain text для обратной совместимости — код сам определит.
+    // Но БЕЗОПАСНЕЕ — использовать password_hash() (BCrypt/Argon2).
     'ADMIN_PASSWORD'        => 'CHANGE_ME',
+    //
+    // JWT секрет — случайная строка 32+ символов
+    // Сгенерировать: php -r "echo bin2hex(random_bytes(32));"
     'ADMIN_JWT_SECRET'      => 'CHANGE_ME_RANDOM_32_CHARS',
 
     // ─── Уведомления ────────────────────────────────────────────────────────

@@ -131,7 +131,7 @@ export default function MarkirovkaObuviPage() {
               Рассчитать стоимость
             </Link>
             <a
-              href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+              href="tel:+79219324163"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#163A5F]/20 hover:border-[#163A5F]/40 text-[#163A5F] font-bold rounded-xl transition-colors"
@@ -257,7 +257,7 @@ export default function MarkirovkaObuviPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
-              href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+              href="tel:+79219324163"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-colors shadow-md"

@@ -903,10 +903,15 @@ async function loadCaptcha() {
   state.captchaQuestion = d.question;
 }
 
-async function login(login, password, captchaAnswer) {
+async function login(login, password, captchaAnswer, honeypot = '') {
   return api('/admin/auth', {
     method: 'POST',
-    body: JSON.stringify({ login, password, captchaToken: state.captchaToken, captchaAnswer }),
+    body: JSON.stringify({
+      login, password,
+      captchaToken: state.captchaToken,
+      captchaAnswer,
+      website: honeypot,  // honeypot — должен быть пустым
+    }),
   });
 }
 
@@ -1053,6 +1058,10 @@ function renderLogin(root) {
           <input id="li_pass" type="password" autocomplete="current-password" placeholder="••••••••">
           <label>Капча: <span class="captcha" id="li_captcha">${state.captchaQuestion || 'загрузка...'}</span></label>
           <input id="li_cap_ans" type="text" inputmode="numeric" placeholder="Ответ">
+          <!-- Honeypot — скрытое поле, боты заполняют, люди нет -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off"
+                 style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0"
+                 aria-hidden="true" />
           <button id="li_btn" onclick="doLogin()">Войти</button>
           <div id="li_err" class="login-error"></div>
         </div>
@@ -1065,12 +1074,14 @@ async function doLogin() {
   const l = document.getElementById('li_login').value.trim();
   const p = document.getElementById('li_pass').value;
   const a = document.getElementById('li_cap_ans').value.trim();
+  // Honeypot: скрытое поле, которое боты заполнят автоматически
+  const hp = document.querySelector('input[name="website"]')?.value || '';
   const err = document.getElementById('li_err');
   const btn = document.getElementById('li_btn');
   btn.disabled = true; btn.textContent = 'Вход...';
   err.textContent = '';
   try {
-    await login(l, p, a);
+    await login(l, p, a, hp);
     state.authed = true;
     await loadOrders();
   } catch (e) {

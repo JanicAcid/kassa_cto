@@ -4,10 +4,12 @@
 // ============================================================================
 
 import Link from 'next/link'
-import { Phone, Calculator, CheckCircle2, ArrowRight, ChevronRight, MapPin } from 'lucide-react'
+import { Phone, Calculator, CheckCircle2, ArrowRight, ChevronRight, MapPin, Tag } from 'lucide-react'
 import { JsonLdData } from '@/components/JsonLd'
+import { ProductsPreview } from '@/components/ProductsPreview'
 import { SITE_URL } from '@/config/site'
 import { CITY_PHONE, CITY_PHONE_HREF } from '@/config/contacts'
+import { PROMOCODE } from '@/config/promocode'
 
 export interface FaqItem {
   q: string
@@ -183,6 +185,14 @@ export function SeoServicePage({
               </>
             )}
           </div>
+
+          {/* Промокод-бейдж в Hero — компактно */}
+          <div className="mt-5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/15 border border-amber-300/50">
+            <Tag className="w-3.5 h-3.5 text-amber-200" />
+            <span className="text-xs sm:text-sm text-amber-100">
+              Промокод <b className="tracking-wider text-amber-50">{PROMOCODE}</b> — спеццена при звонке с сайта
+            </span>
+          </div>
         </div>
       </div>
 
@@ -257,6 +267,12 @@ export function SeoServicePage({
             </div>
           </section>
         )}
+
+        {/* Превью каталога касс */}
+        <ProductsPreview
+          title="Кассы в наличии"
+          subtitle="Продаём с установкой под ключ. Все модели онлайн-касс для маркировки, алкоголя, услуг."
+        />
 
         {/* CTA */}
         <section className="mt-16 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-8 sm:p-10 text-center text-white">

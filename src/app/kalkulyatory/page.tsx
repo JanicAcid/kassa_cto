@@ -124,7 +124,7 @@ export default function KalkulyatoryPage() {
             +7 (812) 465-94-57
           </a>
           <a
-            href="https://max.ru/u/f9LHodD0cOLz83AdDdqqOHf53_ZdGSiYyzbFb4HtjphM0C99jNiCW_lIrCo"
+            href="tel:+79219324163"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors"

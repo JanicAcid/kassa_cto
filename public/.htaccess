@@ -88,9 +88,22 @@ RewriteRule ^(.*)$ https://kassa-cto.ru/$1 [R=301,L]
 </IfModule>
 
 # ─── Запрет доступа к служебным файлам ──────────────────────────────────────
-<FilesMatch "^(config\.php|\.env|\.htaccess|email-debug\.log)$">
+<FilesMatch "^(config\.php|\.env|\.htaccess|email-debug\.log|config\.php\.example)$">
   Require all denied
 </FilesMatch>
+
+# ─── Запрет доступа к папке с токенами капчи ───────────────────────────────
+RewriteRule ^api/\.captcha_store/ - [F,L]
+
+# ─── Запрет доступа к скрытым файлам (начинаются с точки) ──────────────────
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# ─── Запрет выполнения PHP в папке загрузок (если будет) ───────────────────
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
 
 # ─── Запрет листинга директорий ─────────────────────────────────────────────
 Options -Indexes

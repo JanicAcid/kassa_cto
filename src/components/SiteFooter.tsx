@@ -4,11 +4,13 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, MessageCircle, Send } from 'lucide-react'
-import { MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
+import { Phone, Mail, MapPin, Send, Tag } from 'lucide-react'
+import { TELEGRAM_CHAT_URL } from '@/config/contacts'
+import { PROMOCODE } from '@/config/promocode'
 
 const NAV_LINKS = [
   { label: 'Главная', href: '/' },
+  { label: 'Каталог касс', href: '/katalog-kass' },
   { label: 'Калькуляторы', href: '/kalkulyatory' },
   { label: 'База знаний', href: '/instructions' },
   { label: 'Услуги', href: '/services' },
@@ -82,11 +84,11 @@ export function SiteFooter() {
                 +7 (812) 321-06-06
               </a>
               <div className="flex flex-col gap-2 mt-1">
-                <a href={MAX_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors" title="Чат с нами в Max: +7 (921) 932-41-63">
-                  <MessageCircle className="w-4 h-4 shrink-0" />
-                  Max · +7 (921) 932-41-63
+                <a href="tel:+79219324163" className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors" title="Мобильный: +7 (921) 932-41-63">
+                  <Phone className="w-4 h-4 shrink-0" />
+                  +7 (921) 932-41-63
                 </a>
-                <a href={TELEGRAM_CHAT_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors">
+                <a href={TELEGRAM_CHAT_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors" title="Чат с нами в Telegram: +7 (921) 932-41-63">
                   <Send className="w-4 h-4 shrink-0" />
                   Telegram
                 </a>
@@ -104,9 +106,20 @@ export function SiteFooter() {
         </div>
 
         {/* Нижняя строка */}
-        <div className="mt-8 pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
-          <p className="order-2 sm:order-1">© {new Date().getFullYear()} ООО «Теллур-Интех». Все права защищены.</p>
-          <p className="order-1 sm:order-2 text-center sm:text-right">Центр технического обслуживания кассового оборудования</p>
+        <div className="mt-8 pt-5 border-t border-white/10">
+          {/* Промокод-плашка */}
+          <div className="mb-4 flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-3 bg-amber-400/10 border border-dashed border-amber-300/40 rounded-xl">
+            <Tag className="w-4 h-4 text-amber-300 shrink-0" />
+            <span className="text-sm text-amber-100 text-center">
+              🎟️ Промокод <b className="tracking-wider text-amber-50">{PROMOCODE}</b> — примените спеццену при звонке с сайта.
+              {' '}
+              <span className="text-amber-200/80">Назовите менеджеру.</span>
+            </span>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
+            <p className="order-2 sm:order-1">© {new Date().getFullYear()} ООО «Теллур-Интех». Все права защищены.</p>
+            <p className="order-1 sm:order-2 text-center sm:text-right">Центр технического обслуживания кассового оборудования</p>
+          </div>
         </div>
       </div>
     </footer>

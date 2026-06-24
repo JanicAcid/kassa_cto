@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Существующие страницы
   const existing = [
     { url: baseUrl, changeFrequency: 'weekly' as const, priority: 1.0 },
+    { url: `${baseUrl}/katalog-kass`, changeFrequency: 'weekly' as const, priority: 0.95 },
     { url: `${baseUrl}/kkt-spb`, changeFrequency: 'weekly' as const, priority: 0.9 },
     { url: `${baseUrl}/kalkulyatory`, changeFrequency: 'weekly' as const, priority: 0.9 },
     { url: `${baseUrl}/kalkulyatory/markirovka`, changeFrequency: 'monthly' as const, priority: 0.9 },
