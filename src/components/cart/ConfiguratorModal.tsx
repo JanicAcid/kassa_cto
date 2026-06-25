@@ -3,13 +3,17 @@
 // ============================================================================
 // ConfiguratorModal.tsx — конфигуратор «под ключ» для конкретной кассы
 // ----------------------------------------------------------------------------
-// Выбор: ФН (15/36) + ОФД (15/36) + услуги (reg/setup/delivery) + допы (scanner/etc)
+// Выбор: ФН (15/36) + ОФД (15/36 Такском со скидкой) + услуги + допы
 // Итог = price + fn + ofd + services + extras  (БЕЗ скидки 5%)
 // Кнопка «Добавить в корзину»
+//
+// Жёсткие правила:
+//   1. «Настройка кассы под ключ» (setup) — ВСЕГДА включена, нельзя снять
+//   2. Доставка — выбирается через город: Пушкин (600₽), СПб (900₽), Гатчина (нет)
 // ============================================================================
 
 import { useEffect, useState } from 'react'
-import { X, Check, ShoppingCart, Settings2 } from 'lucide-react'
+import { X, Check, ShoppingCart, Settings2, Lock } from 'lucide-react'
 import { CONFIGURATOR_OPTIONS, type KassaProduct, type ConfiguratorOption } from '@/config/kass-catalog'
 import { useCart } from './CartContext'
 
@@ -19,21 +23,26 @@ interface Props {
   onClose: () => void
 }
 
+type City = 'pushkin' | 'spb' | 'gatchina' | null
+
 export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const { addItem } = useCart()
 
   const [fnId, setFnId] = useState('fn-15')
   const [ofdId, setOfdId] = useState('ofd-15')
-  const [services, setServices] = useState<Set<string>>(new Set(['reg-fns', 'setup', 'delivery']))
+  // services всегда содержит setup (жёстко), reg-fns, опционально training, tech-support
+  const [services, setServices] = useState<Set<string>>(new Set(['reg-fns', 'setup']))
   const [extras, setExtras] = useState<Set<string>>(new Set())
+  const [city, setCity] = useState<City>(null)
 
   // сброс при смене кассы
   useEffect(() => {
     if (kassa) {
       setFnId('fn-15')
       setOfdId('ofd-15')
-      setServices(new Set(['reg-fns', 'setup', 'delivery']))
+      setServices(new Set(['reg-fns', 'setup']))
       setExtras(new Set())
+      setCity(null)
     }
   }, [kassa])
 
@@ -53,26 +62,42 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const fnOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'fn')
   const ofdOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'ofd')
-  const serviceOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'service')
+  const serviceOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'service' && o.id !== 'delivery-pushkin' && o.id !== 'delivery-spb')
   const extraOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'extra')
 
   const fn = fnOptions.find(o => o.id === fnId)
   const ofd = ofdOptions.find(o => o.id === ofdId)
   const selectedServices = serviceOptions.filter(o => services.has(o.id))
+
+  // Доставка в зависимости от города
+  const deliveryOption: ConfiguratorOption | null = (() => {
+    if (city === 'pushkin') return CONFIGURATOR_OPTIONS.find(o => o.id === 'delivery-pushkin') ?? null
+    if (city === 'spb') return CONFIGURATOR_OPTIONS.find(o => o.id === 'delivery-spb') ?? null
+    return null
+  })()
+
   const selectedExtras = extraOptions.filter(o => extras.has(o.id))
 
-  // ИТОГ = ПРОСТАЯ СУММА (БЕЗ скидки 5% — пользователь просил убрать)
+  // ИТОГ = ПРОСТАЯ СУММА (БЕЗ скидки 5%)
   const total = kassa.price
     + (fn?.price ?? 0)
     + (ofd?.price ?? 0)
     + selectedServices.reduce((s, o) => s + o.price, 0)
+    + (deliveryOption?.price ?? 0)
     + selectedExtras.reduce((s, o) => s + o.price, 0)
 
   const toggleService = (id: string) => {
+    // setup нельзя снять — жёстко
+    if (id === 'setup') return
     setServices(prev => {
       const next = new Set(prev)
+      // tech-support — взаимоисключающие (можно выбрать только один)
+      if (id === 'tech-support-month') next.delete('tech-support-year')
+      if (id === 'tech-support-year') next.delete('tech-support-month')
       if (next.has(id)) next.delete(id)
       else next.add(id)
+      // всегда держим setup
+      next.add('setup')
       return next
     })
   }
@@ -88,6 +113,10 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const handleAddToCart = () => {
     if (!fn || !ofd) return
+    // формируем финальный список services (включая доставку если выбран город)
+    const finalServices = [...selectedServices]
+    if (deliveryOption) finalServices.push(deliveryOption)
+
     addItem({
       kassaId: kassa.id,
       name: kassa.name,
@@ -96,7 +125,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
       qty: 1,
       fn,
       ofd,
-      services: selectedServices,
+      services: finalServices,
       extras: selectedExtras,
       total,
     })
@@ -176,7 +205,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
           {/* ОФД */}
           <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📡 ОФД — оператор фискальных данных</h4>
+            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📡 ОФД Такском — со скидкой 68% при покупке кассы</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {ofdOptions.map(o => (
                 <button
@@ -196,11 +225,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                   </div>
                   <div className="text-xs text-slate-500 mb-1">{o.desc}</div>
                   <div className="flex items-baseline gap-1.5">
-                    {o.price === 0 ? (
-                      <span className="font-bold text-emerald-600">0 ₽ — ПОДАРОК</span>
-                    ) : (
-                      <span className="font-bold text-[#163A5F]">+{o.price.toLocaleString('ru-RU')} ₽</span>
-                    )}
+                    <span className="font-bold text-emerald-600">{o.price.toLocaleString('ru-RU')} ₽</span>
                     {o.oldPrice && (
                       <span className="text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
                     )}
@@ -212,34 +237,39 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
           {/* Услуги */}
           <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🛠 Услуги (отметьте нужные)</h4>
+            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🛠 Услуги</h4>
             <div className="space-y-2">
               {serviceOptions.map(o => {
                 const checked = services.has(o.id)
+                const isLocked = o.id === 'setup'
                 return (
                   <button
                     key={o.id}
                     onClick={() => toggleService(o.id)}
+                    disabled={isLocked}
                     className={`w-full text-left p-3 rounded-xl border-2 transition-all flex items-start gap-3 ${
                       checked
                         ? 'border-emerald-500 bg-emerald-50'
                         : 'border-slate-200 hover:border-slate-300'
-                    }`}
+                    } ${isLocked ? 'cursor-default opacity-95' : 'cursor-pointer'}`}
                   >
                     <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 ${
                       checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'
                     }`}>
-                      {checked && <Check className="w-3.5 h-3.5" />}
+                      {checked && (isLocked ? <Lock className="w-3 h-3" /> : <Check className="w-3.5 h-3.5" />)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold text-[#163A5F]">{o.name}</span>
+                        <span className="font-semibold text-[#163A5F] flex items-center gap-1.5">
+                          {o.name}
+                          {isLocked && <span className="text-[10px] text-slate-500 font-normal">(обязательно)</span>}
+                        </span>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           {o.badge && (
                             <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
                           )}
                           <span className="font-bold text-[#163A5F] whitespace-nowrap">
-                            {o.price === 0 ? '0 ₽' : `+${o.price.toLocaleString('ru-RU')} ₽`}
+                            {o.price === 0 ? '0 ₽' : `${o.price.toLocaleString('ru-RU')} ₽`}
                           </span>
                         </div>
                       </div>
@@ -249,6 +279,45 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                 )
               })}
             </div>
+          </div>
+
+          {/* Город доставки */}
+          <div>
+            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🚚 Доставка (выберите город)</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <button
+                onClick={() => setCity('pushkin')}
+                className={`text-left p-3 rounded-xl border-2 transition-all ${
+                  city === 'pushkin'
+                    ? 'border-emerald-500 bg-emerald-50'
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="font-semibold text-[#163A5F] text-sm">Пушкин</div>
+                <div className="text-xs text-slate-500 mt-0.5">Привезём, подключим, проверим</div>
+                <div className="font-bold text-emerald-600 mt-1">600 ₽</div>
+              </button>
+              <button
+                onClick={() => setCity('spb')}
+                className={`text-left p-3 rounded-xl border-2 transition-all ${
+                  city === 'spb'
+                    ? 'border-emerald-500 bg-emerald-50'
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="font-semibold text-[#163A5F] text-sm">Санкт-Петербург</div>
+                <div className="text-xs text-slate-500 mt-0.5">Привезём, подключим, проверим</div>
+                <div className="font-bold text-emerald-600 mt-1">900 ₽</div>
+              </button>
+              <div className="text-left p-3 rounded-xl border-2 border-slate-200 bg-slate-50 opacity-60 cursor-not-allowed">
+                <div className="font-semibold text-slate-500 text-sm">Гатчина</div>
+                <div className="text-xs text-slate-400 mt-0.5">Доставки нет — самовывоз</div>
+                <div className="font-bold text-slate-400 mt-1">—</div>
+              </div>
+            </div>
+            {city === null && (
+              <p className="text-xs text-slate-400 mt-2">Доставка опциональна — можно забрать кассу из офиса в Пушкине, СПб или Гатчине.</p>
+            )}
           </div>
 
           {/* Допы */}
@@ -303,9 +372,10 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             <div className="text-right text-xs text-slate-500">
               <div>Касса: {kassa.price.toLocaleString('ru-RU')} ₽</div>
               <div>ФН: {fn?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
-              <div>ОФД: {ofd?.price === 0 ? 'подарок' : `${ofd?.price.toLocaleString('ru-RU') ?? 0} ₽`}</div>
+              <div>ОФД: {ofd?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
               <div>Услуги: {selectedServices.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>
-              <div>Допы: {selectedExtras.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>
+              {deliveryOption && <div>Доставка ({city === 'pushkin' ? 'Пушкин' : 'СПб'}): {deliveryOption.price} ₽</div>}
+              {selectedExtras.length > 0 && <div>Допы: {selectedExtras.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>}
             </div>
           </div>
           <button
