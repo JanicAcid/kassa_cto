@@ -105,6 +105,12 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const toggleExtra = (id: string) => {
     setExtras(prev => {
       const next = new Set(prev)
+      // 2D-сканеры — взаимоисключающие
+      if (id === 'scanner-2d-wire') next.delete('scanner-2d-bt')
+      if (id === 'scanner-2d-bt') next.delete('scanner-2d-wire')
+      // Денежные ящики — взаимоисключающие
+      if (id === 'cash-drawer-small') next.delete('cash-drawer-large')
+      if (id === 'cash-drawer-large') next.delete('cash-drawer-small')
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
@@ -323,39 +329,54 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           {/* Допы */}
           <div>
             <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📦 Доп. оборудование (по желанию)</h4>
+            <p className="text-xs text-slate-400 mb-3">Сканеры и денежные ящики — выберите один вариант из каждой группы.</p>
             <div className="space-y-2">
-              {extraOptions.map(o => {
+              {extraOptions.map((o, idx) => {
                 const checked = extras.has(o.id)
+                // подзаголовки групп
+                const showScannerHeader = idx === 0
+                const showDrawerHeader = o.id === 'cash-drawer-small'
+                const showPrinterHeader = o.id === 'label-printer'
                 return (
-                  <button
-                    key={o.id}
-                    onClick={() => toggleExtra(o.id)}
-                    className={`w-full text-left p-3 rounded-xl border-2 transition-all flex items-start gap-3 ${
-                      checked
-                        ? 'border-emerald-500 bg-emerald-50'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 ${
-                      checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'
-                    }`}>
-                      {checked && <Check className="w-3.5 h-3.5" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold text-[#163A5F]">{o.name}</span>
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                          {o.badge && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
-                          )}
-                          <span className="font-bold text-[#163A5F] whitespace-nowrap">
-                            +{o.price.toLocaleString('ru-RU')} ₽
-                          </span>
-                        </div>
+                  <div key={o.id}>
+                    {showScannerHeader && (
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-2 mb-1">2D-сканер (один из вариантов)</div>
+                    )}
+                    {showDrawerHeader && (
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-3 mb-1">Денежный ящик (один из вариантов)</div>
+                    )}
+                    {showPrinterHeader && (
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-3 mb-1">Принтер этикеток</div>
+                    )}
+                    <button
+                      onClick={() => toggleExtra(o.id)}
+                      className={`w-full text-left p-3 rounded-xl border-2 transition-all flex items-start gap-3 ${
+                        checked
+                          ? 'border-emerald-500 bg-emerald-50'
+                          : 'border-slate-200 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 ${
+                        checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'
+                      }`}>
+                        {checked && <Check className="w-3.5 h-3.5" />}
                       </div>
-                      <div className="text-xs text-slate-500 mt-0.5">{o.desc}</div>
-                    </div>
-                  </button>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="font-semibold text-[#163A5F]">{o.name}</span>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            {o.badge && (
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
+                            )}
+                            <span className="font-bold text-[#163A5F] whitespace-nowrap">
+                              +{o.price.toLocaleString('ru-RU')} ₽
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-xs text-slate-500 mt-0.5">{o.desc}</div>
+                      </div>
+                    </button>
+                  </div>
                 )
               })}
             </div>

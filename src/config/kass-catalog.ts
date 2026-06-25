@@ -195,8 +195,12 @@ export const CONFIGURATOR_OPTIONS: ConfiguratorOption[] = [
   { id: 'training', name: 'Обучение работе с кассой', desc: 'Практическое занятие — сканирование, приём товара, возвраты', price: 1300, category: 'service' },
   { id: 'tech-support-month', name: 'Тех.сопровождение на 1 месяц', desc: 'Приоритетная поддержка, обновление ПО, диагностика, скидка на ремонт', price: 850, category: 'service', badge: '1 мес' },
   { id: 'tech-support-year', name: 'Тех.сопровождение на 1 год', desc: 'Регулярное ТО 1-4 раза в год, приоритетный выезд, бесплатная диагностика, скидка 20-30% на ремонт', price: 9180, category: 'service', badge: '12 мес' },
-  // ─── Доп. оборудование ─────────────────────────────────────────────────
-  { id: 'scanner-2d', name: '2D-сканер штрихкодов', desc: 'Для маркировки — DataMatrix', price: 4500, oldPrice: 6000, category: 'extra', badge: 'Для маркировки' },
-  { id: 'cash-drawer', name: 'Денежный ящик', desc: 'Для хранения наличных', price: 2500, category: 'extra' },
+  // ─── Доп. оборудование: 2D-сканеры (2 варианта) ────────────────────────
+  { id: 'scanner-2d-wire', name: '2D-сканер проводной', desc: 'Для маркировки — DataMatrix, подключение по USB', price: 4300, category: 'extra', badge: 'Для маркировки' },
+  { id: 'scanner-2d-bt', name: '2D-сканер Bluetooth', desc: 'Беспроводной, для маркировки — DataMatrix', price: 5600, category: 'extra', badge: 'Беспроводной' },
+  // ─── Доп. оборудование: Денежные ящики (2 варианта) ────────────────────
+  { id: 'cash-drawer-small', name: 'Денежный ящик с ключом (245×320×90 мм)', desc: 'Компактный, чёрный, для хранения наличных', price: 3300, category: 'extra' },
+  { id: 'cash-drawer-large', name: 'Денежный ящик с ключом (368×335×95 мм)', desc: 'Большой, чёрный, для хранения наличных', price: 4100, category: 'extra' },
+  // ─── Принтер этикеток ──────────────────────────────────────────────────
   { id: 'label-printer', name: 'Принтер этикеток', desc: 'Печать ценников и штрихкодов', price: 8500, oldPrice: 10000, category: 'extra' },
 ]
