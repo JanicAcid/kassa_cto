@@ -8,6 +8,7 @@ import {
   CheckCircle, Star, Building2, Users, Wrench, Footprints, Package, QrCode, Shirt, Store, Settings, Send, MessageCircle
 } from 'lucide-react'
 import { MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
+import { ProductsPreview } from '@/components/ProductsPreview'
 
 // ============================================================================
 // ГЛАВНАЯ — Центр поддержки пользователей ККТ
@@ -241,75 +242,10 @@ export default function HomePage() {
       {/* ================================================================== */}
       {/* QUICK CALCULATOR CARDS */}
       {/* ================================================================== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-        <div className="anim-fade-in-up anim-delay-2 text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#163A5F]">
-            Калькуляторы стоимости
-          </h2>
-          <p className="mt-2 text-sm sm:text-base text-slate-500">
-            Рассчитайте точную стоимость услуг за 2 минуты
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          {CALCULATORS.map((calc, idx) => (
-            <Link
-              key={idx}
-              href={calc.active ? calc.href : '#'}
-              className={`anim-fade-in-up anim-delay-${idx + 3} group relative bg-white rounded-2xl border-2 p-5 sm:p-6 transition-all duration-300 hover:shadow-lg ${
-                calc.active
-                  ? 'border-[#F59E0B]/40 hover:border-[#F59E0B] shadow-md'
-                  : 'border-slate-100 hover:border-slate-200'
-              } ${!calc.active ? 'pointer-events-none' : ''}`}
-            >
-              {/* Gold badge for active */}
-              {calc.active && (
-                <div className="absolute -top-3 left-5">
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#F59E0B] text-white text-[10px] sm:text-xs font-bold shadow-md shadow-[#F59E0B]/30">
-                    <CheckCircle className="w-3 h-3" />
-                    Работает
-                  </span>
-                </div>
-              )}
-
-              {/* Coming soon badge */}
-              {!calc.active && (
-                <div className="absolute -top-3 left-5">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-200 text-slate-500 text-[10px] sm:text-xs font-bold">
-                    Скоро
-                  </span>
-                </div>
-              )}
-
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-                calc.active
-                  ? 'bg-[#F59E0B]/10 text-[#F59E0B]'
-                  : 'bg-slate-100 text-slate-400'
-              }`}>
-                <Calculator className="w-6 h-6" />
-              </div>
-
-              <h3 className={`text-base sm:text-lg font-bold mb-2 ${
-                calc.active ? 'text-[#163A5F]' : 'text-slate-500'
-              }`}>
-                {calc.title}
-              </h3>
-              <p className="text-sm text-slate-500 leading-relaxed mb-4">
-                {calc.desc}
-              </p>
-
-              {calc.active && (
-                <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${
-                  calc.active ? 'text-[#F59E0B] group-hover:gap-2.5' : ''
-                } transition-all`}>
-                  {calc.price && <span>{calc.price}</span>}
-                  Открыть <ArrowRight className="w-4 h-4" />
-                </span>
-              )}
-            </Link>
-          ))}
-        </div>
-      </section>
+      <ProductsPreview
+        title="Каталог онлайн-касс"
+        subtitle="Продаём кассы с установкой под ключ: ФН, ОФД, регистрация в ФНС, настройка маркировки. Все модели в наличии, доставка по СПб и ЛО."
+      />
 
       {/* ================================================================== */}
       {/* TRUST / STATS SECTION */}

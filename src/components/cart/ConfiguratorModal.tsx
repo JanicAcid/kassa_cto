@@ -1,15 +1,13 @@
 'use client'
 
 // ============================================================================
-// ConfiguratorModal.tsx — конфигуратор «под ключ» для конкретной кассы
+// ConfiguratorModal.tsx — конфигуратор «под ключ» (мобило-адаптивный)
 // ----------------------------------------------------------------------------
-// Выбор: ФН (15/36) + ОФД (15/36 Такском со скидкой) + услуги + допы
-// Итог = price + fn + ofd + services + extras  (БЕЗ скидки 5%)
-// Кнопка «Добавить в корзину»
-//
 // Жёсткие правила:
 //   1. «Настройка кассы под ключ» (setup) — ВСЕГДА включена, нельзя снять
-//   2. Доставка — выбирается через город: Пушкин (600₽), СПб (900₽), Гатчина (нет)
+//   2. Доставка: Пушкин 600₽ / СПб 900₽ / Гатчина нет
+//   3. 2D-сканеры взаимоисключающие, ден.ящики взаимоисключающие
+//   4. tech-support-month/year взаимоисключающие
 // ============================================================================
 
 import { useEffect, useState } from 'react'
@@ -30,12 +28,10 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const [fnId, setFnId] = useState('fn-15')
   const [ofdId, setOfdId] = useState('ofd-15')
-  // services всегда содержит setup (жёстко), reg-fns, опционально training, tech-support
   const [services, setServices] = useState<Set<string>>(new Set(['reg-fns', 'setup']))
   const [extras, setExtras] = useState<Set<string>>(new Set())
   const [city, setCity] = useState<City>(null)
 
-  // сброс при смене кассы
   useEffect(() => {
     if (kassa) {
       setFnId('fn-15')
@@ -46,7 +42,6 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
     }
   }, [kassa])
 
-  // блок скролла + Esc
   useEffect(() => {
     if (!isOpen) return
     document.body.style.overflow = 'hidden'
@@ -69,7 +64,6 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const ofd = ofdOptions.find(o => o.id === ofdId)
   const selectedServices = serviceOptions.filter(o => services.has(o.id))
 
-  // Доставка в зависимости от города
   const deliveryOption: ConfiguratorOption | null = (() => {
     if (city === 'pushkin') return CONFIGURATOR_OPTIONS.find(o => o.id === 'delivery-pushkin') ?? null
     if (city === 'spb') return CONFIGURATOR_OPTIONS.find(o => o.id === 'delivery-spb') ?? null
@@ -78,7 +72,6 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const selectedExtras = extraOptions.filter(o => extras.has(o.id))
 
-  // ИТОГ = ПРОСТАЯ СУММА (БЕЗ скидки 5%)
   const total = kassa.price
     + (fn?.price ?? 0)
     + (ofd?.price ?? 0)
@@ -87,16 +80,13 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
     + selectedExtras.reduce((s, o) => s + o.price, 0)
 
   const toggleService = (id: string) => {
-    // setup нельзя снять — жёстко
     if (id === 'setup') return
     setServices(prev => {
       const next = new Set(prev)
-      // tech-support — взаимоисключающие (можно выбрать только один)
       if (id === 'tech-support-month') next.delete('tech-support-year')
       if (id === 'tech-support-year') next.delete('tech-support-month')
       if (next.has(id)) next.delete(id)
       else next.add(id)
-      // всегда держим setup
       next.add('setup')
       return next
     })
@@ -105,10 +95,8 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const toggleExtra = (id: string) => {
     setExtras(prev => {
       const next = new Set(prev)
-      // 2D-сканеры — взаимоисключающие
       if (id === 'scanner-2d-wire') next.delete('scanner-2d-bt')
       if (id === 'scanner-2d-bt') next.delete('scanner-2d-wire')
-      // Денежные ящики — взаимоисключающие
       if (id === 'cash-drawer-small') next.delete('cash-drawer-large')
       if (id === 'cash-drawer-large') next.delete('cash-drawer-small')
       if (next.has(id)) next.delete(id)
@@ -119,7 +107,6 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const handleAddToCart = () => {
     if (!fn || !ofd) return
-    // формируем финальный список services (включая доставку если выбран город)
     const finalServices = [...selectedServices]
     if (deliveryOption) finalServices.push(deliveryOption)
 
@@ -140,68 +127,70 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[92vh] flex flex-col overflow-hidden"
+        className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-3xl max-h-[94vh] sm:max-h-[92vh] flex flex-col overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
         {/* header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] text-white">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
-              <Settings2 className="w-5 h-5" />
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] text-white">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+              <Settings2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <h3 className="font-bold text-lg">Конфигуратор «под ключ»</h3>
-              <p className="text-xs text-white/70">{kassa.name} — соберите готовый комплект</p>
+            <div className="min-w-0">
+              <h3 className="font-bold text-base sm:text-lg truncate">Конфигуратор «под ключ»</h3>
+              <p className="text-xs text-white/70 truncate">{kassa.name}</p>
             </div>
           </div>
           <button
             onClick={onClose}
             aria-label="Закрыть"
-            className="w-9 h-9 rounded-full hover:bg-white/15 flex items-center justify-center text-white/80"
+            className="w-9 h-9 rounded-full hover:bg-white/15 flex items-center justify-center text-white/80 flex-shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-5 space-y-4 sm:space-y-5">
           {/* касса — базовая цена */}
-          <div className="flex items-center justify-between p-3 bg-[#163A5F]/5 rounded-xl border border-[#163A5F]/10">
-            <div>
-              <div className="font-semibold text-[#163A5F]">{kassa.name}</div>
-              <div className="text-xs text-slate-500">{kassa.shortDesc}</div>
+          <div className="flex items-center justify-between gap-3 p-3 bg-[#163A5F]/5 rounded-xl border border-[#163A5F]/10">
+            <div className="min-w-0 flex-1">
+              <div className="font-semibold text-[#163A5F] text-sm sm:text-base truncate">{kassa.name}</div>
+              <div className="text-xs text-slate-500 truncate">{kassa.shortDesc}</div>
             </div>
-            <div className="font-bold text-[#163A5F]">{kassa.price.toLocaleString('ru-RU')} ₽</div>
+            <div className="font-bold text-[#163A5F] text-sm sm:text-base whitespace-nowrap flex-shrink-0">
+              {kassa.price.toLocaleString('ru-RU')} ₽
+            </div>
           </div>
 
           {/* ФН */}
           <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">💳 Фискальный накопитель (обязательно)</h4>
+            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">💳 Фискальный накопитель</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {fnOptions.map(o => (
                 <button
                   key={o.id}
                   onClick={() => setFnId(o.id)}
-                  className={`text-left p-3 rounded-xl border-2 transition-all ${
+                  className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
                     fnId === o.id
                       ? 'border-[#163A5F] bg-[#163A5F]/5'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-semibold text-[#163A5F]">{o.name}</span>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="font-semibold text-[#163A5F] text-xs sm:text-sm">{o.name}</span>
                     {o.badge && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
+                      <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 whitespace-nowrap flex-shrink-0">{o.badge}</span>
                     )}
                   </div>
-                  <div className="text-xs text-slate-500 mb-1">{o.desc}</div>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="font-bold text-[#163A5F]">{o.price.toLocaleString('ru-RU')} ₽</span>
+                  <div className="text-[11px] sm:text-xs text-slate-500 mb-1.5 leading-snug">{o.desc}</div>
+                  <div className="flex items-baseline gap-1.5 flex-wrap">
+                    <span className="font-bold text-[#163A5F] text-sm sm:text-base">{o.price.toLocaleString('ru-RU')} ₽</span>
                     {o.oldPrice && (
-                      <span className="text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
+                      <span className="text-[11px] sm:text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
                     )}
                   </div>
                 </button>
@@ -211,29 +200,29 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
           {/* ОФД */}
           <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📡 ОФД Такском — со скидкой 68% при покупке кассы</h4>
+            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📡 ОФД Такском — скидка 68%</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {ofdOptions.map(o => (
                 <button
                   key={o.id}
                   onClick={() => setOfdId(o.id)}
-                  className={`text-left p-3 rounded-xl border-2 transition-all ${
+                  className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
                     ofdId === o.id
                       ? 'border-emerald-500 bg-emerald-50'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-semibold text-[#163A5F]">{o.name}</span>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="font-semibold text-[#163A5F] text-xs sm:text-sm">{o.name}</span>
                     {o.badge && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">{o.badge}</span>
+                      <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 whitespace-nowrap flex-shrink-0">{o.badge}</span>
                     )}
                   </div>
-                  <div className="text-xs text-slate-500 mb-1">{o.desc}</div>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="font-bold text-emerald-600">{o.price.toLocaleString('ru-RU')} ₽</span>
+                  <div className="text-[11px] sm:text-xs text-slate-500 mb-1.5 leading-snug">{o.desc}</div>
+                  <div className="flex items-baseline gap-1.5 flex-wrap">
+                    <span className="font-bold text-emerald-600 text-sm sm:text-base">{o.price.toLocaleString('ru-RU')} ₽</span>
                     {o.oldPrice && (
-                      <span className="text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
+                      <span className="text-[11px] sm:text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
                     )}
                   </div>
                 </button>
@@ -253,7 +242,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                     key={o.id}
                     onClick={() => toggleService(o.id)}
                     disabled={isLocked}
-                    className={`w-full text-left p-3 rounded-xl border-2 transition-all flex items-start gap-3 ${
+                    className={`w-full text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all flex items-start gap-2.5 ${
                       checked
                         ? 'border-emerald-500 bg-emerald-50'
                         : 'border-slate-200 hover:border-slate-300'
@@ -265,21 +254,20 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                       {checked && (isLocked ? <Lock className="w-3 h-3" /> : <Check className="w-3.5 h-3.5" />)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold text-[#163A5F] flex items-center gap-1.5">
+                      {/* name + price на одной строке, badge отдельно если есть */}
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="font-semibold text-[#163A5F] text-xs sm:text-sm leading-snug">
                           {o.name}
-                          {isLocked && <span className="text-[10px] text-slate-500 font-normal">(обязательно)</span>}
+                          {isLocked && <span className="text-[10px] text-slate-500 font-normal ml-1">(обязательно)</span>}
                         </span>
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                          {o.badge && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
-                          )}
-                          <span className="font-bold text-[#163A5F] whitespace-nowrap">
-                            {o.price === 0 ? '0 ₽' : `${o.price.toLocaleString('ru-RU')} ₽`}
-                          </span>
-                        </div>
+                        <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+                          {o.price === 0 ? '0 ₽' : `${o.price.toLocaleString('ru-RU')} ₽`}
+                        </span>
                       </div>
-                      <div className="text-xs text-slate-500 mt-0.5">{o.desc}</div>
+                      <div className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-snug">{o.desc}</div>
+                      {o.badge && (
+                        <span className="inline-block mt-1 text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
+                      )}
                     </div>
                   </button>
                 )
@@ -290,67 +278,67 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           {/* Город доставки */}
           <div>
             <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🚚 Доставка (выберите город)</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <button
                 onClick={() => setCity('pushkin')}
-                className={`text-left p-3 rounded-xl border-2 transition-all ${
+                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
                   city === 'pushkin'
                     ? 'border-emerald-500 bg-emerald-50'
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-sm">Пушкин</div>
-                <div className="text-xs text-slate-500 mt-0.5">Привезём, подключим, проверим</div>
-                <div className="font-bold text-emerald-600 mt-1">600 ₽</div>
+                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">Пушкин</div>
+                <div className="font-bold text-emerald-600 mt-1 text-xs sm:text-sm">600 ₽</div>
               </button>
               <button
                 onClick={() => setCity('spb')}
-                className={`text-left p-3 rounded-xl border-2 transition-all ${
+                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
                   city === 'spb'
                     ? 'border-emerald-500 bg-emerald-50'
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-sm">Санкт-Петербург</div>
-                <div className="text-xs text-slate-500 mt-0.5">Привезём, подключим, проверим</div>
-                <div className="font-bold text-emerald-600 mt-1">900 ₽</div>
+                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">СПб</div>
+                <div className="font-bold text-emerald-600 mt-1 text-xs sm:text-sm">900 ₽</div>
               </button>
-              <div className="text-left p-3 rounded-xl border-2 border-slate-200 bg-slate-50 opacity-60 cursor-not-allowed">
-                <div className="font-semibold text-slate-500 text-sm">Гатчина</div>
-                <div className="text-xs text-slate-400 mt-0.5">Доставки нет — самовывоз</div>
-                <div className="font-bold text-slate-400 mt-1">—</div>
+              <div className="text-left p-2.5 sm:p-3 rounded-xl border-2 border-slate-200 bg-slate-50 opacity-60 cursor-not-allowed">
+                <div className="font-semibold text-slate-500 text-xs sm:text-sm">Гатчина</div>
+                <div className="font-bold text-slate-400 mt-1 text-xs sm:text-sm">—</div>
               </div>
             </div>
             {city === null && (
-              <p className="text-xs text-slate-400 mt-2">Доставка опциональна — можно забрать кассу из офиса в Пушкине, СПб или Гатчине.</p>
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-2 leading-snug">
+                Доставка опциональна — можно забрать кассу из офиса.
+              </p>
             )}
           </div>
 
           {/* Допы */}
           <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📦 Доп. оборудование (по желанию)</h4>
-            <p className="text-xs text-slate-400 mb-3">Сканеры и денежные ящики — выберите один вариант из каждой группы.</p>
+            <h4 className="font-bold text-[#163A5F] mb-1 text-sm">📦 Доп. оборудование</h4>
+            <p className="text-[11px] sm:text-xs text-slate-400 mb-2 leading-snug">
+              Сканеры и ящики — выберите один из вариантов.
+            </p>
             <div className="space-y-2">
               {extraOptions.map((o, idx) => {
                 const checked = extras.has(o.id)
-                // подзаголовки групп
                 const showScannerHeader = idx === 0
                 const showDrawerHeader = o.id === 'cash-drawer-small'
                 const showPrinterHeader = o.id === 'label-printer'
                 return (
                   <div key={o.id}>
                     {showScannerHeader && (
-                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-2 mb-1">2D-сканер (один из вариантов)</div>
+                      <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-2 mb-1">2D-сканер</div>
                     )}
                     {showDrawerHeader && (
-                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-3 mb-1">Денежный ящик (один из вариантов)</div>
+                      <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-3 mb-1">Денежный ящик</div>
                     )}
                     {showPrinterHeader && (
-                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-3 mb-1">Принтер этикеток</div>
+                      <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-3 mb-1">Принтер этикеток</div>
                     )}
                     <button
                       onClick={() => toggleExtra(o.id)}
-                      className={`w-full text-left p-3 rounded-xl border-2 transition-all flex items-start gap-3 ${
+                      className={`w-full text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all flex items-start gap-2.5 ${
                         checked
                           ? 'border-emerald-500 bg-emerald-50'
                           : 'border-slate-200 hover:border-slate-300'
@@ -362,18 +350,16 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                         {checked && <Check className="w-3.5 h-3.5" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="font-semibold text-[#163A5F]">{o.name}</span>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            {o.badge && (
-                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
-                            )}
-                            <span className="font-bold text-[#163A5F] whitespace-nowrap">
-                              +{o.price.toLocaleString('ru-RU')} ₽
-                            </span>
-                          </div>
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="font-semibold text-[#163A5F] text-xs sm:text-sm leading-snug">{o.name}</span>
+                          <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+                            +{o.price.toLocaleString('ru-RU')} ₽
+                          </span>
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">{o.desc}</div>
+                        <div className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-snug">{o.desc}</div>
+                        {o.badge && (
+                          <span className="inline-block mt-1 text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
+                        )}
                       </div>
                     </button>
                   </div>
@@ -384,24 +370,24 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
         </div>
 
         {/* footer — итог + кнопка */}
-        <div className="border-t border-slate-100 p-5 bg-slate-50">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <div className="text-xs text-slate-500 uppercase tracking-wider">Итого за комплект</div>
-              <div className="text-3xl font-bold text-[#163A5F]">{total.toLocaleString('ru-RU')} ₽</div>
+        <div className="border-t border-slate-100 p-3 sm:p-5 bg-slate-50">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div className="min-w-0">
+              <div className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider">Итого за комплект</div>
+              <div className="text-2xl sm:text-3xl font-bold text-[#163A5F]">{total.toLocaleString('ru-RU')} ₽</div>
             </div>
-            <div className="text-right text-xs text-slate-500">
+            <div className="text-right text-[10px] sm:text-xs text-slate-500 flex-shrink-0">
               <div>Касса: {kassa.price.toLocaleString('ru-RU')} ₽</div>
               <div>ФН: {fn?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
               <div>ОФД: {ofd?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
               <div>Услуги: {selectedServices.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>
-              {deliveryOption && <div>Доставка ({city === 'pushkin' ? 'Пушкин' : 'СПб'}): {deliveryOption.price} ₽</div>}
+              {deliveryOption && <div>Доставка: {deliveryOption.price} ₽</div>}
               {selectedExtras.length > 0 && <div>Допы: {selectedExtras.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>}
             </div>
           </div>
           <button
             onClick={handleAddToCart}
-            className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center gap-2"
+            className="w-full py-3 sm:py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 text-sm sm:text-base"
           >
             <ShoppingCart className="w-5 h-5" />
             Добавить в корзину
