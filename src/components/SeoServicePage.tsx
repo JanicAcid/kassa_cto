@@ -122,14 +122,14 @@ export function SeoServicePage({
       <JsonLdData data={jsonLdBreadcrumbs} />
 
       <div className="bg-gradient-to-br from-[#163A5F] to-[#1E4A78] text-white">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
           {/* Хлебные крошки */}
           {breadcrumbs.length > 0 && (
-            <nav className="flex items-center gap-1.5 text-xs sm:text-sm text-white/60 mb-6 flex-wrap">
+            <nav className="flex items-center gap-1.5 text-[11px] sm:text-xs text-white/60 mb-2 flex-wrap">
               <Link href="/" className="hover:text-white">Главная</Link>
               {breadcrumbs.map((b, i) => (
                 <span key={i} className="flex items-center gap-1.5">
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <ChevronRight className="w-3 h-3" />
                   {b.href ? (
                     <Link href={b.href} className="hover:text-white">{b.label}</Link>
                   ) : (
@@ -140,66 +140,38 @@ export function SeoServicePage({
             </nav>
           )}
 
-          <h1 className="text-[28px] sm:text-[36px] md:text-[44px] font-bold leading-[1.1] mb-4 tracking-tight">
-            {h1}
-          </h1>
-          <p className="text-base sm:text-lg text-white/80 max-w-3xl leading-relaxed mb-8">
-            {heroSubtitle}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            {hideCalculator ? (
-              // Без калькулятора: основная CTA — звонок, вторая — все услуги
-              <>
-                <a
-                  href={CITY_PHONE_HREF}
-                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base font-bold rounded-xl transition-all duration-200 shadow-lg shadow-[#F59E0B]/25 hover:-translate-y-0.5"
-                >
-                  <Phone className="w-5 h-5" />
-                  Получить консультацию
-                </a>
-                <Link
-                  href={heroCta?.href || '/services'}
-                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white text-base font-medium rounded-xl transition-all duration-200 border border-white/20"
-                >
-                  {heroCta?.label || 'Все услуги'}
-                </Link>
-              </>
-            ) : (
-              // С калькулятором (по умолчанию)
-              <>
-                <Link
-                  href={heroCta?.href || '/kalkulyatory/markirovka'}
-                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base font-bold rounded-xl transition-all duration-200 shadow-lg shadow-[#F59E0B]/25 hover:-translate-y-0.5"
-                >
-                  <Calculator className="w-5 h-5" />
-                  {heroCta?.label || 'Рассчитать стоимость'}
-                </Link>
-                <a
-                  href={CITY_PHONE_HREF}
-                  className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white text-base font-medium rounded-xl transition-all duration-200 border border-white/20"
-                >
-                  <Phone className="w-5 h-5" />
-                  {CITY_PHONE}
-                </a>
-              </>
-            )}
-          </div>
-
-          {/* Промокод-бейдж в Hero — компактно */}
-          <div className="mt-5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/15 border border-amber-300/50">
-            <Tag className="w-3.5 h-3.5 text-amber-200" />
-            <span className="text-xs sm:text-sm text-amber-100">
-              Промокод <b className="tracking-wider text-amber-50">{PROMOCODE}</b> — спеццена при звонке с сайта
-            </span>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-6">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-1.5 sm:mb-2 tracking-tight">
+                {h1}
+              </h1>
+              <p className="text-xs sm:text-sm text-white/80 max-w-2xl leading-snug">
+                {heroSubtitle}
+              </p>
+            </div>
+            <a
+              href={CITY_PHONE_HREF}
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors text-sm whitespace-nowrap flex-shrink-0 self-start sm:self-end"
+            >
+              <Phone className="w-4 h-4" />
+              {CITY_PHONE}
+            </a>
           </div>
         </div>
       </div>
 
-      <main className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <main className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        {/* Промокод-бейдж — компактно */}
+        <div className="mb-6 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200">
+          <Tag className="w-3.5 h-3.5 text-amber-600" />
+          <span className="text-xs sm:text-sm text-amber-800">
+            Промокод <b className="tracking-wider text-amber-700">{PROMOCODE}</b> — спеццена при звонке с сайта
+          </span>
+        </div>
+
         {/* Intro */}
-        <div className="max-w-3xl mx-auto mb-12">
-          <p className="text-base sm:text-lg text-slate-700 leading-relaxed">{intro}</p>
+        <div className="max-w-3xl mx-auto mb-10">
+          <p className="text-sm sm:text-base text-slate-700 leading-relaxed">{intro}</p>
         </div>
 
         {/* Контент секции */}

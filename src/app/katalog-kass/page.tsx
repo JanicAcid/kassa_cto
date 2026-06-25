@@ -9,7 +9,7 @@
 // Плавающая корзина справа снизу + CartModal
 // ============================================================================
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Phone, CheckCircle2, ShoppingCart, Shield, Tag, Settings2 } from 'lucide-react'
 import { KASSA_CATALOG, BRAND_ICONS, type KassaProduct } from '@/config/kass-catalog'
@@ -21,6 +21,8 @@ import { CartModal } from '@/components/cart/CartModal'
 import { FloatingCart } from '@/components/cart/FloatingCart'
 import { ConfiguratorModal } from '@/components/cart/ConfiguratorModal'
 import { CardGallery } from '@/components/catalog/CardGallery'
+import { SpecsAccordion } from '@/components/catalog/SpecsAccordion'
+import { CatalogFilters, applyFilters, DEFAULT_FILTER, type FilterState } from '@/components/catalog/CatalogFilters'
 
 const jsonLdCatalog = {
   '@context': 'https://schema.org',
@@ -131,6 +133,11 @@ function KassaCard({ kassa, onConfigure }: { kassa: KassaProduct; onConfigure: (
         <div className="text-[11px] text-slate-400 text-center mt-2">
           Гарантия: {kassa.warranty}
         </div>
+
+        {/* Разворачиваемые характеристики */}
+        {kassa.specGroups && kassa.specGroups.length > 0 && (
+          <SpecsAccordion specGroups={kassa.specGroups} />
+        )}
       </div>
     </div>
   )
@@ -139,57 +146,64 @@ function KassaCard({ kassa, onConfigure }: { kassa: KassaProduct; onConfigure: (
 function CatalogContent() {
   const [configKassa, setConfigKassa] = useState<KassaProduct | null>(null)
   const [configOpen, setConfigOpen] = useState(false)
+  const [filter, setFilter] = useState<FilterState>(DEFAULT_FILTER)
 
   const openConfigurator = (k: KassaProduct) => {
     setConfigKassa(k)
     setConfigOpen(true)
   }
 
+  const filteredKassas = useMemo(() => applyFilters(KASSA_CATALOG, filter), [filter])
+
   return (
     <>
       <JsonLdData data={jsonLdCatalog} />
 
-      {/* HERO */}
+      {/* HERO — компактный */}
       <div className="bg-gradient-to-br from-[#163A5F] to-[#1E4A78] text-white">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12 sm:py-16">
-          <nav className="flex items-center gap-1.5 text-xs text-white/60 mb-6">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <nav className="flex items-center gap-1.5 text-[11px] text-white/60 mb-2">
             <Link href="/" className="hover:text-white">Главная</Link>
             <span>/</span>
             <span className="text-white/80">Каталог касс</span>
           </nav>
-          <h1 className="text-[28px] sm:text-[36px] md:text-[44px] font-bold leading-[1.1] mb-4 tracking-tight">
-            Каталог онлайн-касс в СПб
-          </h1>
-          <p className="text-base sm:text-lg text-white/80 max-w-3xl leading-relaxed mb-6">
-            Продаём кассы с установкой под ключ: ФН, ОФД, регистрация в ФНС, настройка маркировки.
-            Все модели в наличии. Доставка по СПб и ЛО. Промокод{' '}
-            <b className="text-amber-200 tracking-wider">{PROMOCODE}</b> — спеццена при звонке с сайта.
-          </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-6">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-1.5 sm:mb-2 tracking-tight">
+                Каталог онлайн-касс в СПб
+              </h1>
+              <p className="text-xs sm:text-sm text-white/80 max-w-2xl leading-snug">
+                Кассы с установкой под ключ: ФН, ОФД, регистрация в ФНС, маркировка. Промокод{' '}
+                <b className="text-amber-200 tracking-wider">{PROMOCODE}</b> — спеццена.
+              </p>
+            </div>
             <a
               href={CITY_PHONE_HREF}
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors text-sm whitespace-nowrap flex-shrink-0 self-start sm:self-end"
             >
-              <Phone className="w-5 h-5" />
+              <Phone className="w-4 h-4" />
               {CITY_PHONE}
-            </a>
-            <a
-              href="#catalog"
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors"
-            >
-              Смотреть каталог
             </a>
           </div>
         </div>
       </div>
 
       {/* CATALOG */}
-      <main className="max-w-[1200px] mx-auto px-4 sm:px-6 py-12">
+      <main className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <CatalogFilters state={filter} onChange={setFilter} resultsCount={filteredKassas.length} />
+
         <div id="catalog" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {KASSA_CATALOG.map(kassa => (
+          {filteredKassas.map(kassa => (
             <KassaCard key={kassa.id} kassa={kassa} onConfigure={openConfigurator} />
           ))}
         </div>
+
+        {filteredKassas.length === 0 && (
+          <div className="text-center py-16 text-slate-500">
+            <p className="text-base mb-2">Ничего не найдено</p>
+            <p className="text-sm">Попробуйте сбросить фильтры или изменить поисковый запрос.</p>
+          </div>
+        )}
 
         {/* TRUST */}
         <section className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6">

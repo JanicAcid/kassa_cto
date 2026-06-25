@@ -202,44 +202,6 @@ export default function HomePage() {
       </section>
 
       {/* ================================================================== */}
-      {/* ДИАГНОСТИКА + КАЛЬКУЛЯТОР — единая воронка */}
-      {/* ================================================================== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <div className="anim-fade-in-up anim-delay-1 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border-2 border-[#F59E0B]/20 p-5 sm:p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-            <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#F59E0B]/10 flex items-center justify-center">
-              <ShieldCheck className="w-7 h-7 text-[#F59E0B]" />
-            </div>
-            <div className="flex-1 text-center sm:text-left min-w-0">
-              <h2 className="text-base sm:text-lg font-bold text-[#163A5F] mb-1">
-                Проверьте, правильно ли работает ваша маркировка
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                8 простых вопросов — узнайте, где в цепочке могут быть проблемы. Без терминов, за 3 минуты.
-                <span className="hidden sm:inline"> Потом рассчитайте стоимость решения в калькуляторе.</span>
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-2.5 shrink-0 w-full sm:w-auto">
-              <Link
-                href="/diagnostika"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white text-sm font-bold rounded-xl transition-all shadow-md shadow-[#F59E0B]/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
-              >
-                Начать проверку
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/kalkulyatory/markirovka"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 border-2 border-[#163A5F]/20 text-[#163A5F] text-sm font-semibold rounded-xl hover:bg-[#163A5F] hover:text-white hover:border-[#163A5F] transition-all"
-              >
-                <Calculator className="w-4 h-4" />
-                Калькулятор
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ================================================================== */}
       {/* QUICK CALCULATOR CARDS */}
       {/* ================================================================== */}
       <ProductsPreview

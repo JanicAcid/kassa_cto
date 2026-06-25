@@ -2,6 +2,16 @@
 // kass-catalog.ts — каталог онлайн-касс (упрощённый для быстрого деплоя)
 // ============================================================================
 
+export interface KassaSpec {
+  label: string
+  value: string
+}
+
+export interface KassaSpecGroup {
+  name: string
+  specs: KassaSpec[]
+}
+
 export interface KassaProduct {
   id: string
   brand: string
@@ -18,6 +28,8 @@ export interface KassaProduct {
   inStock: boolean
   gift?: string
   warranty: string
+  // Подробные характеристики — показываются в карточке по кнопке «Характеристики»
+  specGroups?: KassaSpecGroup[]
 }
 
 export const KASSA_CATALOG: KassaProduct[] = [
@@ -30,6 +42,42 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2 (маркировка)', 'Wi-Fi + 3G', 'Встроенный принтер', 'Аккумулятор до 12ч'],
     type: 'autonomous', inStock: true,
     gift: 'ОФД на 15 месяцев + настройка в подарок', warranty: '12 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Инкотекс (Меркурий)' },
+        { label: 'Тип', value: 'Автономная онлайн-касса' },
+        { label: 'Год выпуска', value: '2019' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '3G', value: 'Есть' },
+        { label: 'USB', value: 'Есть (тип B)' },
+        { label: 'Bluetooth', value: 'Нет' },
+        { label: 'Ethernet', value: 'Нет' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Принтер', value: 'Встроенный' },
+        { label: 'Ширина чека', value: '58 мм' },
+        { label: 'Скорость', value: '50 мм/сек' },
+        { label: 'Автоотрезчик', value: 'Нет' },
+      ]},
+      { name: 'Питание', specs: [
+        { label: 'Аккумулятор', value: 'До 12 часов' },
+        { label: 'От сети', value: '5V/2A' },
+      ]},
+      { name: 'Совместимость', specs: [
+        { label: 'ФФД', value: '1.2 (маркировка)' },
+        { label: 'ОФД', value: 'Все операторы' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+        { label: 'Алкоголь (ЕГАИС)', value: 'Поддерживается' },
+        { label: '1С', value: 'Через драйвер' },
+      ]},
+      { name: 'Габариты', specs: [
+        { label: 'Размеры', value: '190×100×70 мм' },
+        { label: 'Вес', value: '350 г' },
+      ]},
+    ],
   },
   {
     id: 'mercury-105f', brand: 'Меркурий', model: '105Ф', name: 'Меркурий 105Ф',
@@ -40,6 +88,36 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Wi-Fi + 3G', 'Встроенный принтер', 'Аккумулятор'],
     type: 'autonomous', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽ + сим-карта', warranty: '12 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Инкотекс (Меркурий)' },
+        { label: 'Тип', value: 'Автономная онлайн-касса' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '3G', value: 'Есть' },
+        { label: 'USB', value: 'Есть' },
+        { label: 'Bluetooth', value: 'Нет' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '58 мм' },
+        { label: 'Скорость', value: '50 мм/сек' },
+        { label: 'Автоотрезчик', value: 'Нет' },
+      ]},
+      { name: 'Питание', specs: [
+        { label: 'Аккумулятор', value: 'До 8 часов' },
+      ]},
+      { name: 'Совместимость', specs: [
+        { label: 'ФФД', value: '1.2' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+        { label: 'Алкоголь', value: 'Поддерживается' },
+      ]},
+      { name: 'Габариты', specs: [
+        { label: 'Размеры', value: '180×95×65 мм' },
+        { label: 'Вес', value: '300 г' },
+      ]},
+    ],
   },
   {
     id: 'aqsi-5', brand: 'AQSI', model: '5Ф', name: 'AQSI 5Ф (без эквайринга)',
@@ -50,6 +128,37 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Сенсорный экран 5.5"', 'Wi-Fi + 4G', 'Android'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽ + сим-карта', warranty: '12 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Аквариус (AQSI)' },
+        { label: 'Тип', value: 'Смарт-терминал' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Экран', specs: [
+        { label: 'Диагональ', value: '5.5"' },
+        { label: 'Тип', value: 'Сенсорный, ёмкостный' },
+        { label: 'Разрешение', value: 'HD' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '4G', value: 'Есть' },
+        { label: 'Bluetooth', value: 'Есть' },
+        { label: 'USB', value: 'Есть' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '58 мм' },
+        { label: 'Скорость', value: '70 мм/сек' },
+      ]},
+      { name: 'ПО', specs: [
+        { label: 'ОС', value: 'Android' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+        { label: '1С', value: 'Через AQSI.Драйвер' },
+      ]},
+      { name: 'Габариты', specs: [
+        { label: 'Размеры', value: '210×95×60 мм' },
+        { label: 'Вес', value: '450 г' },
+      ]},
+    ],
   },
   {
     id: 'aqsi-5-acq', brand: 'AQSI', model: '5Ф', name: 'AQSI 5Ф (с эквайрингом)',
@@ -60,6 +169,36 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Эквайринг (Мир/Visa/MC)', 'Wi-Fi + 4G', 'Android'],
     type: 'smart', hasAcquiring: true, inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ + 0% комиссия 1 мес', warranty: '12 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Аквариус (AQSI)' },
+        { label: 'Тип', value: 'Смарт-терминал с эквайрингом' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Экран', specs: [
+        { label: 'Диагональ', value: '5.5"' },
+        { label: 'Тип', value: 'Сенсорный' },
+      ]},
+      { name: 'Эквайринг', specs: [
+        { label: 'Visa', value: 'Поддерживается' },
+        { label: 'MasterCard', value: 'Поддерживается' },
+        { label: 'МИР', value: 'Поддерживается' },
+        { label: 'Бесконтактно (NFC)', value: 'Есть' },
+        { label: 'Комиссия', value: 'От 1.2%' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '4G', value: 'Есть' },
+        { label: 'Bluetooth', value: 'Есть' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '58 мм' },
+      ]},
+      { name: 'ПО', specs: [
+        { label: 'ОС', value: 'Android' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+      ]},
+    ],
   },
   {
     id: 'aqsi-6-acq', brand: 'AQSI', model: '6Ф', name: 'AQSI 6Ф (с эквайрингом)',
@@ -70,6 +209,35 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Сенсорный экран 6"', 'Эквайринг', 'Wi-Fi + 4G'],
     type: 'smart', hasAcquiring: true, inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ + 0% комиссия 2 мес', warranty: '18 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Аквариус (AQSI)' },
+        { label: 'Тип', value: 'Смарт-терминал с эквайрингом' },
+        { label: 'Год выпуска', value: '2024' },
+        { label: 'Гарантия', value: '18 месяцев' },
+      ]},
+      { name: 'Экран', specs: [
+        { label: 'Диагональ', value: '6"' },
+        { label: 'Тип', value: 'Сенсорный, улучшенный' },
+      ]},
+      { name: 'Эквайринг', specs: [
+        { label: 'Visa/MC/МИР', value: 'Поддерживается' },
+        { label: 'NFC', value: 'Есть' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '4G', value: 'Есть' },
+        { label: 'Bluetooth', value: 'Есть' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '58 мм' },
+        { label: 'Скорость', value: '80 мм/сек' },
+      ]},
+      { name: 'ПО', specs: [
+        { label: 'ОС', value: 'Android' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+      ]},
+    ],
   },
   {
     id: 'atol-30f', brand: 'АТОЛ', model: '30Ф', name: 'АТОЛ 30Ф',
@@ -80,6 +248,35 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'USB + RS-232', 'Ширина чека 80 мм', 'Совместимость с 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'АТОЛ' },
+        { label: 'Тип', value: 'Фискальный регистратор' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'USB', value: 'Есть' },
+        { label: 'RS-232', value: 'Есть' },
+        { label: 'Wi-Fi', value: 'Нет' },
+        { label: 'Ethernet', value: 'Нет' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Метод', value: 'Термопечать' },
+        { label: 'Ширина чека', value: '80 мм' },
+        { label: 'Скорость', value: '75 мм/сек' },
+        { label: 'Автоотрезчик', value: 'Нет' },
+      ]},
+      { name: 'Совместимость', specs: [
+        { label: 'ФФД', value: '1.2' },
+        { label: '1С', value: 'Полная' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+        { label: 'ОС', value: 'Windows, Linux' },
+      ]},
+      { name: 'Габариты', specs: [
+        { label: 'Размеры', value: '160×130×80 мм' },
+        { label: 'Вес', value: '600 г' },
+      ]},
+    ],
   },
   {
     id: 'atol-22v2f', brand: 'АТОЛ', model: '22 v2 Ф', name: 'АТОЛ 22 v2 Ф',
@@ -90,6 +287,33 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Автоотрезчик', 'Скорость 200 мм/сек', 'Совместимость с 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '18 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'АТОЛ' },
+        { label: 'Тип', value: 'Фискальный регистратор' },
+        { label: 'Гарантия', value: '18 месяцев' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'USB', value: 'Есть' },
+        { label: 'RS-232', value: 'Есть' },
+        { label: 'Ethernet', value: 'Опционально' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '80 мм' },
+        { label: 'Скорость', value: '200 мм/сек' },
+        { label: 'Автоотрезчик', value: 'Есть' },
+        { label: 'Ресурс отрезчика', value: '1.5 млн отрезов' },
+      ]},
+      { name: 'Совместимость', specs: [
+        { label: 'ФФД', value: '1.2' },
+        { label: '1С', value: 'Полная' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+      ]},
+      { name: 'Габариты', specs: [
+        { label: 'Размеры', value: '160×145×100 мм' },
+        { label: 'Вес', value: '700 г' },
+      ]},
+    ],
   },
   {
     id: 'atol-35f', brand: 'АТОЛ', model: '35Ф', name: 'АТОЛ 35Ф',
@@ -99,6 +323,27 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Автоотрезчик', 'USB + Ethernet', 'Для 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '18 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'АТОЛ' },
+        { label: 'Тип', value: 'Фискальный регистратор' },
+        { label: 'Гарантия', value: '18 месяцев' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'USB', value: 'Есть' },
+        { label: 'Ethernet', value: 'Есть' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '80 мм' },
+        { label: 'Скорость', value: '200 мм/сек' },
+        { label: 'Автоотрезчик', value: 'Есть' },
+      ]},
+      { name: 'Совместимость', specs: [
+        { label: 'ФФД', value: '1.2' },
+        { label: '1С', value: 'Полная' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+      ]},
+    ],
   },
   {
     id: 'atol-55f', brand: 'АТОЛ', model: '55Ф v2', name: 'АТОЛ 55Ф v2',
@@ -108,6 +353,27 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Автоотрезчик', 'USB', 'Совместимость с 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '18 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'АТОЛ' },
+        { label: 'Тип', value: 'Фискальный регистратор' },
+        { label: 'Гарантия', value: '18 месяцев' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'USB', value: 'Есть' },
+        { label: 'RS-232', value: 'Есть' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '80 мм' },
+        { label: 'Скорость', value: '200 мм/сек' },
+        { label: 'Автоотрезчик', value: 'Есть' },
+      ]},
+      { name: 'Совместимость', specs: [
+        { label: 'ФФД', value: '1.2' },
+        { label: '1С', value: 'Полная' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+      ]},
+    ],
   },
   {
     id: 'atol-27f', brand: 'АТОЛ', model: '27Ф', name: 'АТОЛ 27Ф',
@@ -118,6 +384,33 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Автоотрезчик (1.5 млн отрезов)', 'Скорость 300 мм/сек', 'USB + Ethernet'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '18 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'АТОЛ' },
+        { label: 'Тип', value: 'Фискальный регистратор (высоконагруженный)' },
+        { label: 'Гарантия', value: '18 месяцев' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'USB', value: 'Есть' },
+        { label: 'Ethernet', value: 'Есть' },
+        { label: 'RS-232', value: 'Есть' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '80 мм' },
+        { label: 'Скорость', value: '300 мм/сек' },
+        { label: 'Автоотрезчик', value: 'Есть (1.5 млн отрезов)' },
+      ]},
+      { name: 'Нагрузка', specs: [
+        { label: 'Чеков в день', value: 'До 5000' },
+        { label: 'Срок службы', value: '7+ лет' },
+        { label: 'Для супермаркетов', value: 'Да' },
+      ]},
+      { name: 'Совместимость', specs: [
+        { label: 'ФФД', value: '1.2' },
+        { label: '1С', value: 'Полная' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+      ]},
+    ],
   },
   {
     id: 'evotor-6', brand: 'Эвотор', model: '6', name: 'Эвотор 6',
@@ -127,6 +420,31 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Сенсорный экран 6"', 'Wi-Fi + 3G', 'Эвотор.Маркет'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽ + 3 приложения', warranty: '12 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Эвотор' },
+        { label: 'Тип', value: 'Смарт-терминал' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Экран', specs: [
+        { label: 'Диагональ', value: '6"' },
+        { label: 'Тип', value: 'Сенсорный' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '3G', value: 'Есть' },
+        { label: 'Bluetooth', value: 'Есть' },
+        { label: 'USB-портов', value: '3' },
+      ]},
+      { name: 'Печать', specs: [
+        { label: 'Ширина чека', value: '58 мм' },
+      ]},
+      { name: 'ПО', specs: [
+        { label: 'ОС', value: 'Evotor OS (Android-based)' },
+        { label: 'Магазин приложений', value: 'Эвотор.Маркет' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+      ]},
+    ],
   },
   {
     id: 'evotor-7-3', brand: 'Эвотор', model: '7.3', name: 'Эвотор 7.3',
@@ -137,6 +455,33 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Сенсорный экран 7"', '5 USB-портов', 'Аккумулятор до 14ч'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽ + 5 приложений', warranty: '18 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Эвотор' },
+        { label: 'Тип', value: 'Смарт-терминал' },
+        { label: 'Гарантия', value: '18 месяцев' },
+      ]},
+      { name: 'Экран', specs: [
+        { label: 'Диагональ', value: '7"' },
+        { label: 'Тип', value: 'Сенсорный, IPS' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '3G', value: 'Есть' },
+        { label: 'Bluetooth', value: 'Есть' },
+        { label: 'USB-портов', value: '5' },
+      ]},
+      { name: 'Питание', specs: [
+        { label: 'Аккумулятор', value: 'До 14 часов' },
+        { label: 'Сменный', value: 'Да' },
+      ]},
+      { name: 'ПО', specs: [
+        { label: 'ОС', value: 'Evotor OS' },
+        { label: 'Магазин приложений', value: 'Эвотор.Маркет' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+        { label: '1С', value: 'Поддерживается' },
+      ]},
+    ],
   },
   {
     id: 'evotor-10', brand: 'Эвотор', model: '10', name: 'Эвотор 10',
@@ -147,6 +492,32 @@ export const KASSA_CATALOG: KassaProduct[] = [
     features: ['ФФД 1.2', 'Сенсорный экран 10.1"', '6 USB-портов', 'Wi-Fi + 4G'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽ + настройка 1С', warranty: '18 месяцев',
+      specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Производитель', value: 'Эвотор' },
+        { label: 'Тип', value: 'Смарт-терминал (большой экран)' },
+        { label: 'Гарантия', value: '18 месяцев' },
+      ]},
+      { name: 'Экран', specs: [
+        { label: 'Диагональ', value: '10.1"' },
+        { label: 'Тип', value: 'Сенсорный, IPS' },
+      ]},
+      { name: 'Подключение', specs: [
+        { label: 'Wi-Fi', value: 'Есть' },
+        { label: '4G', value: 'Есть' },
+        { label: 'USB-портов', value: '6' },
+      ]},
+      { name: 'Применение', specs: [
+        { label: 'Рестораны', value: 'Оптимально' },
+        { label: 'HoReCa', value: 'Да' },
+        { label: 'Магазины', value: 'Да' },
+      ]},
+      { name: 'ПО', specs: [
+        { label: 'ОС', value: 'Evotor OS' },
+        { label: 'Маркировка', value: 'Поддерживается' },
+        { label: '1С', value: 'Поддерживается' },
+      ]},
+    ],
   },
 ]
 
