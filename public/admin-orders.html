@@ -1503,40 +1503,53 @@ function setStatus(rowIndex, status) {
 
 function renderManagerPanel(d, services) {
   const checkedSet = d.managerChecklist || new Set();
+  const doneCount = MANAGER_CHECKLIST.filter(item => checkedSet.has(item.id)).length;
+  const totalCount = MANAGER_CHECKLIST.length;
+  const panelId = `mgr_${d.rowIndex}`;
   return `
     <div class="panel manager">
-      <h3>👤 Менеджер — воронка работы с заявкой</h3>
+      <h3>👤 Заявка</h3>
       <div class="body">
-        <div class="kv" style="margin-bottom:14px">
+        <div class="kv" style="margin-bottom:10px">
           <div class="k">№ заказа</div><div class="v">${escapeHtml(d.num||'—')}</div>
           <div class="k">Дата</div><div class="v">${escapeHtml(d.date||'—')}</div>
           <div class="k">Клиент</div><div class="v">${escapeHtml(d.client||'—')}</div>
           <div class="k">Телефон</div><div class="v"><a href="tel:${(d.phone||'').replace(/\D/g,'')}">${escapeHtml(d.phone||'—')}</a></div>
           <div class="k">Email</div><div class="v">${d.email ? `<a href="mailto:${escapeHtml(d.email)}">${escapeHtml(d.email)}</a>` : '—'}</div>
           <div class="k">Сумма</div><div class="v"><b>${fmtTotal(d.total)}</b></div>
-          <div class="k">Комментарий клиента</div><div class="v">${escapeHtml(d.comment||'—')}</div>
+          <div class="k">Комментарий</div><div class="v">${escapeHtml(d.comment||'—')}</div>
         </div>
-        <div class="funnel-label" style="margin-top:6px">Воронка менеджера (отметка этапа = статус)</div>
-        <ul class="checklist funnel-checklist">
-          ${MANAGER_CHECKLIST.map((item, idx) => {
-            const checked = checkedSet.has(item.id);
-            const current = (d.status || 'Новый') === item.status;
-            const cls = checked ? 'done' : (current ? 'current' : '');
-            return `
-            <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${cls}">
-              <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)">
-              <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()">
-                <div class="funnel-step-title">${item.icon} ${escapeHtml(item.label)} <span class="funnel-status-badge ${current?'current':''}">→ ${escapeHtml(item.status)}</span></div>
-                ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
-              </div>
-            </li>`;
-          }).join('')}
-        </ul>
-        <div style="margin-top:10px;padding:8px 10px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b;font-size:11px;color:#92400e">
-          ⚠️ Отметка этапа автоматически меняет статус заказа. Снятие галочки откатывает статус назад.
+      </div>
+      <div class="collapsible" id="${panelId}">
+        <div class="collapsible-toggle" onclick="toggleEngineer('${panelId}')">
+          <span>📋 Воронка менеджера ${doneCount>0 ? `<span style="opacity:.8;font-weight:400">(${doneCount}/${totalCount})</span>` : ''}</span>
+          <span class="toggle-icon">▼</span>
         </div>
-        <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-          <button class="btn danger" onclick="setStatus(${d.rowIndex}, 'Отказ')" style="font-size:12px;padding:6px 12px">❌ Отметить как отказ</button>
+        <div class="collapsible-content">
+          <div class="body">
+            <div class="funnel-label" style="margin-top:6px">Отметка этапа = статус</div>
+            <ul class="checklist funnel-checklist">
+              ${MANAGER_CHECKLIST.map((item, idx) => {
+                const checked = checkedSet.has(item.id);
+                const current = (d.status || 'Новый') === item.status;
+                const cls = checked ? 'done' : (current ? 'current' : '');
+                return `
+                <li data-row="${d.rowIndex}" data-check="${item.id}" data-list="manager" class="${cls}">
+                  <input type="checkbox" id="m_${item.id}_${d.rowIndex}" ${checked?'checked':''} onchange="toggleCheck(${d.rowIndex}, '${item.id}', 'manager', this.checked)">
+                  <div class="check-label" onclick="document.getElementById('m_${item.id}_${d.rowIndex}').click()">
+                    <div class="funnel-step-title">${item.icon} ${escapeHtml(item.label)} <span class="funnel-status-badge ${current?'current':''}">→ ${escapeHtml(item.status)}</span></div>
+                    ${item.hint ? `<small>${escapeHtml(item.hint)}</small>` : ''}
+                  </div>
+                </li>`;
+              }).join('')}
+            </ul>
+            <div style="margin-top:10px;padding:8px 10px;background:#fef3c7;border-radius:6px;border-left:3px solid #f59e0b;font-size:11px;color:#92400e">
+              ⚠️ Отметка этапа автоматически меняет статус заказа. Снятие галочки откатывает статус назад.
+            </div>
+            <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+              <button class="btn danger" onclick="setStatus(${d.rowIndex}, 'Отказ')" style="font-size:12px;padding:6px 12px">❌ Отметить как отказ</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
