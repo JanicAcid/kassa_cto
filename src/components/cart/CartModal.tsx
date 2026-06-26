@@ -5,7 +5,8 @@
 // ============================================================================
 
 import { useEffect, useState } from 'react'
-import { X, Plus, Minus, Trash2, ShoppingCart, Phone, Send } from 'lucide-react'
+import Link from 'next/link'
+import { X, Plus, Minus, Trash2, ShoppingCart, Phone, Send, Stethoscope, Calculator } from 'lucide-react'
 import { useCart } from './CartContext'
 import { CITY_PHONE, CITY_PHONE_HREF } from '@/config/contacts'
 import { PROMOCODE } from '@/config/promocode'
@@ -112,7 +113,7 @@ export function CartModal() {
 
         {submitted ? (
           // === success ===
-          <div className="p-8 flex-1 flex flex-col items-center justify-center text-center">
+          <div className="p-6 sm:p-8 flex-1 flex flex-col items-center justify-center text-center">
             <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mb-4">
               <svg className="w-10 h-10 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -130,6 +131,50 @@ export function CartModal() {
               <Phone className="w-4 h-4" />
               Или позвоните: {CITY_PHONE}
             </a>
+
+            {/* Блок предложений после заявки */}
+            <div className="mt-6 w-full max-w-md">
+              <p className="text-xs text-slate-500 mb-3">Пока ждёте звонка — проверьте свою кассу:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <Link
+                  href="/diagnostika"
+                  onClick={() => {
+                    clearCart()
+                    setSubmitted(false)
+                    setForm({ name: '', phone: '' })
+                    closeCart()
+                  }}
+                  className="flex items-center gap-2.5 p-3 rounded-xl border-2 border-slate-200 hover:border-[#163A5F] hover:bg-[#163A5F]/5 transition-all text-left"
+                >
+                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                    <Stethoscope className="w-4 h-4 text-amber-600" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-semibold text-[#163A5F] text-xs">Диагностика кассы</div>
+                    <div className="text-[10px] text-slate-500 leading-tight">8 вопросов за 3 минуты</div>
+                  </div>
+                </Link>
+                <Link
+                  href="/kalkulyatory/markirovka"
+                  onClick={() => {
+                    clearCart()
+                    setSubmitted(false)
+                    setForm({ name: '', phone: '' })
+                    closeCart()
+                  }}
+                  className="flex items-center gap-2.5 p-3 rounded-xl border-2 border-slate-200 hover:border-[#163A5F] hover:bg-[#163A5F]/5 transition-all text-left"
+                >
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                    <Calculator className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-semibold text-[#163A5F] text-xs">Калькулятор маркировки</div>
+                    <div className="text-[10px] text-slate-500 leading-tight">Рассчитать стоимость</div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
             <button
               onClick={() => {
                 clearCart()

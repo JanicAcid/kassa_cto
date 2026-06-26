@@ -51,7 +51,7 @@ export function ProductsPreview({
   const items = KASSA_PREVIEW
 
   return (
-    <section className={`max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 ${className}`}>
+    <section className={`max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 overflow-hidden ${className}`}>
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-8">
         <div className="flex-1 min-w-0">
           <h2 className="text-xl sm:text-3xl font-bold text-[#163A5F] mb-1.5 sm:mb-2 tracking-tight">
@@ -89,10 +89,11 @@ export function ProductsPreview({
         </div>
       </div>
 
+      {/* Карусель — overflow-x-auto, карточки не вылезают за края благодаря overflow-hidden на section */}
       <div
         ref={scrollRef}
-        className="flex gap-3 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-3 -mx-4 px-4 sm:mx-0 sm:px-0"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        className="flex gap-3 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-3"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
       >
         <style>{`.products-carousel::-webkit-scrollbar { display: none; }`}</style>
         <div className="products-carousel" style={{ display: 'contents' }}>

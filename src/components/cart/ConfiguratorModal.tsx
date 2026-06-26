@@ -4,14 +4,13 @@
 // ConfiguratorModal.tsx — конфигуратор «под ключ» (мобило-адаптивный)
 // ----------------------------------------------------------------------------
 // Жёсткие правила:
-//   1. «Настройка кассы под ключ» (setup) — ВСЕГДА включена, нельзя снять
-//   2. Доставка: Пушкин 600₽ / СПб 900₽ / Гатчина нет
-//   3. 2D-сканеры взаимоисключающие, ден.ящики взаимоисключающие
-//   4. tech-support-month/year взаимоисключающие
+//   1. Доставка: Пушкин 600₽ / СПб 900₽ / Гатчина нет
+//   2. 2D-сканеры взаимоисключающие, ден.ящики взаимоисключающие
+//   3. tech-support-month/year взаимоисключающие
 // ============================================================================
 
 import { useEffect, useState } from 'react'
-import { X, Check, ShoppingCart, Settings2, Lock } from 'lucide-react'
+import { X, Check, ShoppingCart, Settings2 } from 'lucide-react'
 import { CONFIGURATOR_OPTIONS, type KassaProduct, type ConfiguratorOption } from '@/config/kass-catalog'
 import { useCart } from './CartContext'
 
@@ -28,7 +27,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const [fnId, setFnId] = useState('fn-15')
   const [ofdId, setOfdId] = useState('ofd-15')
-  const [services, setServices] = useState<Set<string>>(new Set(['reg-fns', 'setup']))
+  const [services, setServices] = useState<Set<string>>(new Set(['reg-fns']))
   const [extras, setExtras] = useState<Set<string>>(new Set())
   const [city, setCity] = useState<City>(null)
 
@@ -36,7 +35,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
     if (kassa) {
       setFnId('fn-15')
       setOfdId('ofd-15')
-      setServices(new Set(['reg-fns', 'setup']))
+      setServices(new Set(['reg-fns']))
       setExtras(new Set())
       setCity(null)
     }
@@ -80,14 +79,12 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
     + selectedExtras.reduce((s, o) => s + o.price, 0)
 
   const toggleService = (id: string) => {
-    if (id === 'setup') return
     setServices(prev => {
       const next = new Set(prev)
       if (id === 'tech-support-month') next.delete('tech-support-year')
       if (id === 'tech-support-year') next.delete('tech-support-month')
       if (next.has(id)) next.delete(id)
       else next.add(id)
-      next.add('setup')
       return next
     })
   }
@@ -236,29 +233,25 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             <div className="space-y-2">
               {serviceOptions.map(o => {
                 const checked = services.has(o.id)
-                const isLocked = o.id === 'setup'
                 return (
                   <button
                     key={o.id}
                     onClick={() => toggleService(o.id)}
-                    disabled={isLocked}
                     className={`w-full text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all flex items-start gap-2.5 ${
                       checked
                         ? 'border-emerald-500 bg-emerald-50'
                         : 'border-slate-200 hover:border-slate-300'
-                    } ${isLocked ? 'cursor-default opacity-95' : 'cursor-pointer'}`}
+                    } cursor-pointer`}
                   >
                     <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 ${
                       checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'
                     }`}>
-                      {checked && (isLocked ? <Lock className="w-3 h-3" /> : <Check className="w-3.5 h-3.5" />)}
+                      {checked && <Check className="w-3.5 h-3.5" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      {/* name + price на одной строке, badge отдельно если есть */}
                       <div className="flex items-start justify-between gap-2">
                         <span className="font-semibold text-[#163A5F] text-xs sm:text-sm leading-snug">
                           {o.name}
-                          {isLocked && <span className="text-[10px] text-slate-500 font-normal ml-1">(обязательно)</span>}
                         </span>
                         <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
                           {o.price === 0 ? '0 ₽' : `${o.price.toLocaleString('ru-RU')} ₽`}
