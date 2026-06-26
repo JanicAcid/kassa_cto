@@ -451,9 +451,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 
   /* kv (поля № заказа, Дата, Клиент, Телефон, Email) — в 2 колонки на мобиле, мелко */
   .kv {
-    grid-template-columns: 60px 1fr 60px 1fr;
-    gap: 2px 4px;
-    font-size: 10px;
+    grid-template-columns: 60px 1fr 60px 1fr !important;
+    gap: 2px 4px !important;
+    font-size: 10px !important;
   }
   /* Поля с длинным значением — на всю ширину */
   .kv .v.full,
@@ -463,9 +463,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   .kv .k.full-k {
     grid-column: 1 / -1;
   }
-  .kv .k { font-size: 9px; }
-  .kv .v { font-size: 10px; }
-  .kv .v a { font-size: 10px; }
+  .kv .k { font-size: 9px !important; }
+  .kv .v { font-size: 10px !important; }
+  .kv .v a { font-size: 10px !important; }
 
   /* details-grid — минимум отступов */
   .details-grid {
@@ -792,6 +792,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   gap: 8px 12px;
   font-size: 13px;
 }
+
+/* ВНИМАНИЕ: десктопный kv выше. Мобильные правила в @media (max-width: 767px) в начале файла.
+   Если меняешь grid-template-columns здесь — добавь !important или обнови mobile версию тоже. */
 .kv .k { color: var(--text-soft); }
 .kv .v { font-weight: 500; word-break: break-word; }
 .kv .v a { color: var(--primary); text-decoration: none; }
