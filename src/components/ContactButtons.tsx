@@ -6,15 +6,15 @@
 'use client'
 
 import { Phone, MessageCircle, Send } from 'lucide-react'
+import {
+  MOBILE_PHONE,
+  MOBILE_PHONE_HREF,
+  MAX_PROFILE_URL,
+  TELEGRAM_CHAT_URL,
+} from '@/config/contacts'
 
-// ============================================================================
-// Константы контактов — единый источник правды
-// ============================================================================
-
-export const MOBILE_PHONE = '+7 (921) 932-41-63'
-export const MOBILE_PHONE_HREF = 'tel:+79219324163'
-export const MAX_PROFILE_URL = 'tel:+79219324163'
-export const TELEGRAM_CHAT_URL = 'https://t.me/+79219324163'
+// Реэкспорт для обратной совместимости (на случай если кто-то импортирует отсюда)
+export { MOBILE_PHONE, MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL }
 
 // ============================================================================
 // Варианты отображения

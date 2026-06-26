@@ -20,7 +20,13 @@ export const MOBILE_PHONE = '+7 (921) 932-41-63'
 export const MOBILE_PHONE_HREF = 'tel:+79219324163'
 
 // Мессенджеры — привязаны к мобильному номеру +7 (921) 932-41-63
-export const MAX_PROFILE_URL = 'tel:+79219324163'
+// MAX_PROFILE_URL — ссылка на профиль в мессенджере MAX.
+// ВАЖНО: tel: открывает звонилку, НЕ мессенджер.
+// Чтобы открывался чат в MAX — нужна персональная ссылка профиля вида
+//   https://max.ru/<username>  или  max://user/<user_id>
+// Получить: приложение MAX → Профиль → QR-код → Поделиться → Скопировать ссылку
+// Пока пользователь не дал ссылку — fallback на https://max.ru/
+export const MAX_PROFILE_URL = 'https://max.ru/'
 export const TELEGRAM_CHAT_URL = 'https://t.me/+79219324163'
 
 // Все городские телефоны (для страницы контактов)
