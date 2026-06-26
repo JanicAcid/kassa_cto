@@ -111,7 +111,9 @@ export function ProductsPreview({
             <Link
               key={kassa.id}
               href="/katalog-kass"
-              className="group snap-start shrink-0 w-[210px] sm:w-[260px] bg-white rounded-xl border border-slate-200 overflow-hidden transition-all duration-200 hover:shadow-lg hover:border-[#163A5F]/30 hover:-translate-y-0.5 flex flex-col"
+              // Мобила: 75% ширины экрана (видно кусок следующей — понятно что свайпается)
+              // Десктоп: фиксированная 260px
+              className="group snap-start shrink-0 w-[75%] sm:w-[260px] bg-white rounded-xl border border-slate-200 overflow-hidden transition-all duration-200 hover:shadow-lg hover:border-[#163A5F]/30 hover:-translate-y-0.5 flex flex-col"
             >
               <div className="relative bg-slate-50 aspect-[4/3] flex items-center justify-center p-3 sm:p-4 border-b border-slate-100">
                 {kassa.badge && (
@@ -171,7 +173,7 @@ export function ProductsPreview({
 
         <Link
           href="/katalog-kass"
-          className="snap-start shrink-0 w-[180px] sm:w-[220px] bg-gradient-to-br from-[#163A5F] to-[#1E4A78] rounded-xl overflow-hidden flex flex-col items-center justify-center p-5 sm:p-6 text-white hover:shadow-lg transition-all hover:-translate-y-0.5"
+          className="snap-start shrink-0 w-[60%] sm:w-[220px] bg-gradient-to-br from-[#163A5F] to-[#1E4A78] rounded-xl overflow-hidden flex flex-col items-center justify-center p-5 sm:p-6 text-white hover:shadow-lg transition-all hover:-translate-y-0.5"
         >
           <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/15 flex items-center justify-center mb-2 sm:mb-3">
             <ArrowRight className="w-6 h-6 sm:w-7 sm:h-7" />
