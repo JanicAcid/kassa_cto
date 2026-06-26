@@ -349,6 +349,96 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   /* Empty state */
   .empty { padding: 40px 16px; }
   .empty h2 { font-size: 16px; }
+
+  /* ─── COMPACT MOBILE FIX — уменьшаем растянутые блоки ─── */
+
+  /* Воронка статусов — компактная, скроллится горизонтально */
+  .funnel {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 8px 10px;
+    gap: 6px;
+    margin-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .funnel::-webkit-scrollbar { display: none; }
+  .funnel-step {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  .funnel-arrow { font-size: 12px; }
+  .funnel-label { font-size: 10px; margin-bottom: 4px; }
+
+  /* Карточка заказа — компактнее */
+  .order-card { margin-bottom: 8px; }
+  .order-header { padding: 10px 12px; gap: 4px 10px; }
+  .order-num { font-size: 12px; }
+  .order-client { font-size: 14px; }
+  .order-client small { font-size: 11px; margin-top: 2px; }
+  .order-services-preview { margin-top: 3px; max-height: 16px; }
+  .order-services-preview .service-chip { font-size: 9px; padding: 1px 5px; }
+  .order-mobile-meta { gap: 6px; margin-top: 4px; }
+  .order-mobile-kkm { font-size: 10px; padding: 1px 6px; }
+  .order-mobile-total { font-size: 12px; }
+
+  /* Развёрнутая карточка — меньше отступов */
+  .details-grid { padding: 10px 12px; gap: 10px; }
+  .services-block { margin: 0 12px 10px; }
+  .services-block .body { padding: 8px 10px; }
+  .services-list li { font-size: 11px; padding: 5px 8px; }
+  .services-list li .price { font-size: 11px; }
+
+  /* Воронка-чеклист — компактнее */
+  .funnel-checklist li { padding: 8px 10px; }
+  .funnel-checklist .funnel-step-title { font-size: 12px; }
+  .funnel-checklist .check-label small { font-size: 10px; }
+
+  /* Actions row — кнопки меньше */
+  .actions-row { padding: 8px 12px; gap: 6px; }
+  .actions-row .btn { font-size: 12px; padding: 8px 12px; }
+  .actions-row .note-input { font-size: 12px; padding: 8px 10px; }
+
+  /* kv пары — ещё компактнее */
+  .kv { grid-template-columns: 90px 1fr; gap: 4px 8px; font-size: 11px; }
+  .kv .k { font-size: 10px; }
+  .kv .v { font-size: 11px; }
+
+  /* Панели — меньше padding */
+  .panel h3 { font-size: 10px; padding: 6px 10px; }
+  .panel .body { padding: 8px 10px; }
+
+  /* Collapsible-toggle — компактнее */
+  .collapsible-toggle { padding: 6px 10px; font-size: 10px; }
+
+  /* Инженерная панель — меньше margin */
+  .order-details > .panel.engineer { margin: 0 12px 10px; }
+
+  /* Stats — компактнее */
+  .stats { gap: 6px; }
+  .stat { padding: 8px 10px; }
+  .stat .value { font-size: 16px; }
+  .stat .label { font-size: 9px; }
+
+  /* Main — меньше padding */
+  main { padding: 10px 10px; }
+
+  /* Filters — компактнее */
+  .filters { padding: 8px 12px; gap: 6px; }
+  .filters input { font-size: 13px; padding: 8px 10px; }
+  .filters select { font-size: 13px; padding: 8px 10px; }
+
+  /* Header — компактнее */
+  header .header-inner { padding: 8px 12px; gap: 6px; }
+  header .brand img { height: 28px; }
+  header .brand .brand-text strong { font-size: 12px; }
+  header .brand .brand-text small { font-size: 8px; }
+  header .actions button,
+  header .actions .btn-link {
+    padding: 7px 9px;
+    font-size: 12px;
+  }
 }
 /* Статусы — новая палитра по требованиям арт-директора */
 .status-Новый { background: #DBEAFE; color: #2563EB; }
@@ -903,15 +993,10 @@ async function loadCaptcha() {
   state.captchaQuestion = d.question;
 }
 
-async function login(login, password, captchaAnswer, honeypot = '') {
+async function login(login, password, captchaAnswer) {
   return api('/admin/auth', {
     method: 'POST',
-    body: JSON.stringify({
-      login, password,
-      captchaToken: state.captchaToken,
-      captchaAnswer,
-      website: honeypot,  // honeypot — должен быть пустым
-    }),
+    body: JSON.stringify({ login, password, captchaToken: state.captchaToken, captchaAnswer }),
   });
 }
 
@@ -1058,10 +1143,6 @@ function renderLogin(root) {
           <input id="li_pass" type="password" autocomplete="current-password" placeholder="••••••••">
           <label>Капча: <span class="captcha" id="li_captcha">${state.captchaQuestion || 'загрузка...'}</span></label>
           <input id="li_cap_ans" type="text" inputmode="numeric" placeholder="Ответ">
-          <!-- Honeypot — скрытое поле, боты заполняют, люди нет -->
-          <input type="text" name="website" tabindex="-1" autocomplete="off"
-                 style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0"
-                 aria-hidden="true" />
           <button id="li_btn" onclick="doLogin()">Войти</button>
           <div id="li_err" class="login-error"></div>
         </div>
@@ -1074,14 +1155,12 @@ async function doLogin() {
   const l = document.getElementById('li_login').value.trim();
   const p = document.getElementById('li_pass').value;
   const a = document.getElementById('li_cap_ans').value.trim();
-  // Honeypot: скрытое поле, которое боты заполнят автоматически
-  const hp = document.querySelector('input[name="website"]')?.value || '';
   const err = document.getElementById('li_err');
   const btn = document.getElementById('li_btn');
   btn.disabled = true; btn.textContent = 'Вход...';
   err.textContent = '';
   try {
-    await login(l, p, a, hp);
+    await login(l, p, a);
     state.authed = true;
     await loadOrders();
   } catch (e) {
