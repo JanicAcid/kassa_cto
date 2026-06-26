@@ -168,18 +168,18 @@ function CatalogContent() {
             <span className="text-white/80">Каталог</span>
           </nav>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-6">
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 text-center sm:text-left">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-1.5 sm:mb-2 tracking-tight">
                 Каталог
               </h1>
-              <p className="text-xs sm:text-sm text-white/80 max-w-2xl leading-snug">
+              <p className="text-xs sm:text-sm text-white/80 max-w-2xl leading-snug mx-auto sm:mx-0">
                 Кассы с установкой под ключ: ФН, ОФД, регистрация в ФНС, маркировка. Промокод{' '}
                 <b className="text-amber-200 tracking-wider">{PROMOCODE}</b> — спеццена.
               </p>
             </div>
             <a
               href={CITY_PHONE_HREF}
-              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors text-sm whitespace-nowrap flex-shrink-0 self-start sm:self-end"
+              className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors text-sm whitespace-nowrap flex-shrink-0 w-full sm:w-auto self-stretch sm:self-end"
             >
               <Phone className="w-4 h-4" />
               {CITY_PHONE}
