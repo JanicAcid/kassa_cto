@@ -51,58 +51,53 @@ export function ProductsPreview({
   const items = KASSA_PREVIEW
 
   return (
-    <section className={`w-full py-10 sm:py-16 ${className}`}>
-      {/* Заголовок и подзаголовок — в отдельном контейнере с padding */}
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 mb-5 sm:mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <h2 className="text-xl sm:text-3xl font-bold text-[#163A5F] mb-1.5 sm:mb-2 tracking-tight">
-              {title}
-            </h2>
-            <p className="text-xs sm:text-base text-slate-600 max-w-2xl leading-snug sm:leading-relaxed">
-              {subtitle}
-            </p>
-          </div>
-          <div className="hidden sm:flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => scrollBy(-1)}
-              disabled={!canLeft}
-              aria-label="Назад"
-              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
-                canLeft
-                  ? 'border-[#163A5F] text-[#163A5F] hover:bg-[#163A5F] hover:text-white'
-                  : 'border-slate-200 text-slate-300 cursor-not-allowed'
-              }`}
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scrollBy(1)}
-              disabled={!canRight}
-              aria-label="Вперёд"
-              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
-                canRight
-                  ? 'border-[#163A5F] text-[#163A5F] hover:bg-[#163A5F] hover:text-white'
-                  : 'border-slate-200 text-slate-300 cursor-not-allowed'
-              }`}
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+    <section className={`max-w-[1200px] mx-auto px-4 sm:px-6 py-10 sm:py-16 ${className}`}>
+      {/* Заголовок и подзаголовок + кнопки листания (десктоп) */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-8">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-xl sm:text-3xl font-bold text-[#163A5F] mb-1.5 sm:mb-2 tracking-tight">
+            {title}
+          </h2>
+          <p className="text-xs sm:text-base text-slate-600 max-w-2xl leading-snug sm:leading-relaxed">
+            {subtitle}
+          </p>
+        </div>
+        <div className="hidden sm:flex items-center gap-2 shrink-0">
+          <button
+            onClick={() => scrollBy(-1)}
+            disabled={!canLeft}
+            aria-label="Назад"
+            className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
+              canLeft
+                ? 'border-[#163A5F] text-[#163A5F] hover:bg-[#163A5F] hover:text-white'
+                : 'border-slate-200 text-slate-300 cursor-not-allowed'
+            }`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => scrollBy(1)}
+            disabled={!canRight}
+            aria-label="Вперёд"
+            className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
+              canRight
+                ? 'border-[#163A5F] text-[#163A5F] hover:bg-[#163A5F] hover:text-white'
+                : 'border-slate-200 text-slate-300 cursor-not-allowed'
+            }`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
       </div>
 
-      {/* Карусель — w-full, БЕЗ max-w и padding, чтобы скролл не вылезал */}
+      {/* Карусель — внутри max-w-[1200px] контейнера, overflow-x-auto сам ограничивает */}
       <div
         ref={scrollRef}
-        className="flex gap-3 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-3 px-4 sm:px-6 w-full"
+        className="flex gap-3 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-3 w-full"
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
           WebkitOverflowScrolling: 'touch',
-          // Жёстко ограничиваем ширину, чтобы карточки не вылезали
-          width: '100%',
-          maxWidth: '100vw',
           boxSizing: 'border-box',
         }}
       >
@@ -188,20 +183,18 @@ export function ProductsPreview({
         </Link>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
-        <div className="mt-2 sm:hidden text-center text-[11px] text-slate-400">
-          ← листайте, чтобы увидеть все модели →
-        </div>
+      <div className="mt-2 sm:hidden text-center text-[11px] text-slate-400">
+        ← листайте, чтобы увидеть все модели →
+      </div>
 
-        <div className="hidden sm:block text-center mt-6">
-          <Link
-            href="/katalog-kass"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#163A5F] hover:bg-[#1E4A78] text-white text-sm font-bold rounded-xl transition-colors"
-          >
-            Все модели в каталоге
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+      <div className="hidden sm:block text-center mt-6">
+        <Link
+          href="/katalog-kass"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[#163A5F] hover:bg-[#1E4A78] text-white text-sm font-bold rounded-xl transition-colors"
+        >
+          Все модели в каталоге
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
     </section>
   )
