@@ -27,7 +27,7 @@ import { CatalogFilters, applyFilters, DEFAULT_FILTER, type FilterState } from '
 const jsonLdCatalog = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'Каталог онлайн-касс Теллур-Интех',
+  name: 'Каталог — Теллур-Интех',
   itemListElement: KASSA_CATALOG.map((kassa, idx) => ({
     '@type': 'ListItem',
     position: idx + 1,
@@ -165,12 +165,12 @@ function CatalogContent() {
           <nav className="flex items-center gap-1.5 text-[11px] text-white/60 mb-2">
             <Link href="/" className="hover:text-white">Главная</Link>
             <span>/</span>
-            <span className="text-white/80">Каталог касс</span>
+            <span className="text-white/80">Каталог</span>
           </nav>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-6">
             <div className="flex-1 min-w-0">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-1.5 sm:mb-2 tracking-tight">
-                Каталог онлайн-касс в СПб
+                Каталог
               </h1>
               <p className="text-xs sm:text-sm text-white/80 max-w-2xl leading-snug">
                 Кассы с установкой под ключ: ФН, ОФД, регистрация в ФНС, маркировка. Промокод{' '}

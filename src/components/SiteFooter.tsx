@@ -10,7 +10,7 @@ import { PROMOCODE } from '@/config/promocode'
 
 const NAV_LINKS = [
   { label: 'Главная', href: '/' },
-  { label: 'Каталог касс', href: '/katalog-kass' },
+  { label: 'Каталог', href: '/katalog-kass' },
   { label: 'Калькуляторы', href: '/kalkulyatory' },
   { label: 'База знаний', href: '/instructions' },
   { label: 'Услуги', href: '/services' },
