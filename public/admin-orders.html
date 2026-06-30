@@ -802,13 +802,15 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 
 .kv {
   display: grid;
-  grid-template-columns: 130px 1fr;
   gap: 8px 12px;
   font-size: 13px;
 }
 
-/* ВНИМАНИЕ: десктопный kv выше. Мобильные правила в @media (max-width: 767px) в начале файла.
-   Если меняешь grid-template-columns здесь — добавь !important или обнови mobile версию тоже. */
+/* Десктопный kv grid только для >=768px. Mobile в @media (max-width: 767px) в начале файла. */
+@media (min-width: 768px) {
+  .kv { grid-template-columns: 130px 1fr; }
+}
+
 .kv .k { color: var(--text-soft); }
 .kv .v { font-weight: 500; word-break: break-word; }
 .kv .v a { color: var(--primary); text-decoration: none; }

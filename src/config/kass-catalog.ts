@@ -122,7 +122,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
   },
   {
     id: 'aqsi-5-acq', brand: 'AQSI', model: '5Ф', name: 'AQSI 5Ф (с эквайрингом)',
-    price: 24600, oldPrice: 29520,
+    price: 22100, oldPrice: 26520,
     images: ['/kass-photo/aqsi-5-acq_1.webp', '/kass-photo/aqsi-5-acq_2.webp', '/kass-photo/aqsi-5-acq_3.webp', '/kass-photo/aqsi-5-acq_4.png'],
     badge: 'С эквайрингом',
     shortDesc: 'Касса с встроенным приёмом банковских карт',
@@ -162,7 +162,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
   },
   {
     id: 'aqsi-6-acq', brand: 'AQSI', model: '6Ф', name: 'AQSI 6Ф (с эквайрингом)',
-    price: 25900, oldPrice: 31080,
+    price: 20000, oldPrice: 24000,
     images: ['/kass-photo/aqsi-6-acq_1.webp', '/kass-photo/aqsi-6-acq_2.webp', '/kass-photo/aqsi-6-acq_3.jpg', '/kass-photo/aqsi-6-acq_4.png'],
     badge: 'NEW',
     shortDesc: 'Новая касса с эквайрингом и улучшенным экраном',
