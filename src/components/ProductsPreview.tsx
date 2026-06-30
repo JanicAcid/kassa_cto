@@ -15,7 +15,7 @@ interface ProductsPreviewProps {
 
 export function ProductsPreview({
   title = 'Каталог',
-  subtitle = 'Продаём кассы с установкой под ключ. Все модели в наличии, доставка по СПб и ЛО.',
+  subtitle = 'Продаём кассы с установкой под ключ. Все модели в наличии, есть доставка.',
   className = '',
 }: ProductsPreviewProps) {
   const scrollRef = useRef<HTMLDivElement>(null)

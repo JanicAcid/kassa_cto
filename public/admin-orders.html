@@ -323,7 +323,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   .actions-row .btn { font-size: 13px; padding: 10px 14px; }
 
   /* Инженерная панель */
-  .order-details > .panel.engineer { margin: 0 14px 14px; }
+  .order-details > .panel.engineer,
+  .order-details > .panel.manager { margin: 0 14px 14px; }
 
   /* kv пары */
   .kv { grid-template-columns: 100px 1fr; gap: 6px 10px; font-size: 12px; }
@@ -413,7 +414,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
   .collapsible-toggle { padding: 6px 10px; font-size: 10px; }
 
   /* Инженерная панель — меньше margin */
-  .order-details > .panel.engineer { margin: 0 12px 10px; }
+  .order-details > .panel.engineer,
+  .order-details > .panel.manager { margin: 0 12px 10px; }
 
   /* Stats — компактнее */
   .stats { gap: 6px; }
@@ -544,8 +546,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
     padding: 6px 8px;
   }
 
-  /* engineer panel */
-  .order-details > .panel.engineer {
+  /* engineer + manager panels — одинаковые отступы */
+  .order-details > .panel.engineer,
+  .order-details > .panel.manager {
     margin: 0 10px 8px;
   }
 
@@ -776,8 +779,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 .panel .body { min-width: 0; }
 .kv { min-width: 0; }
 
-/* Панель инженера внизу карточки — на всю ширину */
-.order-details > .panel.engineer {
+/* Панели инженера и менеджера внизу карточки — на всю ширину */
+.order-details > .panel.engineer,
+.order-details > .panel.manager {
   margin: 0 18px 18px;
 }
 
@@ -1449,9 +1453,7 @@ function renderOrder(o) {
       </div>
       <div class="order-details">
         ${renderServicesBlock(d, services)}
-        <div class="details-grid">
-          ${renderManagerPanel(d, services)}
-        </div>
+        ${renderManagerPanel(d, services)}
         <div class="actions-row">
           <input class="note-input" id="note_${d.rowIndex}" placeholder="Комментарий менеджера..." value="${escapeHtml(d.note||'')}">
           <button class="btn primary" onclick="saveNote(${d.rowIndex})">💾 Сохранить</button>
