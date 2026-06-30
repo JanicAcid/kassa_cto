@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import {
-  Calculator, Phone, ArrowRight, Clock, ShieldCheck,
+  Phone, ArrowRight, Clock, ShieldCheck,
   Monitor, Tag, ChevronRight, FileText, HelpCircle,
-  CheckCircle, Star, Building2, Users, Wrench, Footprints, Package, QrCode, Shirt, Store, Settings, Send, MessageCircle
+  CheckCircle, Star, Building2, Users, Wrench, Footprints, Package, QrCode, Shirt, Store, Settings, MessageCircle, LayoutGrid, X
 } from 'lucide-react'
-import { MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
+import { CITY_PHONE_HREF, MAX_PROFILE_URL } from '@/config/contacts'
+import { PROMOCODE } from '@/config/promocode'
 import { ProductsPreview } from '@/components/ProductsPreview'
 
 // ============================================================================
@@ -105,6 +106,7 @@ const ARTICLES = [
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [showPromoModal, setShowPromoModal] = useState(false)
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -155,6 +157,13 @@ export default function HomePage() {
           <div className="anim-fade-in-up anim-delay-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <a
               href="tel:+78124659457"
+              onClick={(e) => {
+                // На ПК открываем модалку с промокодом, на мобиле — звонилка
+                if (window.innerWidth >= 768) {
+                  e.preventDefault()
+                  setShowPromoModal(true)
+                }
+              }}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-[#F59E0B] hover:bg-[#D97706] text-white text-base sm:text-lg font-bold rounded-xl transition-all duration-200 shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:shadow-[#F59E0B]/35 hover:-translate-y-0.5 active:scale-[0.98]"
             >
               <Phone className="w-5 h-5" />
@@ -164,7 +173,7 @@ export default function HomePage() {
               href="/services"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/15 hover:bg-white/25 text-white text-base sm:text-lg font-medium rounded-xl transition-all duration-200 border border-white/20 hover:border-white/30"
             >
-              <Calculator className="w-5 h-5" />
+              <LayoutGrid className="w-5 h-5" />
               Все услуги
             </Link>
             <a
@@ -208,28 +217,6 @@ export default function HomePage() {
         title="Каталог"
         subtitle="Продаём кассы с установкой под ключ: ФН, ОФД, регистрация в ФНС, настройка маркировки. Все модели в наличии, есть доставка."
       />
-
-      {/* ================================================================== */}
-      {/* TRUST / STATS SECTION */}
-      {/* ================================================================== */}
-      <section className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-            {STATS.map((stat, idx) => (
-              <div key={idx} className="text-center">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center">
-                  {idx === 0 && <Clock className="w-6 h-6 text-[#F59E0B]" />}
-                  {idx === 1 && <Wrench className="w-6 h-6 text-[#F59E0B]" />}
-                  {idx === 2 && <Users className="w-6 h-6 text-[#F59E0B]" />}
-                  {idx === 3 && <ShieldCheck className="w-6 h-6 text-[#F59E0B]" />}
-                </div>
-                <p className="text-2xl sm:text-3xl font-extrabold text-white">{stat.value}</p>
-                <p className="text-xs sm:text-sm text-white/60 mt-1">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ================================================================== */}
       {/* SERVICES PREVIEW */}
@@ -460,15 +447,6 @@ export default function HomePage() {
                   <MessageCircle className="w-5 h-5" />
                   Max
                 </a>
-                <a
-                  href={TELEGRAM_CHAT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl transition-colors shadow-md"
-                >
-                  <Send className="w-5 h-5" />
-                  Telegram
-                </a>
               </div>
               <a
                 href="mailto:push@tellur.spb.ru"
@@ -479,6 +457,52 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Модалка промокода при клике «Позвонить» на ПК */}
+      {showPromoModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+          onClick={() => setShowPromoModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="bg-gradient-to-r from-amber-400 to-amber-500 px-5 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-white font-bold">
+                <Tag className="w-4 h-4" />
+                Спеццена по промокоду
+              </div>
+              <button
+                onClick={() => setShowPromoModal(false)}
+                aria-label="Закрыть"
+                className="text-white/80 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 text-center">
+              <p className="text-sm text-slate-600 mb-3">
+                Цены на сайте — спецусловия. Чтобы менеджер их учёл, назовите промокод:
+              </p>
+              <div className="text-4xl font-extrabold text-amber-600 tracking-[0.25em] py-3 bg-amber-50 rounded-xl border-2 border-amber-200 mb-4">
+                {PROMOCODE}
+              </div>
+              <p className="text-xs text-slate-500 mb-5">
+                Промокод действует при звонке с сайта. Назовите его менеджеру — примените спеццену как на сайте.
+              </p>
+              <a
+                href={CITY_PHONE_HREF}
+                onClick={() => setShowPromoModal(false)}
+                className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                Позвонить: +7 (812) 465-94-57
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

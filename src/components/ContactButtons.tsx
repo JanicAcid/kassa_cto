@@ -1,11 +1,11 @@
 // ============================================================================
-// ContactButtons — 3 канала связи: Телефон, Max, Telegram
-// Все привязаны к мобильному +7 (921) 932-41-63
+// ContactButtons — 2 канала связи: Телефон, Max
+// Telegram убран по требованию пользователя
 // ============================================================================
 
 'use client'
 
-import { Phone, MessageCircle, Send } from 'lucide-react'
+import { Phone, MessageCircle } from 'lucide-react'
 import {
   MOBILE_PHONE,
   MOBILE_PHONE_HREF,
@@ -13,17 +13,11 @@ import {
   TELEGRAM_CHAT_URL,
 } from '@/config/contacts'
 
-// Реэкспорт для обратной совместимости (на случай если кто-то импортирует отсюда)
+// Реэкспорт для обратной совместимости
 export { MOBILE_PHONE, MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL }
 
-// ============================================================================
-// Варианты отображения
-// ============================================================================
-
 interface ContactButtonsProps {
-  /** compact — маленькие иконки с текстом (inline), full — карточки с подписями */
   variant?: 'compact' | 'full'
-  /** Дополнительный CSS-класс для обёртки */
   className?: string
 }
 
@@ -43,14 +37,6 @@ export function ContactButtons({ variant = 'full', className = '' }: ContactButt
       label: 'Max',
       short: 'Написать в Max',
       color: 'bg-blue-500 hover:bg-blue-600',
-      external: true,
-    },
-    {
-      href: TELEGRAM_CHAT_URL,
-      icon: <Send className="w-5 h-5" />,
-      label: 'Telegram',
-      short: 'Написать в Telegram',
-      color: 'bg-sky-500 hover:bg-sky-600',
       external: true,
     },
   ]
@@ -74,7 +60,7 @@ export function ContactButtons({ variant = 'full', className = '' }: ContactButt
   }
 
   return (
-    <div className={`grid grid-cols-3 gap-2.5 sm:gap-3 ${className}`}>
+    <div className={`grid grid-cols-2 gap-2.5 sm:gap-3 ${className}`}>
       {contacts.map(c => (
         <a
           key={c.label}

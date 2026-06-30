@@ -12,7 +12,7 @@ import {
   Phone, MessageSquare, Download, X, ArrowLeft, CheckCircle2, Info,
   Clock, Zap, ShieldCheck, Headphones, ChevronRight, Send
 } from 'lucide-react'
-import { PHONES, MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL } from '@/config/contacts'
+import { PHONES, MOBILE_PHONE_HREF, MAX_PROFILE_URL } from '@/config/contacts'
 import type { DoneScreenProps, GenerateOrderHtmlParams } from './types'
 
 // ============================================================================
@@ -472,15 +472,6 @@ export function DoneScreen({
               >
                 <MessageSquare className="w-4 h-4" />
                 Написать в Max
-              </a>
-              <a
-                href={TELEGRAM_CHAT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-white/15 hover:bg-white/25 text-white font-bold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2"
-              >
-                <Send className="w-4 h-4" />
-                Telegram
               </a>
             </div>
           </div>

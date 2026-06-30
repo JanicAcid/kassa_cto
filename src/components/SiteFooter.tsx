@@ -4,8 +4,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Send, Tag } from 'lucide-react'
-import { TELEGRAM_CHAT_URL } from '@/config/contacts'
+import { Phone, Mail, MapPin, Tag, MessageCircle } from 'lucide-react'
+import { MAX_PROFILE_URL } from '@/config/contacts'
 import { PROMOCODE } from '@/config/promocode'
 
 const NAV_LINKS = [
@@ -88,9 +88,9 @@ export function SiteFooter() {
                   <Phone className="w-4 h-4 shrink-0" />
                   +7 (921) 932-41-63
                 </a>
-                <a href={TELEGRAM_CHAT_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors" title="Чат с нами в Telegram: +7 (921) 932-41-63">
-                  <Send className="w-4 h-4 shrink-0" />
-                  Telegram
+                <a href={MAX_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors" title="Написать в мессенджер MAX">
+                  <MessageCircle className="w-4 h-4 shrink-0" />
+                  MAX
                 </a>
               </div>
               <a href="mailto:push@tellur.spb.ru" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
@@ -107,14 +107,14 @@ export function SiteFooter() {
 
         {/* Нижняя строка */}
         <div className="mt-8 pt-5 border-t border-white/10">
-          {/* Промокод-плашка */}
-          <div className="mb-4 flex flex-col sm:flex-row items-center justify-center gap-2 px-4 py-3 bg-amber-400/10 border border-dashed border-amber-300/40 rounded-xl">
-            <Tag className="w-4 h-4 text-amber-300 shrink-0" />
-            <span className="text-sm text-amber-100 text-center">
-              🎟️ Промокод <b className="tracking-wider text-amber-50">{PROMOCODE}</b> — примените спеццену при звонке с сайта.
-              {' '}
-              <span className="text-amber-200/80">Назовите менеджеру.</span>
-            </span>
+          {/* Промокод-плашка — компактная, заметная */}
+          <div className="mb-4 flex items-center justify-center gap-3 px-5 py-3.5 bg-gradient-to-r from-amber-500 to-amber-400 rounded-xl shadow-lg shadow-amber-500/20">
+            <Tag className="w-5 h-5 text-white shrink-0" />
+            <div className="flex items-baseline gap-2 flex-wrap justify-center">
+              <span className="text-sm font-medium text-white/90">Промокод</span>
+              <b className="text-lg tracking-[0.2em] text-white font-extrabold">{PROMOCODE}</b>
+              <span className="text-xs text-white/80">— спеццена при звонке</span>
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
             <p className="order-2 sm:order-1">© {new Date().getFullYear()} ООО «Теллур-Интех». Все права защищены.</p>

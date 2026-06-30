@@ -19,18 +19,11 @@ export const CITY_PHONE_HREF = 'tel:+78124659457'
 export const MOBILE_PHONE = '+7 (921) 932-41-63'
 export const MOBILE_PHONE_HREF = 'tel:+79219324163'
 
-// Мессенджеры — привязаны к мобильному номеру +7 (921) 932-41-63
-// MAX_PROFILE_URL — ссылка на чат в мессенджере MAX.
-// Изучена документация https://dev.max.ru/docs:
-//   1. max://user/<user_id> — для упоминания пользователя (нужен internal user_id, НЕ номер)
-//   2. https://max.ru/<botName> — для ботов
-//   3. По номеру телефона прямой ссылки НЕТ (только через бота с кнопкой request_contact)
-//
-// Решение: используем web.max.ru/messages — открывает веб-версию MAX на списке чатов.
-// Если у пользователя установлено приложение MAX — браузер предложит открыть в нём.
-// В будущем, когда пользователь даст @username или ссылку на свой профиль — заменим.
-export const MAX_PROFILE_URL = 'https://web.max.ru/messages'
-export const TELEGRAM_CHAT_URL = 'https://t.me/+79219324163'
+// Мессенджеры
+// MAX_PROFILE_URL — ссылка на чат в мессенджере MAX от пользователя
+export const MAX_PROFILE_URL = 'https://max.ru/c/-72448395814985/AZ8YVD4MfBk'
+// Telegram — УБРАН со всего сайта (пользователь просил)
+export const TELEGRAM_CHAT_URL = ''
 
 // Все городские телефоны (для страницы контактов)
 export const PHONES = [
