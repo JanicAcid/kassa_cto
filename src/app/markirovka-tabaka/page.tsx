@@ -10,13 +10,13 @@ import {
   ChevronDown,
   Phone,
   Calculator,
-  MessageCircle,
   UserPlus,
   Settings,
   Wifi,
   GraduationCap,
 } from 'lucide-react'
 import { SITE_URL } from '@/config/site'
+import { MaxIcon } from '@/components/MaxIcon'
 
 const PAGE_URL = `${SITE_URL}/markirovka-tabaka`
 
@@ -136,7 +136,7 @@ export default function MarkirovkaTabakaPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#163A5F]/20 hover:border-[#163A5F]/40 text-[#163A5F] font-bold rounded-xl transition-colors"
             >
-              <MessageCircle className="w-5 h-5" />
+              <MaxIcon size={20} />
               Получить консультацию
             </a>
           </div>

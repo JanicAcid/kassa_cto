@@ -4,8 +4,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Tag, MessageCircle } from 'lucide-react'
+import { Phone, Mail, MapPin, Tag } from 'lucide-react'
 import { MAX_PROFILE_URL } from '@/config/contacts'
+import { MaxIcon } from '@/components/MaxIcon'
 import { PROMOCODE } from '@/config/promocode'
 
 const NAV_LINKS = [
@@ -89,7 +90,7 @@ export function SiteFooter() {
                   +7 (921) 932-41-63
                 </a>
                 <a href={MAX_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors" title="Написать в мессенджер MAX">
-                  <MessageCircle className="w-4 h-4 shrink-0" />
+                  <MaxIcon size={16} className="text-white/50" />
                   MAX
                 </a>
               </div>

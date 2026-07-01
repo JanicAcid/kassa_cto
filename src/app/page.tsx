@@ -5,11 +5,12 @@ import Link from 'next/link'
 import {
   Phone, ArrowRight, Clock, ShieldCheck,
   Monitor, Tag, ChevronRight, FileText, HelpCircle,
-  CheckCircle, Star, Building2, Users, Wrench, Footprints, Package, QrCode, Shirt, Store, Settings, MessageCircle, LayoutGrid, X
+  CheckCircle, Star, Building2, Users, Wrench, Footprints, Package, QrCode, Shirt, Store, Settings, LayoutGrid, X
 } from 'lucide-react'
 import { CITY_PHONE_HREF, MAX_PROFILE_URL } from '@/config/contacts'
 import { PROMOCODE } from '@/config/promocode'
 import { ProductsPreview } from '@/components/ProductsPreview'
+import { MaxIcon } from '@/components/MaxIcon'
 
 // ============================================================================
 // ГЛАВНАЯ — Центр поддержки пользователей ККТ
@@ -182,7 +183,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 text-white text-base sm:text-lg font-medium rounded-xl transition-all duration-200 border border-white/15 hover:border-white/25"
             >
-              <MessageCircle className="w-5 h-5" />
+              <MaxIcon size={20} />
               Написать в Max
             </a>
           </div>
@@ -444,7 +445,7 @@ export default function HomePage() {
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-colors shadow-md"
                 >
-                  <MessageCircle className="w-5 h-5" />
+                  <MaxIcon size={20} />
                   Max
                 </a>
               </div>

@@ -4,7 +4,7 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, Phone, Mail, Clock, ExternalLink, MessageCircle } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react'
 import { BRANCHES } from '@/config/contacts'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { SITE_URL } from '@/config/site'

@@ -13,6 +13,7 @@ import {
   Clock, Zap, ShieldCheck, Headphones, ChevronRight, Send
 } from 'lucide-react'
 import { PHONES, MOBILE_PHONE_HREF, MAX_PROFILE_URL } from '@/config/contacts'
+import { MaxIcon } from '@/components/MaxIcon'
 import type { DoneScreenProps, GenerateOrderHtmlParams } from './types'
 
 // ============================================================================
@@ -394,7 +395,7 @@ export function DoneScreen({
                 <Phone className="w-3.5 h-3.5" />Позвонить
               </a>
               <a href={MAX_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-red-700 font-medium hover:text-red-900 hover:underline">
-                <MessageSquare className="w-3.5 h-3.5" />Написать в Max
+                <MaxIcon size={14} />Написать в Max
               </a>
             </div>
           </div>

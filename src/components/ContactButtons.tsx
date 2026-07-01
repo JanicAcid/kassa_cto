@@ -5,13 +5,14 @@
 
 'use client'
 
-import { Phone, MessageCircle } from 'lucide-react'
+import { Phone } from 'lucide-react'
 import {
   MOBILE_PHONE,
   MOBILE_PHONE_HREF,
   MAX_PROFILE_URL,
   TELEGRAM_CHAT_URL,
 } from '@/config/contacts'
+import { MaxIcon } from '@/components/MaxIcon'
 
 // Реэкспорт для обратной совместимости
 export { MOBILE_PHONE, MOBILE_PHONE_HREF, MAX_PROFILE_URL, TELEGRAM_CHAT_URL }
@@ -33,7 +34,7 @@ export function ContactButtons({ variant = 'full', className = '' }: ContactButt
     },
     {
       href: MAX_PROFILE_URL,
-      icon: <MessageCircle className="w-5 h-5" />,
+      icon: <MaxIcon size={20} />,
       label: 'Max',
       short: 'Написать в Max',
       color: 'bg-blue-500 hover:bg-blue-600',
