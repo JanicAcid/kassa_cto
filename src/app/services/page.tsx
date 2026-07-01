@@ -111,48 +111,6 @@ export default function ServicesPage() {
         ))}
       </div>
 
-      {/* Conversion CTA — Настройка маркировки под ключ */}
-      <div className="mt-8 sm:mt-10 rounded-2xl p-6 sm:p-8 text-center" style={{ backgroundColor: '#163A5F' }}>
-        <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
-          Настройка маркировки под ключ
-        </h2>
-        <p className="text-white/70 text-sm sm:text-base mb-6">
-          от 1 дня · от 1 500 ₽ · без остановки работы
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto">
-          <div className="flex items-center gap-2 justify-center">
-            <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
-            <span className="text-white text-sm font-medium">Подключим к Честный ЗНАК</span>
-          </div>
-          <div className="flex items-center gap-2 justify-center">
-            <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
-            <span className="text-white text-sm font-medium">Настроим кассу и 1С</span>
-          </div>
-          <div className="flex items-center gap-2 justify-center">
-            <CheckCircle2 className="w-5 h-5 text-[#F59E0B] shrink-0" />
-            <span className="text-white text-sm font-medium">Обучим персонал</span>
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
-            href="tel:+78124659457"
-            className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-colors shadow-md"
-            style={{ backgroundColor: '#F59E0B' }}
-          >
-            <Phone className="w-5 h-5" />
-            Позвонить
-          </a>
-          <a
-            href="tel:+79219324163"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors"
-          >
-            Оставить заявку
-          </a>
-        </div>
-      </div>
-
       {/* Bottom CTA */}
       <div className="mt-6 sm:mt-8 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-6 sm:p-8 text-center">
         <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">

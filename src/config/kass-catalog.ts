@@ -574,7 +574,7 @@ export const CONFIGURATOR_OPTIONS: ConfiguratorOption[] = [
   { id: 'ofd-36', name: 'ОФД Такском на 36 месяцев', desc: 'Со скидкой 68% при покупке кассы', price: 3800, oldPrice: 12000, category: 'ofd', badge: 'СКИДКА 68%' },
   // ─── Услуги ──────────────────────────────────────────────────────────────
   { id: 'reg-fns', name: 'Регистрация ККТ в ФНС', desc: 'Подача заявления, фискализация', price: 3000, category: 'service', badge: 'Обязательно' },
-  { id: 'fn-replace', name: 'Замена ФН', desc: 'Снятие старого, установка нового, перерегистрация', price: 2500, category: 'service' },
+  { id: 'fn-replace', name: 'Замена ФН', desc: 'Снятие старого, установка нового, перерегистрация', price: 2700, category: 'service' },
   // ─── Продление ОФД — все 4 провайдера из калькулятора, 2 периода ────────
   { id: 'ofd-renew-takskom-15', name: 'Продление ОФД Такском на 15 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 6400, oldPrice: 6900, category: 'service', badge: 'Такском' },
   { id: 'ofd-renew-takskom-36', name: 'Продление ОФД Такском на 36 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 11000, oldPrice: 12000, category: 'service', badge: 'Такском' },
