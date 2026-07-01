@@ -233,7 +233,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           <details className="group">
             <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 list-none">
               <span className="flex items-center gap-2">
-                <span className="text-slate-400 group-open:rotate-90 transition-transform inline-block">▶</span>
+                <span className="text-[#163A5F] group-open:rotate-90 transition-transform inline-block text-base font-bold">▶</span>
                 📡 ОФД Такском со скидкой 68%
               </span>
               {ofd && <span className="text-emerald-600 font-bold text-xs">{ofd.price.toLocaleString('ru-RU')} ₽</span>}
@@ -308,7 +308,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           <details className="group">
             <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 list-none">
               <span className="flex items-center gap-2">
-                <span className="text-slate-400 group-open:rotate-90 transition-transform inline-block">▶</span>
+                <span className="text-[#163A5F] group-open:rotate-90 transition-transform inline-block text-base font-bold">▶</span>
                 📡 Продление ОФД
               </span>
               {services.has('ofd-renew-takskom-15') || services.has('ofd-renew-takskom-36') || services.has('ofd-renew-platform-15') || services.has('ofd-renew-platform-36') || services.has('ofd-renew-first-15') || services.has('ofd-renew-first-36') || services.has('ofd-renew-sbis-15') || services.has('ofd-renew-sbis-36')
@@ -366,7 +366,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           <details className="group">
             <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 border-b border-slate-100">
               <span>🚚 Доставка или самовывоз {city && <span className="text-emerald-600 font-normal text-xs ml-1">✓ выбрано</span>}</span>
-              <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+              <span className="text-[#163A5F] group-open:rotate-180 transition-transform text-base font-bold">▼</span>
             </summary>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
               <button
