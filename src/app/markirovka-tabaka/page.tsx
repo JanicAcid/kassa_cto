@@ -23,7 +23,7 @@ const PAGE_URL = `${SITE_URL}/markirovka-tabaka`
 export const metadata: Metadata = {
   title: 'Маркировка табака 2025 — настройка кассы, подключение к Честный ЗНАК | Теллур-Интех',
   description:
-    'Маркировка табака и сигарет по Data Matrix: настройка кассы, Честный ЗНАК, ЭДО, ОФД. Цена от 5 000 ₽, от 1 дня. ФФД 1.2, ТС ПИоТ. Санкт-Петербург и ЛО.',
+    'Маркировка табака и сигарет по Data Matrix: настройка кассы, Честный ЗНАК, ЭДО, ОФД. Цена от 1 500 ₽, от 1 дня. ФФД 1.2, ТС ПИоТ. Санкт-Петербург и ЛО.',
   alternates: { canonical: PAGE_URL },
   openGraph: {
     title: 'Маркировка табака 2025 — настройка кассы, подключение к Честный ЗНАК',
@@ -197,7 +197,7 @@ export default function MarkirovkaTabakaPage() {
         <section className="mb-10 sm:mb-12">
           <div className="bg-white rounded-2xl border-2 border-[#F59E0B]/30 shadow-sm p-6 sm:p-8 text-center">
             <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Стоимость настройки маркировки табака</p>
-            <p className="text-3xl font-extrabold text-[#163A5F] mb-1">от 5 000 ₽</p>
+            <p className="text-3xl font-extrabold text-[#163A5F] mb-1">от 1 500 ₽</p>
             <p className="text-sm text-slate-500 mb-4">от 1 рабочего дня · без остановки работы магазина</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto">
               <div className="flex items-center gap-2 justify-center">

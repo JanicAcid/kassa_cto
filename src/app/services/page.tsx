@@ -117,7 +117,7 @@ export default function ServicesPage() {
           Настройка маркировки под ключ
         </h2>
         <p className="text-white/70 text-sm sm:text-base mb-6">
-          от 1 дня · от 5 000 ₽ · без остановки работы
+          от 1 дня · от 1 500 ₽ · без остановки работы
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto">
           <div className="flex items-center gap-2 justify-center">
