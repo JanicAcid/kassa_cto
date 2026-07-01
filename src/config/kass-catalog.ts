@@ -85,7 +85,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/aqsi-5_1.webp', '/kass-photo/aqsi-5_2.png', '/kass-photo/aqsi-5_3.webp', '/kass-photo/aqsi-5_4.png'],
     badge: '-17%',
     shortDesc: 'Бюджетный смарт-терминал с сенсорным экраном',
-    features: ['ФФД 1.2', 'Сенсорный экран 5.5"', 'Wi-Fi + 4G', 'Android'],
+    features: ['ФФД 1.2 (маркировка)', 'Сенсорный экран 5.5"', 'Wi-Fi + 4G', 'Android'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -126,7 +126,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/aqsi-5-acq_1.webp', '/kass-photo/aqsi-5-acq_2.webp', '/kass-photo/aqsi-5-acq_3.webp', '/kass-photo/aqsi-5-acq_4.png'],
     badge: 'С эквайрингом',
     shortDesc: 'Касса с встроенным приёмом банковских карт',
-    features: ['ФФД 1.2', 'Эквайринг (Мир/Visa/MC)', 'Wi-Fi + 4G', 'Android'],
+    features: ['ФФД 1.2 (маркировка)', 'Эквайринг (Мир/Visa/MC)', 'Wi-Fi + 4G', 'Android'],
     type: 'smart', hasAcquiring: true, inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -166,7 +166,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/aqsi-6-acq_1.webp', '/kass-photo/aqsi-6-acq_2.webp', '/kass-photo/aqsi-6-acq_3.jpg', '/kass-photo/aqsi-6-acq_4.png'],
     badge: 'NEW',
     shortDesc: 'Новая касса с эквайрингом и улучшенным экраном',
-    features: ['ФФД 1.2', 'Сенсорный экран 6"', 'Эквайринг', 'Wi-Fi + 4G'],
+    features: ['ФФД 1.2 (маркировка)', 'Сенсорный экран 6"', 'Эквайринг', 'Wi-Fi + 4G'],
     type: 'smart', hasAcquiring: true, inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -205,7 +205,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/atol-30f_1.png', '/kass-photo/atol-30f_2.jpg', '/kass-photo/atol-30f_3.jpg', '/kass-photo/atol-30f_4.jpg'],
     badge: '-17%',
     shortDesc: 'Бюджетный фискальный регистратор для малого бизнеса',
-    features: ['ФФД 1.2', 'USB + RS-232', 'Ширина чека 80 мм', 'Совместимость с 1С'],
+    features: ['ФФД 1.2 (маркировка)', 'USB + RS-232', 'Ширина чека 80 мм', 'Совместимость с 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -244,7 +244,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/atol-22v2f_1.jpg', '/kass-photo/atol-22v2f_2.png', '/kass-photo/atol-22v2f_3.jpg', '/kass-photo/atol-22v2f_4.png', '/kass-photo/atol-22v2f_5.png'],
     badge: '-17%',
     shortDesc: 'Фискальный регистратор с автоотрезчиком',
-    features: ['ФФД 1.2', 'Автоотрезчик', 'Скорость 200 мм/сек', 'Совместимость с 1С'],
+    features: ['ФФД 1.2 (маркировка)', 'Автоотрезчик', 'Скорость 200 мм/сек', 'Совместимость с 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -280,7 +280,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     price: 20350, oldPrice: 24420,
     images: ['/kass-photo/atol-35f_1.png', '/kass-photo/atol-35f_2.png', '/kass-photo/atol-35f_3.png', '/kass-photo/atol-35f_4.png'],
     shortDesc: 'Фискальный регистратор с быстрой печатью',
-    features: ['ФФД 1.2', 'Автоотрезчик', 'USB + Ethernet', 'Для 1С'],
+    features: ['ФФД 1.2 (маркировка)', 'Автоотрезчик', 'USB + Ethernet', 'Для 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -310,7 +310,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     price: 28950, oldPrice: 34740,
     images: ['/kass-photo/atol-55f_1.jpg', '/kass-photo/atol-55f_2.jpg', '/kass-photo/atol-55f_3.jpg'],
     shortDesc: 'Фискальный регистратор с автоотрезчиком',
-    features: ['ФФД 1.2', 'Автоотрезчик', 'USB', 'Совместимость с 1С'],
+    features: ['ФФД 1.2 (маркировка)', 'Автоотрезчик', 'USB', 'Совместимость с 1С'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -341,7 +341,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/atol-27f_1.png', '/kass-photo/atol-27f_2.png', '/kass-photo/atol-27f_3.png', '/kass-photo/atol-27f_4.png', '/kass-photo/atol-27f_5.jpg'],
     badge: 'ХИТ',
     shortDesc: 'Фискальный регистратор для высокой нагрузки',
-    features: ['ФФД 1.2', 'Автоотрезчик (1.5 млн отрезов)', 'Скорость 300 мм/сек', 'USB + Ethernet'],
+    features: ['ФФД 1.2 (маркировка)', 'Автоотрезчик (1.5 млн отрезов)', 'Скорость 300 мм/сек', 'USB + Ethernet'],
     type: 'register', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -378,7 +378,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/evotor-6_1.png', '/kass-photo/evotor-6_2.png', '/kass-photo/evotor-6_3.jpg'],
     badge: 'АКЦИЯ',
     shortDesc: 'Эвотор 6 за 100 ₽ при оформлении расчётного счёта в Сбербанке + ФН + ОФД + регистрация',
-    features: ['ФФД 1.2', 'Сенсорный экран 6"', 'Wi-Fi + 3G', 'Эвотор.Маркет'],
+    features: ['ФФД 1.2 (маркировка)', 'Сенсорный экран 6"', 'Wi-Fi + 3G', 'Эвотор.Маркет'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
   },
@@ -387,7 +387,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     price: 18900, oldPrice: 22680,
     images: ['/kass-photo/evotor-6_1.png', '/kass-photo/evotor-6_2.png', '/kass-photo/evotor-6_3.jpg'],
     shortDesc: 'Смарт-терминал с экраном 6" для розницы',
-    features: ['ФФД 1.2', 'Сенсорный экран 6"', 'Wi-Fi + 3G', 'Эвотор.Маркет'],
+    features: ['ФФД 1.2 (маркировка)', 'Сенсорный экран 6"', 'Wi-Fi + 3G', 'Эвотор.Маркет'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -422,7 +422,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/evotor-7-3_1.jpeg'],
     badge: '-17%',
     shortDesc: 'Популярный смарт-терминал для розницы и общепита',
-    features: ['ФФД 1.2', 'Сенсорный экран 7"', '5 USB-портов', 'Аккумулятор до 14ч'],
+    features: ['ФФД 1.2 (маркировка)', 'Сенсорный экран 7"', '5 USB-портов', 'Аккумулятор до 14ч'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -459,7 +459,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/evotor-10_1.jpg', '/kass-photo/evotor-10_2.jpg', '/kass-photo/evotor-10_3.jpg'],
     badge: '-17%',
     shortDesc: 'Смарт-терминал с большим экраном для ресторанов',
-    features: ['ФФД 1.2', 'Сенсорный экран 10.1"', '6 USB-портов', 'Wi-Fi + 4G'],
+    features: ['ФФД 1.2 (маркировка)', 'Сенсорный экран 10.1"', '6 USB-портов', 'Wi-Fi + 4G'],
     type: 'smart', inStock: true,
     gift: 'ОФД Такском 15 мес — 2 200 ₽ вместо 6 900 ₽', warranty: '12 месяцев',
       specGroups: [
@@ -518,7 +518,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
     images: ['/kass-photo/fn-4_.png', '/kass-photo/fn-3_.png'],
     badge: 'Выгоднее',
     shortDesc: 'Для УСН, ПСН, услуг — без маркировки и алкоголя. ФФД 1.2. Выгоднее: 3 года вместо 15 мес.',
-    features: ['ФФД 1.2', 'Срок 36 месяцев', 'Для УСН/ПСН/услуг', 'Без маркировки и алкоголя'],
+    features: ['ФФД 1.2 (маркировка)', 'Срок 36 месяцев', 'Для УСН/ПСН/услуг', 'Без маркировки и алкоголя'],
     type: 'autonomous', inStock: true,
     gift: '', warranty: '12 месяцев',
     specGroups: [

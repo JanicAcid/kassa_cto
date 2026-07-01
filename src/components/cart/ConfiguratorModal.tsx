@@ -227,11 +227,14 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           </div>
           )}
 
-          {/* ОФД — только при покупке кассы (не ФН) */}
+          {/* ОФД — только при покупке кассы (не ФН) — аккордеон */}
           {!kassa.id.startsWith('fn-') && (
-          <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📡 ОФД Такском — скидка 68% при покупке кассы</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <details className="group" open>
+            <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 border-b border-slate-100">
+              <span>📡 ОФД Такском — скидка 68% {ofd && <span className="text-emerald-600 font-normal text-xs ml-1">✓ выбрано</span>}</span>
+              <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
               {ofdOptions.map(o => (
                 <button
                   key={o.id}
@@ -258,7 +261,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                 </button>
               ))}
             </div>
-          </div>
+          </details>
           )}
 
           {/* Услуги */}
@@ -367,7 +370,8 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             </div>
           </details>
 
-          {/* Допы */}
+          {/* Допы — только для касс, не для ФН */}
+          {!isFnCard && extraOptions.length > 0 && (
           <div>
             <h4 className="font-bold text-[#163A5F] mb-1 text-sm">📦 Доп. оборудование</h4>
             <p className="text-[11px] sm:text-xs text-slate-400 mb-2 leading-snug">
@@ -421,6 +425,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
               })}
             </div>
           </div>
+          )}
         </div>
 
         {/* footer — итог + кнопка */}
