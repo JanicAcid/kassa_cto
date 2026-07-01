@@ -492,7 +492,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
   {
     id: 'fn-15-card', brand: 'ФН', model: '1.1М 15 мес', name: 'Фискальный накопитель ФН-1.1М на 15 месяцев',
     price: 14200, oldPrice: 15900,
-    images: ['/kass-photo/fn-placeholder.svg'],
+    images: ['/kass-photo/fn-1_.webp', '/kass-photo/fn-2_.webp'],
     badge: 'Обязательно',
     shortDesc: 'Для маркировки, алкоголя, ОСН, ЕГАИС. Срок 15 месяцев — продлить нельзя.',
     features: ['ФФД 1.2 (маркировка)', 'Срок 15 месяцев', 'Для ОСН/маркировки/алкоголя', 'Все модели касс'],
@@ -515,7 +515,7 @@ export const KASSA_CATALOG: KassaProduct[] = [
   {
     id: 'fn-36-card', brand: 'ФН', model: '1.1М 36 мес', name: 'Фискальный накопитель ФН-1.1М на 36 месяцев',
     price: 21000, oldPrice: 23000,
-    images: ['/kass-photo/fn-placeholder.svg'],
+    images: ['/kass-photo/fn-4_.png', '/kass-photo/fn-3_.png'],
     badge: 'Выгоднее',
     shortDesc: 'Для УСН, ПСН, услуг — без маркировки и алкоголя. Выгоднее: 3 года вместо 15 мес.',
     features: ['ФФД 1.2', 'Срок 36 месяцев', 'Для УСН/ПСН/услуг', 'Без маркировки и алкоголя'],
