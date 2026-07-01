@@ -490,17 +490,17 @@ export const KASSA_CATALOG: KassaProduct[] = [
     ],
   },
   {
-    id: 'fn-15-card', brand: 'ФН', model: '1.1М 15 мес', name: 'Фискальный накопитель ФН-1.1М на 15 месяцев',
+    id: 'fn-15-card', brand: 'ФН', model: '1.2 15 мес', name: 'Фискальный накопитель ФН-1.2 на 15 месяцев',
     price: 14200, oldPrice: 15900,
     images: ['/kass-photo/fn-1_.webp', '/kass-photo/fn-2_.webp'],
     badge: 'Обязательно',
-    shortDesc: 'Для маркировки, алкоголя, ОСН, ЕГАИС. Срок 15 месяцев — продлить нельзя.',
+    shortDesc: 'Для маркировки, алкоголя, ОСН, ЕГАИС. ФФД 1.2. Срок 15 месяцев — продлить нельзя.',
     features: ['ФФД 1.2 (маркировка)', 'Срок 15 месяцев', 'Для ОСН/маркировки/алкоголя', 'Все модели касс'],
     type: 'autonomous', inStock: true,
     gift: '', warranty: '12 месяцев',
     specGroups: [
       { name: 'Основное', specs: [
-        { label: 'Модель', value: 'ФН-1.1М' },
+        { label: 'Модель', value: 'ФН-1.2' },
         { label: 'Срок действия', value: '15 месяцев' },
         { label: 'Гарантия', value: '12 месяцев' },
       ]},
@@ -513,17 +513,17 @@ export const KASSA_CATALOG: KassaProduct[] = [
     ],
   },
   {
-    id: 'fn-36-card', brand: 'ФН', model: '1.1М 36 мес', name: 'Фискальный накопитель ФН-1.1М на 36 месяцев',
+    id: 'fn-36-card', brand: 'ФН', model: '1.2 36 мес', name: 'Фискальный накопитель ФН-1.2 на 36 месяцев',
     price: 21000, oldPrice: 23000,
     images: ['/kass-photo/fn-4_.png', '/kass-photo/fn-3_.png'],
     badge: 'Выгоднее',
-    shortDesc: 'Для УСН, ПСН, услуг — без маркировки и алкоголя. Выгоднее: 3 года вместо 15 мес.',
+    shortDesc: 'Для УСН, ПСН, услуг — без маркировки и алкоголя. ФФД 1.2. Выгоднее: 3 года вместо 15 мес.',
     features: ['ФФД 1.2', 'Срок 36 месяцев', 'Для УСН/ПСН/услуг', 'Без маркировки и алкоголя'],
     type: 'autonomous', inStock: true,
     gift: '', warranty: '12 месяцев',
     specGroups: [
       { name: 'Основное', specs: [
-        { label: 'Модель', value: 'ФН-1.1М' },
+        { label: 'Модель', value: 'ФН-1.2' },
         { label: 'Срок действия', value: '36 месяцев' },
         { label: 'Гарантия', value: '12 месяцев' },
       ]},
@@ -575,8 +575,15 @@ export const CONFIGURATOR_OPTIONS: ConfiguratorOption[] = [
   // ─── Услуги ──────────────────────────────────────────────────────────────
   { id: 'reg-fns', name: 'Регистрация ККТ в ФНС', desc: 'Подача заявления, фискализация', price: 3000, category: 'service', badge: 'Обязательно' },
   { id: 'fn-replace', name: 'Замена ФН', desc: 'Снятие старого, установка нового, перерегистрация', price: 2700, category: 'service' },
-  { id: 'ofd-renew-15', name: 'Продление ОФД Такском на 15 месяцев', desc: 'Продление договора с ОФД (без покупки кассы)', price: 6400, oldPrice: 6900, category: 'service' },
-  { id: 'ofd-renew-36', name: 'Продление ОФД Такском на 36 месяцев', desc: 'Продление договора с ОФД (без покупки кассы)', price: 11000, oldPrice: 12000, category: 'service' },
+  // ─── Продление ОФД — все 4 провайдера из калькулятора, 2 периода ────────
+  { id: 'ofd-renew-takskom-15', name: 'Продление ОФД Такском на 15 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 6400, oldPrice: 6900, category: 'service', badge: 'Такском' },
+  { id: 'ofd-renew-takskom-36', name: 'Продление ОФД Такском на 36 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 11000, oldPrice: 12000, category: 'service', badge: 'Такском' },
+  { id: 'ofd-renew-platform-15', name: 'Продление Платформа ОФД на 15 месяцев', desc: 'Платформа ОФД', price: 4000, oldPrice: 4500, category: 'service', badge: 'Платформа' },
+  { id: 'ofd-renew-platform-36', name: 'Продление Платформа ОФД на 36 месяцев', desc: 'Платформа ОФД', price: 8500, oldPrice: 9500, category: 'service', badge: 'Платформа' },
+  { id: 'ofd-renew-first-15', name: 'Продление ПЕРВЫЙ ОФД на 15 месяцев', desc: 'ПЕРВЫЙ ОФД', price: 3100, oldPrice: 3600, category: 'service', badge: 'Первый' },
+  { id: 'ofd-renew-first-36', name: 'Продление ПЕРВЫЙ ОФД на 36 месяцев', desc: 'ПЕРВЫЙ ОФД', price: 6600, oldPrice: 7600, category: 'service', badge: 'Первый' },
+  { id: 'ofd-renew-sbis-15', name: 'Продление СБИС ТЕНЗОР на 15 месяцев', desc: 'СБИС ТЕНЗОР', price: 4000, oldPrice: 4500, category: 'service', badge: 'СБИС' },
+  { id: 'ofd-renew-sbis-36', name: 'Продление СБИС ТЕНЗОР на 36 месяцев', desc: 'СБИС ТЕНЗОР', price: 9000, oldPrice: 10000, category: 'service', badge: 'СБИС' },
   // ─── Доставка / Самовывоз (выбор города) ────────────────────────────────
   { id: 'delivery-pushkin', name: 'Доставка по Пушкину', desc: 'Привезём, подключим, проверим', price: 600, category: 'service' },
   { id: 'delivery-spb', name: 'Доставка по СПб', desc: 'Привезём, подключим, проверим', price: 900, category: 'service' },

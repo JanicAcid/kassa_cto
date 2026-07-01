@@ -14,6 +14,14 @@ import { X, Check, ShoppingCart, Settings2 } from 'lucide-react'
 import { CONFIGURATOR_OPTIONS, type KassaProduct, type ConfiguratorOption } from '@/config/kass-catalog'
 import { useCart } from './CartContext'
 
+// Маппинг ID опций продления ОФД → иконки
+const OFD_ICONS: Record<string, string> = {
+  'takskom': '/brands/ofd-takskom.jpg',
+  'platform': '/brands/ofd-platform.png',
+  'first': '/brands/ofd-first.webp',
+  'sbis': '/brands/ofd-sbis.png',
+}
+
 interface Props {
   kassa: KassaProduct | null
   isOpen: boolean
@@ -56,13 +64,19 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const fnOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'fn')
   const ofdOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'ofd')
-  const serviceOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'service'
-    && o.id !== 'delivery-pushkin'
-    && o.id !== 'delivery-spb'
-    && o.id !== 'pickup-zaslonova'
-    && o.id !== 'pickup-pushkin'
-    && o.id !== 'pickup-gatchina'
-  )
+  const serviceOptions = kassa.id.startsWith('fn-')
+    // Для карточек ФН — только замена ФН + продление ОФД (все 4 провайдера)
+    ? CONFIGURATOR_OPTIONS.filter(o => o.category === 'service'
+        && (o.id === 'fn-replace' || o.id.startsWith('ofd-renew-'))
+      )
+    // Для касс — все услуги кроме доставки/самовывоза
+    : CONFIGURATOR_OPTIONS.filter(o => o.category === 'service'
+        && o.id !== 'delivery-pushkin'
+        && o.id !== 'delivery-spb'
+        && o.id !== 'pickup-zaslonova'
+        && o.id !== 'pickup-pushkin'
+        && o.id !== 'pickup-gatchina'
+      )
   const extraOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'extra')
 
   const fn = fnOptions.find(o => o.id === fnId)
@@ -92,9 +106,11 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
       const next = new Set(prev)
       if (id === 'tech-support-month') next.delete('tech-support-year')
       if (id === 'tech-support-year') next.delete('tech-support-month')
-      // Продление ОФД — взаимоисключающие (15/36 мес)
-      if (id === 'ofd-renew-15') next.delete('ofd-renew-36')
-      if (id === 'ofd-renew-36') next.delete('ofd-renew-15')
+      // Продление ОФД — взаимоисключающие (любой один из всех)
+      if (id.startsWith('ofd-renew-')) {
+        const allOfdRenew = ['ofd-renew-takskom-15','ofd-renew-takskom-36','ofd-renew-platform-15','ofd-renew-platform-36','ofd-renew-first-15','ofd-renew-first-36','ofd-renew-sbis-15','ofd-renew-sbis-36']
+        allOfdRenew.forEach(oid => { if (oid !== id) next.delete(oid) })
+      }
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
@@ -249,6 +265,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             <div className="space-y-2">
               {serviceOptions.map(o => {
                 const checked = services.has(o.id)
+                const ofdIcon = o.id.startsWith('ofd-renew-') ? OFD_ICONS[o.id.split('-').slice(2,-1).join('-')] : null
                 return (
                   <button
                     key={o.id}
@@ -264,14 +281,23 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                     }`}>
                       {checked && <Check className="w-3.5 h-3.5" />}
                     </div>
+                    {ofdIcon && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={ofdIcon} alt="" className="w-6 h-6 object-contain flex-shrink-0 mt-0.5 rounded" />
+                    )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <span className="font-semibold text-[#163A5F] text-xs sm:text-sm leading-snug">
                           {o.name}
                         </span>
-                        <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
-                          {o.price === 0 ? '0 ₽' : `${o.price.toLocaleString('ru-RU')} ₽`}
-                        </span>
+                        <div className="flex items-baseline gap-1.5 flex-shrink-0">
+                          {o.oldPrice && (
+                            <span className="text-[10px] sm:text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
+                          )}
+                          <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap">
+                            {o.price === 0 ? '0 ₽' : `${o.price.toLocaleString('ru-RU')} ₽`}
+                          </span>
+                        </div>
                       </div>
                       <div className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-snug">{o.desc}</div>
                       {o.badge && (

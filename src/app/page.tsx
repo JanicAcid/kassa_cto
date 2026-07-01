@@ -171,11 +171,11 @@ export default function HomePage() {
               Позвонить
             </a>
             <Link
-              href="/services"
+              href="/katalog-kass"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 bg-white/15 hover:bg-white/25 text-white text-base sm:text-lg font-medium rounded-xl transition-all duration-200 border border-white/20 hover:border-white/30"
             >
               <LayoutGrid className="w-5 h-5" />
-              Все услуги
+              Каталог
             </Link>
             <a
               href={MAX_PROFILE_URL}
