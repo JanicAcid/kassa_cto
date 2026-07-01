@@ -348,15 +348,15 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
           {/* Продление ОФД — аккордеон с переключателем срока (для карточек ФН) */}
           {isFnCard && (
-          <details className="group">
-            <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 list-none">
+          <details className="group" open>
+            <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2.5 px-3 rounded-xl bg-emerald-50 border-2 border-emerald-200 list-none">
               <span className="flex items-center gap-2">
-                <span className="text-[#163A5F] group-open:rotate-90 transition-transform inline-block text-base font-bold">▶</span>
-                📡 Продление ОФД
+                <span className="text-emerald-600 group-open:rotate-90 transition-transform inline-block text-base font-bold">▶</span>
+                📡 Продление ОФД — выберите провайдера
               </span>
               {services.has('ofd-renew-takskom-15') || services.has('ofd-renew-takskom-36') || services.has('ofd-renew-platform-15') || services.has('ofd-renew-platform-36') || services.has('ofd-renew-first-15') || services.has('ofd-renew-first-36') || services.has('ofd-renew-sbis-15') || services.has('ofd-renew-sbis-36')
                 ? <span className="text-emerald-600 font-normal text-xs">✓ выбрано</span>
-                : <span className="text-slate-400 font-normal text-xs">опционально</span>}
+                : <span className="text-slate-500 font-normal text-xs">нажмите чтобы развернуть ▼</span>}
             </summary>
             <div className="mt-2 space-y-2">
               {/* Переключатель срока */}
