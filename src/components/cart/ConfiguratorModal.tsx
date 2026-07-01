@@ -35,6 +35,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const [fnId, setFnId] = useState('fn-15')
   const [ofdPeriod, setOfdPeriod] = useState<'15' | '36'>('15')
+  const [ofdRenewPeriod, setOfdRenewPeriod] = useState<'15' | '36'>('15')
   const [services, setServices] = useState<Set<string>>(new Set(['reg-fns']))
   const [extras, setExtras] = useState<Set<string>>(new Set())
   const [city, setCity] = useState<City>(null)
@@ -275,52 +276,91 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           <div>
             <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🛠 Услуги</h4>
             <div className="space-y-2">
-              {serviceOptions.map(o => {
+              {/* Замена ФН — отдельной строкой */}
+              {serviceOptions.filter(o => o.id === 'fn-replace').map(o => {
                 const checked = services.has(o.id)
-                const ofdIcon = o.id.startsWith('ofd-renew-') ? OFD_ICONS[o.id.split('-').slice(2,-1).join('-')] : null
                 return (
                   <button
                     key={o.id}
                     onClick={() => toggleService(o.id)}
                     className={`w-full text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all flex items-start gap-2.5 ${
-                      checked
-                        ? 'border-emerald-500 bg-emerald-50'
-                        : 'border-slate-200 hover:border-slate-300'
+                      checked ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
                     } cursor-pointer`}
                   >
-                    <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 ${
-                      checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'
-                    }`}>
+                    <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 ${checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'}`}>
                       {checked && <Check className="w-3.5 h-3.5" />}
                     </div>
-                    {ofdIcon && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={ofdIcon} alt="" className="w-12 h-12 sm:w-14 sm:h-14 object-contain flex-shrink-0 rounded-lg bg-white border border-slate-100 p-1" />
-                    )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <span className="font-semibold text-[#163A5F] text-xs sm:text-sm leading-snug">
-                          {o.name}
-                        </span>
-                        <div className="flex items-baseline gap-1.5 flex-shrink-0">
-                          {o.oldPrice && (
-                            <span className="text-[10px] sm:text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
-                          )}
-                          <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap">
-                            {o.price === 0 ? '0 ₽' : `${o.price.toLocaleString('ru-RU')} ₽`}
-                          </span>
-                        </div>
+                        <span className="font-semibold text-[#163A5F] text-xs sm:text-sm leading-snug">{o.name}</span>
+                        <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap flex-shrink-0">{o.price.toLocaleString('ru-RU')} ₽</span>
                       </div>
                       <div className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-snug">{o.desc}</div>
-                      {o.badge && (
-                        <span className="inline-block mt-1 text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
-                      )}
                     </div>
                   </button>
                 )
               })}
             </div>
           </div>
+
+          {/* Продление ОФД — аккордеон с переключателем срока (для карточек ФН) */}
+          {isFnCard && (
+          <details className="group">
+            <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 list-none">
+              <span className="flex items-center gap-2">
+                <span className="text-slate-400 group-open:rotate-90 transition-transform inline-block">▶</span>
+                📡 Продление ОФД
+              </span>
+              {services.has('ofd-renew-takskom-15') || services.has('ofd-renew-takskom-36') || services.has('ofd-renew-platform-15') || services.has('ofd-renew-platform-36') || services.has('ofd-renew-first-15') || services.has('ofd-renew-first-36') || services.has('ofd-renew-sbis-15') || services.has('ofd-renew-sbis-36')
+                ? <span className="text-emerald-600 font-normal text-xs">✓ выбрано</span>
+                : <span className="text-slate-400 font-normal text-xs">опционально</span>}
+            </summary>
+            <div className="mt-2 space-y-2">
+              {/* Переключатель срока */}
+              <div className="flex gap-2 mb-2">
+                <button
+                  onClick={() => setOfdRenewPeriod('15')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${ofdRenewPeriod === '15' ? 'bg-[#163A5F] text-white' : 'bg-white text-slate-600 border border-slate-200'}`}
+                >15 мес</button>
+                <button
+                  onClick={() => setOfdRenewPeriod('36')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${ofdRenewPeriod === '36' ? 'bg-[#163A5F] text-white' : 'bg-white text-slate-600 border border-slate-200'}`}
+                >36 мес</button>
+              </div>
+              {/* 4 провайдера — с фото */}
+              {serviceOptions.filter(o => o.id.startsWith('ofd-renew-')).filter(o => o.id.endsWith(ofdRenewPeriod)).map(o => {
+                const checked = services.has(o.id)
+                const ofdIcon = OFD_ICONS[o.id.split('-').slice(2,-1).join('-')]
+                return (
+                  <button
+                    key={o.id}
+                    onClick={() => toggleService(o.id)}
+                    className={`w-full text-left p-2.5 rounded-xl border-2 transition-all flex items-center gap-3 ${
+                      checked ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
+                    } cursor-pointer`}
+                  >
+                    <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center ${checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'}`}>
+                      {checked && <Check className="w-3.5 h-3.5" />}
+                    </div>
+                    {ofdIcon && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={ofdIcon} alt="" className="w-10 h-10 sm:w-12 sm:h-12 object-contain flex-shrink-0 rounded-lg bg-white border border-slate-100 p-0.5" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-semibold text-[#163A5F] text-xs sm:text-sm">{o.name.replace('Продление ', '').replace(' на ' + ofdRenewPeriod + ' месяцев', '')}</span>
+                        <div className="flex items-baseline gap-1.5 flex-shrink-0">
+                          {o.oldPrice && <span className="text-[10px] text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>}
+                          <span className="font-bold text-[#163A5F] text-xs sm:text-sm">{o.price.toLocaleString('ru-RU')} ₽</span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </details>
+          )}
 
           {/* Доставка / Самовывоз — аккордеон */}
           <details className="group">
