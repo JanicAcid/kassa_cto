@@ -34,7 +34,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const { addItem } = useCart()
 
   const [fnId, setFnId] = useState('fn-15')
-  const [ofdId, setOfdId] = useState('ofd-15')
+  const [ofdPeriod, setOfdPeriod] = useState<'15' | '36'>('15')
   const [services, setServices] = useState<Set<string>>(new Set(['reg-fns']))
   const [extras, setExtras] = useState<Set<string>>(new Set())
   const [city, setCity] = useState<City>(null)
@@ -42,7 +42,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   useEffect(() => {
     if (kassa) {
       setFnId('fn-15')
-      setOfdId('ofd-15')
+      setOfdPeriod('15')
       setServices(new Set(['reg-fns']))
       setExtras(new Set())
       setCity(null)
@@ -82,7 +82,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const extraOptions = isFnCard ? [] : CONFIGURATOR_OPTIONS.filter(o => o.category === 'extra')
 
   const fn = fnOptions.find(o => o.id === fnId)
-  const ofd = ofdOptions.find(o => o.id === ofdId)
+  const ofd = ofdOptions.find(o => o.id === `ofd-${ofdPeriod}`)
   const selectedServices = serviceOptions.filter(o => services.has(o.id))
 
   const deliveryOption: ConfiguratorOption | null = (() => {
@@ -227,39 +227,46 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           </div>
           )}
 
-          {/* ОФД — только при покупке кассы (не ФН) — аккордеон */}
+          {/* ОФД — только при покупке кассы (не ФН) — компактный аккордеон */}
           {!kassa.id.startsWith('fn-') && (
-          <details className="group" open>
-            <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 border-b border-slate-100">
-              <span>📡 ОФД Такском — скидка 68% {ofd && <span className="text-emerald-600 font-normal text-xs ml-1">✓ выбрано</span>}</span>
-              <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          <details className="group">
+            <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 list-none">
+              <span className="flex items-center gap-2">
+                <span className="text-slate-400 group-open:rotate-90 transition-transform inline-block">▶</span>
+                📡 ОФД Такском со скидкой 68%
+              </span>
+              {ofd && <span className="text-emerald-600 font-bold text-xs">{ofd.price.toLocaleString('ru-RU')} ₽</span>}
             </summary>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
-              {ofdOptions.map(o => (
+            <div className="mt-2 p-3 bg-emerald-50/50 rounded-xl border border-emerald-100">
+              {/* Переключатель срока */}
+              <div className="flex gap-2 mb-2">
                 <button
-                  key={o.id}
-                  onClick={() => setOfdId(o.id)}
-                  className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
-                    ofdId === o.id
-                      ? 'border-emerald-500 bg-emerald-50'
-                      : 'border-slate-200 hover:border-slate-300'
+                  onClick={() => setOfdPeriod('15')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
+                    ofdPeriod === '15' ? 'bg-emerald-500 text-white' : 'bg-white text-slate-600 border border-slate-200'
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="font-semibold text-[#163A5F] text-xs sm:text-sm">{o.name}</span>
-                    {o.badge && (
-                      <span className="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 whitespace-nowrap flex-shrink-0">{o.badge}</span>
-                    )}
-                  </div>
-                  <div className="text-[11px] sm:text-xs text-slate-500 mb-1.5 leading-snug">{o.desc}</div>
-                  <div className="flex items-baseline gap-1.5 flex-wrap">
-                    <span className="font-bold text-emerald-600 text-sm sm:text-base">{o.price.toLocaleString('ru-RU')} ₽</span>
-                    {o.oldPrice && (
-                      <span className="text-[11px] sm:text-xs text-slate-400 line-through">{o.oldPrice.toLocaleString('ru-RU')} ₽</span>
-                    )}
-                  </div>
+                  15 мес
                 </button>
-              ))}
+                <button
+                  onClick={() => setOfdPeriod('36')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
+                    ofdPeriod === '36' ? 'bg-emerald-500 text-white' : 'bg-white text-slate-600 border border-slate-200'
+                  }`}
+                >
+                  36 мес
+                </button>
+              </div>
+              {ofd && (
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-600">Такском {ofdPeriod} мес</span>
+                  <div className="flex items-baseline gap-1.5">
+                    {ofd.oldPrice && <span className="text-xs text-slate-400 line-through">{ofd.oldPrice.toLocaleString('ru-RU')} ₽</span>}
+                    <span className="font-bold text-emerald-600">{ofd.price.toLocaleString('ru-RU')} ₽</span>
+                  </div>
+                </div>
+              )}
+              <p className="text-[10px] text-slate-400 mt-1">Скидка действует только при покупке кассы</p>
             </div>
           </details>
           )}
