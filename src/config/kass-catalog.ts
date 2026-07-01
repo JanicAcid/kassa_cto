@@ -575,7 +575,8 @@ export const CONFIGURATOR_OPTIONS: ConfiguratorOption[] = [
   // ─── Услуги ──────────────────────────────────────────────────────────────
   { id: 'reg-fns', name: 'Регистрация ККТ в ФНС', desc: 'Подача заявления, фискализация', price: 3000, category: 'service', badge: 'Обязательно' },
   { id: 'fn-replace', name: 'Замена ФН', desc: 'Снятие старого, установка нового, перерегистрация', price: 2700, category: 'service' },
-  { id: 'ofd-renew', name: 'Продление ОФД Такском на 15 месяцев', desc: 'Продление договора с ОФД, без покупки новой кассы', price: 2200, oldPrice: 6900, category: 'service', badge: 'СКИДКА 68%' },
+  { id: 'ofd-renew-15', name: 'Продление ОФД Такском на 15 месяцев', desc: 'Продление договора с ОФД (без покупки кассы)', price: 6400, oldPrice: 6900, category: 'service' },
+  { id: 'ofd-renew-36', name: 'Продление ОФД Такском на 36 месяцев', desc: 'Продление договора с ОФД (без покупки кассы)', price: 11000, oldPrice: 12000, category: 'service' },
   // ─── Доставка / Самовывоз (выбор города) ────────────────────────────────
   { id: 'delivery-pushkin', name: 'Доставка по Пушкину', desc: 'Привезём, подключим, проверим', price: 600, category: 'service' },
   { id: 'delivery-spb', name: 'Доставка по СПб', desc: 'Привезём, подключим, проверим', price: 900, category: 'service' },

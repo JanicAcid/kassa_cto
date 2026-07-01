@@ -92,6 +92,9 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
       const next = new Set(prev)
       if (id === 'tech-support-month') next.delete('tech-support-year')
       if (id === 'tech-support-year') next.delete('tech-support-month')
+      // Продление ОФД — взаимоисключающие (15/36 мес)
+      if (id === 'ofd-renew-15') next.delete('ofd-renew-36')
+      if (id === 'ofd-renew-36') next.delete('ofd-renew-15')
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
@@ -172,7 +175,8 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             </div>
           </div>
 
-          {/* ФН */}
+          {/* ФН — только при покупке кассы (не ФН) */}
+          {!kassa.id.startsWith('fn-') && (
           <div>
             <h4 className="font-bold text-[#163A5F] mb-2 text-sm">💳 Фискальный накопитель</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -203,10 +207,12 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
               ))}
             </div>
           </div>
+          )}
 
-          {/* ОФД */}
+          {/* ОФД — только при покупке кассы (не ФН) */}
+          {!kassa.id.startsWith('fn-') && (
           <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📡 ОФД Такском — скидка 68%</h4>
+            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">📡 ОФД Такском — скидка 68% при покупке кассы</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {ofdOptions.map(o => (
                 <button
@@ -235,6 +241,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
               ))}
             </div>
           </div>
+          )}
 
           {/* Услуги */}
           <div>
@@ -409,8 +416,8 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             </div>
             <div className="text-right text-[10px] sm:text-xs text-slate-500 flex-shrink-0">
               <div>Касса: {kassa.price.toLocaleString('ru-RU')} ₽</div>
-              <div>ФН: {fn?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
-              <div>ОФД: {ofd?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
+              {fn && <div>ФН: {fn.price.toLocaleString('ru-RU')} ₽</div>}
+              {ofd && <div>ОФД: {ofd.price.toLocaleString('ru-RU')} ₽</div>}
               <div>Услуги: {selectedServices.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>
               {deliveryOption && <div>{deliveryOption.price === 0 ? 'Самовывоз' : 'Доставка'}: {deliveryOption.price === 0 ? 'бесплатно' : `${deliveryOption.price} ₽`}</div>}
               {selectedExtras.length > 0 && <div>Допы: {selectedExtras.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>}
