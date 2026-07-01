@@ -259,10 +259,10 @@ export default function HomePage() {
 
         <div className="mt-6 text-center">
           <Link
-            href="/services"
+            href="/katalog-kass"
             className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-[#163A5F]/20 text-[#163A5F] text-sm font-semibold rounded-xl hover:bg-[#163A5F] hover:text-white hover:border-[#163A5F] transition-all"
           >
-            Все услуги
+            Каталог
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

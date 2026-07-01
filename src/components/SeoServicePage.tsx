@@ -274,10 +274,10 @@ export function SeoServicePage({
             )}
             {hideCalculator && (
               <Link
-                href="/services"
+                href="/katalog-kass"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
               >
-                Все услуги
+                Каталог
               </Link>
             )}
           </div>

@@ -752,23 +752,24 @@ export default function TellurServiceCalculator() {
             {showConsultSlide && (
               <div className="fixed inset-0 bg-black/25 z-40" onClick={() => setShowConsultSlide(false)} />
             )}
-            <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center px-20 sm:px-4 pb-3 sm:pb-5 pointer-events-none">
-              <div className={`transition-all duration-300 origin-bottom-center mb-3 pointer-events-auto ${showConsultSlide ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
-                <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-[#F59E0B]/30 p-5 sm:p-7 w-full max-w-md">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center shrink-0 shadow-lg shadow-[#F59E0B]/30">
-                      <Phone className="w-6 h-6 text-white" />
+            {/* Компактная плашка справа снизу — ненавязчиво */}
+            <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-2 pointer-events-none">
+              <div className={`transition-all duration-300 origin-bottom-right pointer-events-auto ${showConsultSlide ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
+                <div className="bg-white rounded-2xl shadow-2xl border border-[#F59E0B]/30 p-4 sm:p-5 w-72 sm:w-80">
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center shrink-0 shadow-md">
+                      <Phone className="w-4 h-4 text-white" />
                     </div>
                     <div className="min-w-0">
-                      <p className="font-extrabold text-lg sm:text-xl text-[#163A5F] leading-tight">Перезвоните мне!</p>
-                      <p className="text-sm text-slate-500 mt-0.5">Оставьте телефон — мы вам поможем</p>
+                      <p className="font-bold text-base text-[#163A5F] leading-tight">Перезвоните мне!</p>
+                      <p className="text-xs text-slate-500">Поможем за 15 минут</p>
                     </div>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">Не хотите разбираться в калькуляторе или не нашли свою кассу в списке? Менеджер перезвонит за <span className="font-bold text-[#F59E0B]">15 минут</span>, поможет подобрать решение и рассчитает стоимость.</p>
+                  <p className="text-xs text-slate-600 leading-relaxed mb-3">Не нашли свою кассу? Менеджер подберёт решение и рассчитает стоимость.</p>
                   <button
                     type="button"
                     onClick={() => { setShowConsultSlide(false); startConsultation() }}
-                    className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white text-base sm:text-lg font-bold rounded-xl transition-all shadow-lg shadow-[#F59E0B]/25 hover:shadow-xl hover:shadow-[#F59E0B]/30 active:scale-[0.98]"
+                    className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white text-sm sm:text-base font-bold rounded-xl transition-all shadow-md active:scale-[0.98]"
                   >
                     Оставить телефон
                   </button>
@@ -777,11 +778,11 @@ export default function TellurServiceCalculator() {
               <button
                 type="button"
                 onClick={() => setShowConsultSlide(v => !v)}
-                className="pointer-events-auto w-full max-w-sm sm:max-w-md flex items-center justify-center gap-2.5 py-3.5 sm:py-4 px-6 rounded-2xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white shadow-xl shadow-[#F59E0B]/30 hover:shadow-2xl hover:shadow-[#F59E0B]/40 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                className="pointer-events-auto flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white shadow-lg shadow-[#F59E0B]/30 transition-all duration-200 hover:scale-105 active:scale-95"
               >
-                <Phone className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
-                <span className="font-bold text-base sm:text-lg">Перезвоните мне!</span>
-                {showConsultSlide ? <X className="w-5 h-5 sm:w-6 sm:h-6 ml-1 shrink-0" /> : null}
+                <Phone className="w-4 h-4 shrink-0" />
+                <span className="font-bold text-sm">Перезвоните мне</span>
+                {showConsultSlide ? <X className="w-4 h-4 ml-0.5 shrink-0" /> : null}
               </button>
             </div>
           </>
