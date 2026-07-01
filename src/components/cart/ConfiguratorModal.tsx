@@ -16,9 +16,9 @@ import { useCart } from './CartContext'
 
 // Маппинг ID опций продления ОФД → иконки
 const OFD_ICONS: Record<string, string> = {
-  'takskom': '/brands/ofd-takskom.jpg',
+  'takskom': '/brands/ofd-takskom.png',
   'platform': '/brands/ofd-platform.png',
-  'first': '/brands/ofd-first.webp',
+  'first': '/brands/ofd-first.png',
   'sbis': '/brands/ofd-sbis.png',
 }
 

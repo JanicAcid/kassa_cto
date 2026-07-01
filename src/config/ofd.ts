@@ -21,7 +21,7 @@ export const OFD_PROVIDERS: OfdProvider[] = [
     name: 'ОФД ТАКСКОМ',
     shortName: 'ТАКСКОМ',
     partner: true,
-    icon: '/brands/ofd-takskom.jpg',
+    icon: '/brands/ofd-takskom.png',
     periods: {
       '15': { price: 6400, originalPrice: 6900 },
       '36': { price: 11000, originalPrice: 12000 }
@@ -41,7 +41,7 @@ export const OFD_PROVIDERS: OfdProvider[] = [
     id: 'first_ofd',
     name: 'ПЕРВЫЙ ОФД',
     shortName: 'ПЕРВЫЙ ОФД',
-    icon: '/brands/ofd-first.webp',
+    icon: '/brands/ofd-first.png',
     periods: {
       '15': { price: 3100, originalPrice: 3600 },
       '36': { price: 6600, originalPrice: 7600 }
