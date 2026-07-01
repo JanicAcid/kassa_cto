@@ -283,7 +283,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                     </div>
                     {ofdIcon && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={ofdIcon} alt="" className="w-6 h-6 object-contain flex-shrink-0 mt-0.5 rounded" />
+                      <img src={ofdIcon} alt="" className="w-12 h-12 sm:w-14 sm:h-14 object-contain flex-shrink-0 rounded-lg bg-white border border-slate-100 p-1" />
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
