@@ -66,7 +66,7 @@ function KassaCard({ kassa, onConfigure }: { kassa: KassaProduct; onConfigure: (
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-2xl border border-slate-200 flex flex-col hover:shadow-lg transition-shadow relative">
       {/* gallery */}
       <CardGallery images={kassa.images ?? []} alt={kassa.name} badge={kassa.badge} />
 
