@@ -62,6 +62,8 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   if (!isOpen || !kassa) return null
 
+  const isFnCard = kassa.id.startsWith('fn-')
+
   const fnOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'fn')
   const ofdOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'ofd')
   const serviceOptions = kassa.id.startsWith('fn-')
@@ -77,7 +79,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
         && o.id !== 'pickup-pushkin'
         && o.id !== 'pickup-gatchina'
       )
-  const extraOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'extra')
+  const extraOptions = isFnCard ? [] : CONFIGURATOR_OPTIONS.filter(o => o.category === 'extra')
 
   const fn = fnOptions.find(o => o.id === fnId)
   const ofd = ofdOptions.find(o => o.id === ofdId)
@@ -95,8 +97,8 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const selectedExtras = extraOptions.filter(o => extras.has(o.id))
 
   const total = kassa.price
-    + (fn?.price ?? 0)
-    + (ofd?.price ?? 0)
+    + (isFnCard ? 0 : (fn?.price ?? 0))
+    + (isFnCard ? 0 : (ofd?.price ?? 0))
     + selectedServices.reduce((s, o) => s + o.price, 0)
     + (deliveryOption?.price ?? 0)
     + selectedExtras.reduce((s, o) => s + o.price, 0)
@@ -310,72 +312,60 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             </div>
           </div>
 
-          {/* Доставка / Самовывоз */}
-          <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🚚 Доставка или самовывоз</h4>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {/* Доставка / Самовывоз — аккордеон */}
+          <details className="group">
+            <summary className="cursor-pointer flex items-center justify-between text-sm font-bold text-[#163A5F] py-2 border-b border-slate-100">
+              <span>🚚 Доставка или самовывоз {city && <span className="text-emerald-600 font-normal text-xs ml-1">✓ выбрано</span>}</span>
+              <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
               <button
                 onClick={() => setCity('pushkin')}
-                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
-                  city === 'pushkin'
-                    ? 'border-emerald-500 bg-emerald-50'
-                    : 'border-slate-200 hover:border-slate-300'
+                className={`text-left p-2 rounded-lg border transition-all ${
+                  city === 'pushkin' ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">📦 Доставка Пушкин</div>
-                <div className="font-bold text-emerald-600 mt-1 text-xs sm:text-sm">600 ₽</div>
+                <div className="font-semibold text-[#163A5F] text-xs">📦 Пушкин</div>
+                <div className="font-bold text-emerald-600 text-xs">600 ₽</div>
               </button>
               <button
                 onClick={() => setCity('spb')}
-                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
-                  city === 'spb'
-                    ? 'border-emerald-500 bg-emerald-50'
-                    : 'border-slate-200 hover:border-slate-300'
+                className={`text-left p-2 rounded-lg border transition-all ${
+                  city === 'spb' ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">📦 Доставка СПб</div>
-                <div className="font-bold text-emerald-600 mt-1 text-xs sm:text-sm">900 ₽</div>
+                <div className="font-semibold text-[#163A5F] text-xs">📦 СПб</div>
+                <div className="font-bold text-emerald-600 text-xs">900 ₽</div>
               </button>
               <button
                 onClick={() => setCity('pickup-zaslonova')}
-                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
-                  city === 'pickup-zaslonova'
-                    ? 'border-emerald-500 bg-emerald-50'
-                    : 'border-slate-200 hover:border-slate-300'
+                className={`text-left p-2 rounded-lg border transition-all ${
+                  city === 'pickup-zaslonova' ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">🏪 СПб, Заслонова</div>
-                <div className="font-bold text-slate-500 mt-1 text-xs sm:text-sm">Самовывоз</div>
+                <div className="font-semibold text-[#163A5F] text-xs">🏪 СПб</div>
+                <div className="font-bold text-slate-500 text-xs">Заслонова</div>
               </button>
               <button
                 onClick={() => setCity('pickup-pushkin')}
-                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
-                  city === 'pickup-pushkin'
-                    ? 'border-emerald-500 bg-emerald-50'
-                    : 'border-slate-200 hover:border-slate-300'
+                className={`text-left p-2 rounded-lg border transition-all ${
+                  city === 'pickup-pushkin' ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">🏪 Пушкин, Октябрьский</div>
-                <div className="font-bold text-slate-500 mt-1 text-xs sm:text-sm">Самовывоз</div>
+                <div className="font-semibold text-[#163A5F] text-xs">🏪 Пушкин</div>
+                <div className="font-bold text-slate-500 text-xs">Октябрьский</div>
               </button>
               <button
                 onClick={() => setCity('pickup-gatchina')}
-                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
-                  city === 'pickup-gatchina'
-                    ? 'border-emerald-500 bg-emerald-50'
-                    : 'border-slate-200 hover:border-slate-300'
+                className={`text-left p-2 rounded-lg border transition-all ${
+                  city === 'pickup-gatchina' ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">🏪 Гатчина, Хохлова</div>
-                <div className="font-bold text-slate-500 mt-1 text-xs sm:text-sm">Самовывоз</div>
+                <div className="font-semibold text-[#163A5F] text-xs">🏪 Гатчина</div>
+                <div className="font-bold text-slate-500 text-xs">Хохлова</div>
               </button>
             </div>
-            {city === null && (
-              <p className="text-[11px] sm:text-xs text-slate-400 mt-2 leading-snug">
-                Доставка опциональна — можно забрать из офиса.
-              </p>
-            )}
-          </div>
+          </details>
 
           {/* Допы */}
           <div>
@@ -441,9 +431,9 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
               <div className="text-2xl sm:text-3xl font-bold text-[#163A5F]">{total.toLocaleString('ru-RU')} ₽</div>
             </div>
             <div className="text-right text-[10px] sm:text-xs text-slate-500 flex-shrink-0">
-              <div>Касса: {kassa.price.toLocaleString('ru-RU')} ₽</div>
-              {fn && <div>ФН: {fn.price.toLocaleString('ru-RU')} ₽</div>}
-              {ofd && <div>ОФД: {ofd.price.toLocaleString('ru-RU')} ₽</div>}
+              <div>{isFnCard ? 'ФН' : 'Касса'}: {kassa.price.toLocaleString('ru-RU')} ₽</div>
+              {!isFnCard && fn && <div>ФН: {fn.price.toLocaleString('ru-RU')} ₽</div>}
+              {!isFnCard && ofd && <div>ОФД: {ofd.price.toLocaleString('ru-RU')} ₽</div>}
               <div>Услуги: {selectedServices.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>
               {deliveryOption && <div>{deliveryOption.price === 0 ? 'Самовывоз' : 'Доставка'}: {deliveryOption.price === 0 ? 'бесплатно' : `${deliveryOption.price} ₽`}</div>}
               {selectedExtras.length > 0 && <div>Допы: {selectedExtras.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>}
