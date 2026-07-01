@@ -72,13 +72,15 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
     ? CONFIGURATOR_OPTIONS.filter(o => o.category === 'service'
         && (o.id === 'fn-replace' || o.id.startsWith('ofd-renew-'))
       )
-    // Для касс — все услуги кроме доставки/самовывоза
+    // Для касс — все услуги кроме доставки/самовывоза и замены ФН (только для ФН карточек)
     : CONFIGURATOR_OPTIONS.filter(o => o.category === 'service'
         && o.id !== 'delivery-pushkin'
         && o.id !== 'delivery-spb'
         && o.id !== 'pickup-zaslonova'
         && o.id !== 'pickup-pushkin'
         && o.id !== 'pickup-gatchina'
+        && o.id !== 'fn-replace'
+        && !o.id.startsWith('ofd-renew-')
       )
   const extraOptions = isFnCard ? [] : CONFIGURATOR_OPTIONS.filter(o => o.category === 'extra')
 
