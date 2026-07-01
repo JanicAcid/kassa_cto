@@ -274,7 +274,8 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
           </details>
           )}
 
-          {/* Услуги */}
+          {/* Услуги — только для карточек ФН (замена ФН) */}
+          {isFnCard && (
           <div>
             <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🛠 Услуги</h4>
             <div className="space-y-2">
@@ -304,6 +305,46 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
               })}
             </div>
           </div>
+          )}
+
+          {/* Услуги — только для карточек касс (регистрация, обучение, ТО) */}
+          {!isFnCard && serviceOptions.length > 0 && (
+          <div>
+            <div className="space-y-2">
+              {serviceOptions.map(o => {
+                const checked = services.has(o.id)
+                const isLocked = o.id === 'reg-fns'
+                return (
+                  <button
+                    key={o.id}
+                    onClick={() => !isLocked && toggleService(o.id)}
+                    disabled={isLocked}
+                    className={`w-full text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all flex items-start gap-2.5 ${
+                      checked ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200 hover:border-slate-300'
+                    } ${isLocked ? 'cursor-default' : 'cursor-pointer'}`}
+                  >
+                    <div className={`w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center mt-0.5 ${checked ? 'bg-emerald-500 text-white' : 'bg-slate-100'}`}>
+                      {checked && <Check className="w-3.5 h-3.5" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="font-semibold text-[#163A5F] text-xs sm:text-sm leading-snug">
+                          {o.name}
+                          {isLocked && <span className="text-[10px] text-slate-500 font-normal ml-1">(обязательно)</span>}
+                        </span>
+                        <span className="font-bold text-[#163A5F] text-xs sm:text-sm whitespace-nowrap flex-shrink-0">{o.price.toLocaleString('ru-RU')} ₽</span>
+                      </div>
+                      <div className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-snug">{o.desc}</div>
+                      {o.badge && !isLocked && (
+                        <span className="inline-block mt-1 text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">{o.badge}</span>
+                      )}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          )}
 
           {/* Продление ОФД — аккордеон с переключателем срока (для карточек ФН) */}
           {isFnCard && (
