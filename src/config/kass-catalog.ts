@@ -489,6 +489,52 @@ export const KASSA_CATALOG: KassaProduct[] = [
       ]},
     ],
   },
+  {
+    id: 'fn-15-card', brand: 'ФН', model: '1.1М 15 мес', name: 'Фискальный накопитель ФН-1.1М на 15 месяцев',
+    price: 14200, oldPrice: 15900,
+    images: ['/kass-photo/fn-placeholder.svg'],
+    badge: 'Обязательно',
+    shortDesc: 'Для маркировки, алкоголя, ОСН, ЕГАИС. Срок 15 месяцев — продлить нельзя.',
+    features: ['ФФД 1.2 (маркировка)', 'Срок 15 месяцев', 'Для ОСН/маркировки/алкоголя', 'Все модели касс'],
+    type: 'autonomous', inStock: true,
+    gift: '', warranty: '12 месяцев',
+    specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Модель', value: 'ФН-1.1М' },
+        { label: 'Срок действия', value: '15 месяцев' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Применение', specs: [
+        { label: 'Маркировка', value: 'Поддерживается' },
+        { label: 'Алкоголь (ЕГАИС)', value: 'Поддерживается' },
+        { label: 'ОСН', value: 'Обязательно' },
+        { label: 'УСН/ПСН', value: 'Можно' },
+      ]},
+    ],
+  },
+  {
+    id: 'fn-36-card', brand: 'ФН', model: '1.1М 36 мес', name: 'Фискальный накопитель ФН-1.1М на 36 месяцев',
+    price: 21000, oldPrice: 23000,
+    images: ['/kass-photo/fn-placeholder.svg'],
+    badge: 'Выгоднее',
+    shortDesc: 'Для УСН, ПСН, услуг — без маркировки и алкоголя. Выгоднее: 3 года вместо 15 мес.',
+    features: ['ФФД 1.2', 'Срок 36 месяцев', 'Для УСН/ПСН/услуг', 'Без маркировки и алкоголя'],
+    type: 'autonomous', inStock: true,
+    gift: '', warranty: '12 месяцев',
+    specGroups: [
+      { name: 'Основное', specs: [
+        { label: 'Модель', value: 'ФН-1.1М' },
+        { label: 'Срок действия', value: '36 месяцев' },
+        { label: 'Гарантия', value: '12 месяцев' },
+      ]},
+      { name: 'Применение', specs: [
+        { label: 'Маркировка', value: 'Не поддерживается' },
+        { label: 'Алкоголь (ЕГАИС)', value: 'Не поддерживается' },
+        { label: 'УСН/ПСН/ЕСХН', value: 'Обязательно' },
+        { label: 'ОСН', value: 'Нельзя' },
+      ]},
+    ],
+  },
 ]
 
 export const KASSA_PREVIEW = [
@@ -505,6 +551,7 @@ export const BRAND_ICONS: Record<string, string> = {
   'Эвотор': '/brands/evotor.webp',
   'Штрих-М': '/brands/shuttle.webp',
   'Пионер': '/brands/pioneer.webp',
+  'ФН': '',
 }
 
 // Конфигуратор «под ключ» — ФН + ОФД + услуги + допы
@@ -527,7 +574,14 @@ export const CONFIGURATOR_OPTIONS: ConfiguratorOption[] = [
   { id: 'ofd-36', name: 'ОФД Такском на 36 месяцев', desc: 'Со скидкой 68% при покупке кассы', price: 3800, oldPrice: 12000, category: 'ofd', badge: 'СКИДКА 68%' },
   // ─── Услуги ──────────────────────────────────────────────────────────────
   { id: 'reg-fns', name: 'Регистрация ККТ в ФНС', desc: 'Подача заявления, фискализация', price: 3000, category: 'service', badge: 'Обязательно' },
+  { id: 'fn-replace', name: 'Замена ФН', desc: 'Снятие старого, установка нового, перерегистрация', price: 2700, category: 'service' },
+  { id: 'ofd-renew', name: 'Продление ОФД Такском на 15 месяцев', desc: 'Продление договора с ОФД, без покупки новой кассы', price: 2200, oldPrice: 6900, category: 'service', badge: 'СКИДКА 68%' },
+  // ─── Доставка / Самовывоз (выбор города) ────────────────────────────────
+  { id: 'delivery-pushkin', name: 'Доставка по Пушкину', desc: 'Привезём, подключим, проверим', price: 600, category: 'service' },
   { id: 'delivery-spb', name: 'Доставка по СПб', desc: 'Привезём, подключим, проверим', price: 900, category: 'service' },
+  { id: 'pickup-zaslonova', name: 'Самовывоз — СПб, Заслонова 32-34', desc: 'Забрать из офиса Теллур-Центр', price: 0, category: 'service' },
+  { id: 'pickup-pushkin', name: 'Самовывоз — Пушкин, Октябрьский 50/30', desc: 'Забрать из офиса Теллур-Пушкин', price: 0, category: 'service' },
+  { id: 'pickup-gatchina', name: 'Самовывоз — Гатчина, Хохлова 6', desc: 'Забрать из офиса Теллур-Гатчина', price: 0, category: 'service' },
   // ─── Обучение и тех.сопровождение ───────────────────────────────────────
   { id: 'training', name: 'Обучение работе с кассой', desc: 'Практическое занятие — сканирование, приём товара, возвраты', price: 1300, category: 'service' },
   { id: 'tech-support-month', name: 'Тех.сопровождение на 1 месяц', desc: 'Приоритетная поддержка, обновление ПО, диагностика', price: 850, category: 'service', badge: '1 мес' },

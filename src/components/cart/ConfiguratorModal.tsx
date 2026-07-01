@@ -20,7 +20,7 @@ interface Props {
   onClose: () => void
 }
 
-type City = 'pushkin' | 'spb' | 'gatchina' | null
+type City = 'pushkin' | 'spb' | 'pickup-zaslonova' | 'pickup-pushkin' | 'pickup-gatchina' | null
 
 export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const { addItem } = useCart()
@@ -56,7 +56,13 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
 
   const fnOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'fn')
   const ofdOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'ofd')
-  const serviceOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'service' && o.id !== 'delivery-pushkin' && o.id !== 'delivery-spb')
+  const serviceOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'service'
+    && o.id !== 'delivery-pushkin'
+    && o.id !== 'delivery-spb'
+    && o.id !== 'pickup-zaslonova'
+    && o.id !== 'pickup-pushkin'
+    && o.id !== 'pickup-gatchina'
+  )
   const extraOptions = CONFIGURATOR_OPTIONS.filter(o => o.category === 'extra')
 
   const fn = fnOptions.find(o => o.id === fnId)
@@ -66,6 +72,9 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
   const deliveryOption: ConfiguratorOption | null = (() => {
     if (city === 'pushkin') return CONFIGURATOR_OPTIONS.find(o => o.id === 'delivery-pushkin') ?? null
     if (city === 'spb') return CONFIGURATOR_OPTIONS.find(o => o.id === 'delivery-spb') ?? null
+    if (city === 'pickup-zaslonova') return CONFIGURATOR_OPTIONS.find(o => o.id === 'pickup-zaslonova') ?? null
+    if (city === 'pickup-pushkin') return CONFIGURATOR_OPTIONS.find(o => o.id === 'pickup-pushkin') ?? null
+    if (city === 'pickup-gatchina') return CONFIGURATOR_OPTIONS.find(o => o.id === 'pickup-gatchina') ?? null
     return null
   })()
 
@@ -268,10 +277,10 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
             </div>
           </div>
 
-          {/* Город доставки */}
+          {/* Доставка / Самовывоз */}
           <div>
-            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🚚 Доставка (выберите город)</h4>
-            <div className="grid grid-cols-3 gap-2">
+            <h4 className="font-bold text-[#163A5F] mb-2 text-sm">🚚 Доставка или самовывоз</h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <button
                 onClick={() => setCity('pushkin')}
                 className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
@@ -280,7 +289,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">Пушкин</div>
+                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">📦 Доставка Пушкин</div>
                 <div className="font-bold text-emerald-600 mt-1 text-xs sm:text-sm">600 ₽</div>
               </button>
               <button
@@ -291,17 +300,46 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
                     : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">СПб</div>
+                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">📦 Доставка СПб</div>
                 <div className="font-bold text-emerald-600 mt-1 text-xs sm:text-sm">900 ₽</div>
               </button>
-              <div className="text-left p-2.5 sm:p-3 rounded-xl border-2 border-slate-200 bg-slate-50 opacity-60 cursor-not-allowed">
-                <div className="font-semibold text-slate-500 text-xs sm:text-sm">Гатчина</div>
-                <div className="font-bold text-slate-400 mt-1 text-xs sm:text-sm">—</div>
-              </div>
+              <button
+                onClick={() => setCity('pickup-zaslonova')}
+                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
+                  city === 'pickup-zaslonova'
+                    ? 'border-emerald-500 bg-emerald-50'
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">🏪 СПб, Заслонова</div>
+                <div className="font-bold text-slate-500 mt-1 text-xs sm:text-sm">Самовывоз</div>
+              </button>
+              <button
+                onClick={() => setCity('pickup-pushkin')}
+                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
+                  city === 'pickup-pushkin'
+                    ? 'border-emerald-500 bg-emerald-50'
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">🏪 Пушкин, Октябрьский</div>
+                <div className="font-bold text-slate-500 mt-1 text-xs sm:text-sm">Самовывоз</div>
+              </button>
+              <button
+                onClick={() => setCity('pickup-gatchina')}
+                className={`text-left p-2.5 sm:p-3 rounded-xl border-2 transition-all ${
+                  city === 'pickup-gatchina'
+                    ? 'border-emerald-500 bg-emerald-50'
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="font-semibold text-[#163A5F] text-xs sm:text-sm">🏪 Гатчина, Хохлова</div>
+                <div className="font-bold text-slate-500 mt-1 text-xs sm:text-sm">Самовывоз</div>
+              </button>
             </div>
             {city === null && (
               <p className="text-[11px] sm:text-xs text-slate-400 mt-2 leading-snug">
-                Доставка опциональна — можно забрать кассу из офиса.
+                Доставка опциональна — можно забрать из офиса.
               </p>
             )}
           </div>
@@ -374,7 +412,7 @@ export function ConfiguratorModal({ kassa, isOpen, onClose }: Props) {
               <div>ФН: {fn?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
               <div>ОФД: {ofd?.price.toLocaleString('ru-RU') ?? 0} ₽</div>
               <div>Услуги: {selectedServices.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>
-              {deliveryOption && <div>Доставка: {deliveryOption.price} ₽</div>}
+              {deliveryOption && <div>{deliveryOption.price === 0 ? 'Самовывоз' : 'Доставка'}: {deliveryOption.price === 0 ? 'бесплатно' : `${deliveryOption.price} ₽`}</div>}
               {selectedExtras.length > 0 && <div>Допы: {selectedExtras.reduce((s, o) => s + o.price, 0).toLocaleString('ru-RU')} ₽</div>}
             </div>
           </div>
