@@ -22,7 +22,7 @@ export function CardGallery({ images, alt, badge }: Props) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="aspect-square bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
+      <div className="aspect-square bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 p-3">
         Нет фото
       </div>
     )
@@ -34,10 +34,10 @@ export function CardGallery({ images, alt, badge }: Props) {
       <>
         <button
           onClick={() => setShowFull(true)}
-          className="relative w-full aspect-square bg-slate-100 rounded-xl overflow-hidden group block"
+          className="relative w-full aspect-square bg-slate-50 rounded-xl overflow-hidden group block p-3 sm:p-4"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={images[0]} alt={alt} className="w-full h-full object-cover" />
+          <img src={images[0]} alt={alt} className="w-full h-full object-contain" />
           {badge && (
             <span className="absolute top-2 left-2 text-[11px] font-bold px-2 py-1 rounded-md bg-amber-500 text-white shadow">
               {badge}
@@ -64,9 +64,9 @@ export function CardGallery({ images, alt, badge }: Props) {
 
   return (
     <>
-      <div className="relative w-full aspect-square bg-slate-100 rounded-xl overflow-hidden group">
+      <div className="relative w-full aspect-square bg-slate-50 rounded-xl overflow-hidden group p-3 sm:p-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={images[idx]} alt={alt} className="w-full h-full object-cover" />
+        <img src={images[idx]} alt={alt} className="w-full h-full object-contain" />
 
         {badge && (
           <span className="absolute top-2 left-2 text-[11px] font-bold px-2 py-1 rounded-md bg-amber-500 text-white shadow z-10">
