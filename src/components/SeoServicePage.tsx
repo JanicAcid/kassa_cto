@@ -4,7 +4,7 @@
 // ============================================================================
 
 import Link from 'next/link'
-import { Phone, CheckCircle2, ArrowRight, ChevronRight, MapPin, Tag, LayoutGrid } from 'lucide-react'
+import { Phone, CheckCircle2, ArrowRight, ChevronRight, MapPin, Tag, LayoutGrid, ShoppingCart } from 'lucide-react'
 import { JsonLdData } from '@/components/JsonLd'
 import { ProductsPreview } from '@/components/ProductsPreview'
 import { SITE_URL } from '@/config/site'
@@ -53,6 +53,9 @@ export interface SeoServicePageProps {
 
   // Скрыть калькулятор из CTA (для хаб-страниц и страниц, где он неуместен)
   hideCalculator?: boolean
+
+  // Кнопка "Купить" в Hero — ведёт прямо на карточку товара в каталоге
+  buyButton?: { label: string; href: string }
 }
 
 export function SeoServicePage({
@@ -62,8 +65,9 @@ export function SeoServicePage({
   pricesTitle = 'Цены на услуги', prices = [],
   faq = [],
   breadcrumbs = [],
-  areaServed = ['Санкт-Петербург', 'Ленинградская область'],
+  areaServed,
   hideCalculator = false,
+  buyButton,
 }: SeoServicePageProps) {
   const canonical = `${SITE_URL}/${slug}`
 
@@ -263,6 +267,15 @@ export function SeoServicePage({
               <Phone className="w-5 h-5" />
               {CITY_PHONE}
             </a>
+            {buyButton && (
+              <Link
+                href={buyButton.href}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {buyButton.label}
+              </Link>
+            )}
             <Link
               href="/katalog-kass"
               className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"

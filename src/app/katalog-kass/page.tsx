@@ -194,7 +194,9 @@ function CatalogContent() {
 
         <div id="catalog" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredKassas.map(kassa => (
-            <KassaCard key={kassa.id} kassa={kassa} onConfigure={openConfigurator} />
+            <div id={kassa.id} key={kassa.id} className="scroll-mt-20">
+              <KassaCard kassa={kassa} onConfigure={openConfigurator} />
+            </div>
           ))}
         </div>
 
