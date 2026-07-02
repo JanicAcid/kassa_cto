@@ -276,27 +276,20 @@ export function SeoServicePage({
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={CITY_PHONE_HREF}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors whitespace-nowrap"
               >
-                <Phone className="w-5 h-5" />
-                {CITY_PHONE}
+                <Phone className="w-5 h-5 shrink-0" />
+                <span>{CITY_PHONE}</span>
               </a>
               {buyButton && (
                 <Link
                   href={buyButton.href}
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg whitespace-nowrap"
                 >
-                  <ShoppingCart className="w-5 h-5" />
-                  {buyButton.label}
+                  <ShoppingCart className="w-5 h-5 shrink-0" />
+                  <span>{buyButton.label}</span>
                 </Link>
               )}
-              <Link
-                href="/katalog-kass"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
-              >
-                <LayoutGrid className="w-5 h-5" />
-                Каталог
-              </Link>
             </div>
             <div className="mt-6 flex items-center gap-2 text-sm text-white/60">
               <MapPin className="w-4 h-4" />

@@ -413,7 +413,10 @@ export function StepExtra({
               Отправить заявку
             </Button>
             <p className="text-[10px] sm:text-xs text-slate-400 text-center mt-2">
-              Нажимая кнопку, вы соглашаетесь на обработку персональных данных
+              Нажимая кнопку, вы соглашаетесь с{' '}
+              <a href="/privacy" target="_blank" className="text-[#163A5F] underline hover:text-[#1E4A78]">политикой конфиденциальности</a>
+              {' '}и{' '}
+              <a href="/oferta" target="_blank" className="text-[#163A5F] underline hover:text-[#1E4A78]">офертой</a>
             </p>
           </div>
         </Card>

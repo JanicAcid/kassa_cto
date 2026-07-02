@@ -325,8 +325,11 @@ export default function OfdCalculatorPage() {
               </button>
 
               <p className="text-xs text-slate-400 text-center mt-3">
-                Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных.
-                Мы перезвоним в течение 30 минут.
+                Нажимая кнопку, вы соглашаетесь с{' '}
+                <a href="/privacy" target="_blank" className="text-[#163A5F] underline hover:text-[#1E4A78]">политикой конфиденциальности</a>
+                {' '}и{' '}
+                <a href="/oferta" target="_blank" className="text-[#163A5F] underline hover:text-[#1E4A78]">офертой</a>.
+                {' '}Мы перезвоним в течение 30 минут.
               </p>
             </div>
           </div>

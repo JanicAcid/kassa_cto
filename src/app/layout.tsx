@@ -6,6 +6,7 @@ import { YandexMetrika } from "@/components/YandexMetrika";
 
 import { FaqWidget } from "@/components/FaqWidget";
 import { FloatingContact } from "@/components/FloatingContact";
+import { FloatingFeedback } from "@/components/FloatingFeedback";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { Navbar } from "@/components/Navbar";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -134,6 +135,7 @@ export default function RootLayout({
 
         <FaqWidget />
         <FloatingContact />
+        <FloatingFeedback />
         <CookieConsent />
         <PromoCodeNotifier />
       </body>
