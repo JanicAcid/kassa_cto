@@ -26,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/markirovka-obuvi`, changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/markirovka-tabaka`, changeFrequency: 'monthly' as const, priority: 0.8 },
     // Существующие сервисные SEO-страницы
-    { url: `${baseUrl}/zamena-fn`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    // /zamena-fn удалён — 301 редирект на /zamena-fn-15-mesyacev в .htaccess
     { url: `${baseUrl}/registraciya-kkt`, changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/podklyuchenie-ofd`, changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/remont-kassovogo-oborudovaniya`, changeFrequency: 'monthly' as const, priority: 0.8 },

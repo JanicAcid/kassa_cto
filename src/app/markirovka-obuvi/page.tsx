@@ -9,7 +9,7 @@ import {
   ChevronRight,
   ChevronDown,
   Phone,
-  Calculator,
+  LayoutGrid,
   MessageCircle,
   UserPlus,
   Settings,
@@ -124,11 +124,11 @@ export default function MarkirovkaObuviPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <Link
-              href="/kalkulyatory/markirovka"
+              href="/katalog-kass"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#163A5F] hover:bg-[#1E4A78] text-white font-bold rounded-xl transition-colors shadow-md"
             >
-              <Calculator className="w-5 h-5" />
-              Рассчитать стоимость
+              <LayoutGrid className="w-5 h-5" />
+              Каталог касс
             </Link>
             <a
               href="tel:+79219324163"
@@ -214,11 +214,11 @@ export default function MarkirovkaObuviPage() {
               </div>
             </div>
             <Link
-              href="/kalkulyatory/markirovka"
+              href="/katalog-kass"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors shadow-md"
             >
-              <Calculator className="w-5 h-5" />
-              Рассчитать точную стоимость
+              <LayoutGrid className="w-5 h-5" />
+              Каталог касс
             </Link>
           </div>
         </section>
