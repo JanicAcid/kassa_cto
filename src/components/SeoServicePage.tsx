@@ -174,12 +174,14 @@ export function SeoServicePage({
       </div>
 
       <main className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Промокод-бейдж — компактно */}
-        <div className="mb-6 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200">
-          <Tag className="w-3.5 h-3.5 text-amber-600" />
-          <span className="text-xs sm:text-sm text-amber-800">
-            Промокод <b className="tracking-wider text-amber-700">{PROMOCODE}</b> — спеццена при звонке с сайта
-          </span>
+        {/* Промокод-бейдж — компактно, отцентровано */}
+        <div className="mb-6 flex justify-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200">
+            <Tag className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <span className="text-xs sm:text-sm text-amber-800">
+              Промокод <b className="tracking-wider text-amber-700">{PROMOCODE}</b> — спеццена при звонке с сайта
+            </span>
+          </div>
         </div>
 
         {/* Intro */}
@@ -266,7 +268,7 @@ export function SeoServicePage({
           </h2>
           <p className="text-white/80 mb-6 max-w-xl mx-auto">
             Бесплатная консультация по телефону. Выезд инженера в день обращения.
-            Работаем с 1995 года, более 5000 касс настроено.
+            Работаем с 1995 года, многолетний опыт.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a

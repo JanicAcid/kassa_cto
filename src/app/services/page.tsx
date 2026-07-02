@@ -118,7 +118,7 @@ export default function ServicesPage() {
         </h2>
         <p className="text-white/70 text-sm sm:text-base mb-4 max-w-xl mx-auto">
           Бесплатная консультация по телефону. Выезд инженера в день обращения.
-          Работаем с 1995 года, более 5000 касс настроено.
+          Работаем с 1995 года, многолетний опыт.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
