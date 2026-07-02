@@ -20,8 +20,8 @@ export const MOBILE_PHONE = '+7 (921) 932-41-63'
 export const MOBILE_PHONE_HREF = 'tel:+79219324163'
 
 // Мессенджеры
-// MAX_PROFILE_URL — ссылка на чат в мессенджере MAX от пользователя
-export const MAX_PROFILE_URL = 'https://max.ru/c/-72448395814985/AZ8YVD4MfBk'
+// MAX_PROFILE_URL — ссылка на чат в мессенджере MAX от пользователя (личка)
+export const MAX_PROFILE_URL = 'https://max.ru/u/f9LHodD0cOIyOKnRf2wxfGv_fgnwzFojV6YB985v1BCD7TPRPxtaoJINc_c'
 // Telegram — УБРАН со всего сайта (пользователь просил)
 export const TELEGRAM_CHAT_URL = ''
 
