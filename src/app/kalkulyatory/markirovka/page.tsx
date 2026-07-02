@@ -746,48 +746,6 @@ export default function TellurServiceCalculator() {
 
 
 
-        {/* FAB — «Перезвоните мне!» — нижний центр, на всех шагах */}
-        {!isDone && !isConsultation && (
-          <>
-            {showConsultSlide && (
-              <div className="fixed inset-0 bg-black/25 z-40" onClick={() => setShowConsultSlide(false)} />
-            )}
-            {/* Компактная плашка справа снизу — ненавязчиво */}
-            <div className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-2 pointer-events-none">
-              <div className={`transition-all duration-300 origin-bottom-right pointer-events-auto ${showConsultSlide ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}>
-                <div className="bg-white rounded-2xl shadow-2xl border border-[#F59E0B]/30 p-4 sm:p-5 w-72 sm:w-80">
-                  <div className="flex items-center gap-2.5 mb-2">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center shrink-0 shadow-md">
-                      <Phone className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-bold text-base text-[#163A5F] leading-tight">Перезвоните мне!</p>
-                      <p className="text-xs text-slate-500">Поможем за 15 минут</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed mb-3">Не нашли свою кассу? Менеджер подберёт решение и рассчитает стоимость.</p>
-                  <button
-                    type="button"
-                    onClick={() => { setShowConsultSlide(false); startConsultation() }}
-                    className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white text-sm sm:text-base font-bold rounded-xl transition-all shadow-md active:scale-[0.98]"
-                  >
-                    Оставить телефон
-                  </button>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowConsultSlide(v => !v)}
-                className="pointer-events-auto flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#c08b0d] text-white shadow-lg shadow-[#F59E0B]/30 transition-all duration-200 hover:scale-105 active:scale-95"
-              >
-                <Phone className="w-4 h-4 shrink-0" />
-                <span className="font-bold text-sm">Перезвоните мне</span>
-                {showConsultSlide ? <X className="w-4 h-4 ml-0.5 shrink-0" /> : null}
-              </button>
-            </div>
-          </>
-        )}
-
       </div>
   )
 }

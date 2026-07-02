@@ -327,3 +327,28 @@
     font-size: 16px !important;
   }
 }
+
+/* ============================================================================ */
+/* Mobile touch responsiveness — prevent scroll lag and missed taps            */
+/* ============================================================================ */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, a, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
+}
+
+/* Prevent overscroll bounce that interferes with clicks */
+html {
+  overscroll-behavior: none;
+}
+
+/* Ensure buttons have minimum touch target size */
+@media (max-width: 640px) {
+  button,
+  a[role="button"],
+  .cursor-pointer {
+    min-height: 44px;
+  }
+}

@@ -29,7 +29,7 @@ export function FloatingContact() {
   }, [isOpen])
 
   return (
-    <div className="fixed bottom-44 sm:bottom-40 right-4 sm:right-6 z-40 flex flex-col items-end gap-2.5">
+    <div className="hidden sm:flex fixed bottom-40 right-6 z-40 flex-col items-end gap-2.5">
       {/* Popup с 2 каналами */}
       <div
         className={`flex flex-col gap-2 transition-all duration-200 origin-bottom-right ${
