@@ -17,6 +17,7 @@ Disallow: /admin-orders
 Disallow: /*.json$
 Disallow: /_next/static/
 Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&_ga&_gid&gclid&fbclid&yclid /
+Crawl-delay: 1
 
 # Google — отдельные правила
 User-agent: Googlebot
@@ -27,4 +28,3 @@ Disallow: /admin/
 Disallow: /admin-orders
 
 Sitemap: https://kassa-cto.ru/sitemap.xml
-Host: https://kassa-cto.ru
