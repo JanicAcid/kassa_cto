@@ -3,29 +3,28 @@
 // ============================================================================
 // PromoCodeNotifier.tsx — глобальный клиентский компонент в layout.tsx
 // ----------------------------------------------------------------------------
-// 1. Перехват кликов по a[href^="tel:"] → toast с промокодом САЙТ
-// 2. Перехват submit форм → localStorage.promo_applied=1
-// 3. Toast авто-исчезает через 8 сек, можно закрыть вручную
+// Перехват кликов по a[href^="tel:"] → toast с промокодом САЙТ
+// (только при звонке — когда клиент сам звонит)
+// При отправке форм промокод НЕ показываем (менеджер сам перезвонит)
 // ============================================================================
 
 import { useEffect, useState } from 'react'
-import { X, Tag, Phone } from 'lucide-react'
+import { X, Tag } from 'lucide-react'
 import { PROMOCODE } from '@/config/promocode'
-import { CITY_PHONE } from '@/config/contacts'
 
 export function PromoCodeNotifier() {
-  const [toast, setToast] = useState<null | { type: 'tel' | 'form'; phone?: string }>(null)
+  const [toast, setToast] = useState<null | { phone?: string }>(null)
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | null = null
 
-    const showToast = (data: { type: 'tel' | 'form'; phone?: string }) => {
+    const showToast = (data: { phone?: string }) => {
       setToast(data)
       if (timer) clearTimeout(timer)
       timer = setTimeout(() => setToast(null), 8000)
     }
 
-    // === 1. Перехват кликов по tel: ===
+    // === Перехват кликов по tel: (когда клиент звонит) ===
     const onClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       const anchor = target.closest('a[href^="tel:"]') as HTMLAnchorElement | null
@@ -37,26 +36,13 @@ export function PromoCodeNotifier() {
       // помечаем что промокод показан
       try { localStorage.setItem('promo_applied', '1') } catch {}
 
-      showToast({ type: 'tel', phone })
-    }
-
-    // === 2. Перехват submit форм ===
-    const onSubmit = (e: SubmitEvent) => {
-      const form = e.target as HTMLFormElement | null
-      if (!form) return
-      // не наша форма корзины (у неё свой обработчик)
-      if (form.closest('[data-cart-form]')) return
-
-      try { localStorage.setItem('promo_applied', '1') } catch {}
-      showToast({ type: 'form' })
+      showToast({ phone })
     }
 
     document.addEventListener('click', onClick)
-    document.addEventListener('submit', onSubmit)
 
     return () => {
       document.removeEventListener('click', onClick)
-      document.removeEventListener('submit', onSubmit)
       if (timer) clearTimeout(timer)
     }
   }, [])
@@ -80,31 +66,15 @@ export function PromoCodeNotifier() {
           </button>
         </div>
         <div className="p-4">
-          {toast.type === 'tel' ? (
-            <>
-              <p className="text-sm text-slate-600 mb-2">
-                Вы позвонили{toast.phone ? ` на ${toast.phone}` : ''}. Назовите менеджеру промокод:
-              </p>
-              <div className="text-3xl font-bold text-amber-600 tracking-[0.2em] text-center py-2 bg-amber-50 rounded-xl">
-                {PROMOCODE}
-              </div>
-              <p className="text-xs text-slate-500 mt-2 text-center">
-                Получите спеццену как на сайте. Перезвоним за 15 мин если занято.
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="text-sm text-slate-600 mb-2">
-                Заявка отправлена! Назовите промокод менеджеру:
-              </p>
-              <div className="text-3xl font-bold text-amber-600 tracking-[0.2em] text-center py-2 bg-amber-50 rounded-xl">
-                {PROMOCODE}
-              </div>
-              <p className="text-xs text-slate-500 mt-2 text-center">
-                Перезвоним за 15 мин. Или позвоните: <b>{CITY_PHONE}</b>
-              </p>
-            </>
-          )}
+          <p className="text-sm text-slate-600 mb-2">
+            Вы позвонили{toast.phone ? ` на ${toast.phone}` : ''}. Назовите менеджеру промокод:
+          </p>
+          <div className="text-3xl font-bold text-amber-600 tracking-[0.2em] text-center py-2 bg-amber-50 rounded-xl">
+            {PROMOCODE}
+          </div>
+          <p className="text-xs text-slate-500 mt-2 text-center">
+            Получите спеццену как на сайте. Перезвоним за 15 мин если занято.
+          </p>
         </div>
       </div>
     </div>
