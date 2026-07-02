@@ -112,5 +112,13 @@ RewriteRule ^api/\.captcha_store/ - [F,L]
 # ─── Запрет листинга директорий ─────────────────────────────────────────────
 Options -Indexes
 
+# ─── Корректный Content-Type для robots.txt и sitemap.xml ───────────────────
+<Files "robots.txt">
+  ForceType "text/plain; charset=utf-8"
+</Files>
+<Files "sitemap.xml">
+  ForceType "application/xml; charset=utf-8"
+</Files>
+
 # ─── Кастомные страницы ошибок ──────────────────────────────────────────────
 ErrorDocument 404 /404.html
