@@ -4,7 +4,7 @@
 // ============================================================================
 
 import Link from 'next/link'
-import { Phone, Calculator, CheckCircle2, ArrowRight, ChevronRight, MapPin, Tag } from 'lucide-react'
+import { Phone, CheckCircle2, ArrowRight, ChevronRight, MapPin, Tag, LayoutGrid } from 'lucide-react'
 import { JsonLdData } from '@/components/JsonLd'
 import { ProductsPreview } from '@/components/ProductsPreview'
 import { SITE_URL } from '@/config/site'
@@ -263,23 +263,13 @@ export function SeoServicePage({
               <Phone className="w-5 h-5" />
               {CITY_PHONE}
             </a>
-            {!hideCalculator && (
-              <Link
-                href="/kalkulyatory/markirovka"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
-              >
-                <Calculator className="w-5 h-5" />
-                Калькулятор стоимости
-              </Link>
-            )}
-            {hideCalculator && (
-              <Link
-                href="/katalog-kass"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
-              >
-                Каталог
-              </Link>
-            )}
+            <Link
+              href="/katalog-kass"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
+            >
+              <LayoutGrid className="w-5 h-5" />
+              Каталог
+            </Link>
           </div>
           <div className="mt-6 flex items-center justify-center gap-2 text-sm text-white/60">
             <MapPin className="w-4 h-4" />
