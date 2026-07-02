@@ -8,8 +8,8 @@
 RewriteEngine On
 
 # ─── Переносы страниц (301) ─────────────────────────────────────────────────
-# /diagnostika → /markirovka/diagnostika
-Redirect 301 /diagnostika /markirovka/diagnostika
+# Старая страница /zamena-fn (удалена) → редирект на /zamena-fn-15-mesyacev
+RedirectMatch 301 ^/zamena-fn/?$ /zamena-fn-15-mesyacev
 
 # Удалённые гео-страницы (выборг/тихвин — далеко, не обслуживаем)
 Redirect 301 /kassy-vyborg /kkt-spb
