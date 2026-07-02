@@ -94,16 +94,16 @@ export function Navbar({ onOpenFeedback }: { onOpenFeedback?: () => void }) {
 
             {/* Телефон CTA + кнопка обратной связи + гамбургер */}
             <div className="flex items-center gap-2 justify-self-end">
-              {/* Мигающая кнопка 'Обратный звонок' (десктоп) */}
+              {/* Мигающая кнопка 'Обратный звонок' — видна ВСЕГДА (десктоп с текстом, мобила иконка) */}
               <button
                 type="button"
                 onClick={() => onOpenFeedback?.()}
-                className="relative hidden sm:inline-flex items-center gap-1.5 px-3 py-2 bg-[#F59E0B] hover:bg-[#D97706] text-white text-[13px] font-semibold rounded-lg transition-all duration-200"
+                className="relative inline-flex items-center justify-center gap-1.5 sm:px-3 sm:py-2 w-12 h-12 sm:w-auto sm:h-auto bg-[#F59E0B] hover:bg-[#D97706] text-white text-[13px] font-semibold rounded-lg sm:rounded-xl transition-all duration-200"
                 aria-label="Обратный звонок"
               >
-                <span className="absolute inset-0 rounded-lg bg-[#F59E0B] animate-ping opacity-30" />
-                <MessageSquareText className="w-4 h-4 relative z-10" />
-                <span className="relative z-10 hidden md:inline">Заявка</span>
+                <span className="absolute inset-0 rounded-lg sm:rounded-xl bg-[#F59E0B] animate-ping opacity-30" />
+                <MessageSquareText className="w-4 h-4 sm:w-4 sm:h-4 relative z-10" />
+                <span className="relative z-10 hidden sm:hidden md:inline">Заявка</span>
               </button>
 
               <a
