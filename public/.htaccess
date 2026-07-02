@@ -104,11 +104,6 @@ RewriteRule ^api/\.captcha_store/ - [F,L]
   Require all denied
 </FilesMatch>
 
-# ─── Запрет выполнения PHP в папке загрузок (если будет) ───────────────────
-<IfModule mod_php.c>
-  php_flag engine off
-</IfModule>
-
 # ─── Запрет листинга директорий ─────────────────────────────────────────────
 Options -Indexes
 
