@@ -49,28 +49,25 @@ export function CartModal() {
       localStorage.setItem('promo_applied', '1')
     } catch {}
 
-    // отправляем в CRM через api/log-order.php
+    // отправляем в CRM через api/log-order
     try {
+      const orderNum = `КОРЗ-${Date.now().toString().slice(-6)}`
+      const itemsList = items.map(i => i.name).join(', ')
+      const servicesList = items.flatMap(i => i.services.map(s => s.name)).join(', ')
       const orderData = {
-        name: form.name,
+        orderNum,
+        clientName: form.name,
         phone: form.phone,
-        source: 'katalog-kass-cart',
-        promo: PROMOCODE,
-        items: items.map(i => ({
-          name: i.name,
-          qty: i.qty,
-          total: i.total * i.qty,
-          fn: i.fn?.name,
-          ofd: i.ofd?.name,
-          services: i.services.map(s => s.name),
-          extras: i.extras.map(x => x.name),
-        })),
+        kkmType: itemsList,
+        kkmCondition: '',
+        services: [servicesList || 'Корзина'],
         total: totalPrice,
+        comment: `Промокод: ${PROMOCODE}. Позиций: ${items.length}. ${items.map(i => `${i.name} (×${i.qty})`).join('; ')}`,
+        subject: `Заказ из каталога: ${form.name} | ${form.phone}`,
       }
 
       // отправляем без await — если упадёт, всё равно покажем "спасибо"
-      // (на static export fetch к api может не работать, но попробуем)
-      fetch('/api/log-order.php', {
+      fetch('/api/log-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
@@ -306,6 +303,20 @@ export function CartModal() {
                 <p className="text-xs text-slate-400 text-center">
                   Перезвоним за 15 мин. Промокод <b className="text-amber-600">{PROMOCODE}</b> — спеццена.
                 </p>
+                <label className="flex items-start gap-2 cursor-pointer pt-1">
+                  <input
+                    type="checkbox"
+                    required
+                    defaultChecked
+                    className="mt-0.5 w-3.5 h-3.5 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500/20 shrink-0"
+                  />
+                  <span className="text-[10px] text-slate-500 leading-snug text-left">
+                    Согласен с{' '}
+                    <Link href="/privacy" target="_blank" className="text-[#163A5F] underline hover:text-[#1E4A78]">политикой конфиденциальности</Link>
+                    {' '}и{' '}
+                    <Link href="/oferta" target="_blank" className="text-[#163A5F] underline hover:text-[#1E4A78]">офертой</Link>
+                  </span>
+                </label>
               </form>
             </div>
           </>

@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Phone, CheckCircle2, ArrowRight, ChevronRight, MapPin, Tag, LayoutGrid, ShoppingCart } from 'lucide-react'
 import { JsonLdData } from '@/components/JsonLd'
 import { ProductsPreview } from '@/components/ProductsPreview'
+import { FeedbackForm } from '@/components/FeedbackForm'
 import { SITE_URL } from '@/config/site'
 import { CITY_PHONE, CITY_PHONE_HREF } from '@/config/contacts'
 import { PROMOCODE } from '@/config/promocode'
@@ -262,43 +263,49 @@ export function SeoServicePage({
         />
 
         {/* CTA */}
-        <section className="mt-16 bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-8 sm:p-10 text-center text-white">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-            Нужна помощь с кассой в СПб или ЛО?
-          </h2>
-          <p className="text-white/80 mb-6 max-w-xl mx-auto">
-            Бесплатная консультация по телефону. Выезд инженера в день обращения.
-            Работаем с 1995 года, многолетний опыт.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              href={CITY_PHONE_HREF}
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors"
-            >
-              <Phone className="w-5 h-5" />
-              {CITY_PHONE}
-            </a>
-            {buyButton && (
-              <Link
-                href={buyButton.href}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg"
+        <section className="mt-16 grid lg:grid-cols-2 gap-6 items-stretch">
+          {/* Левая часть — текст + кнопки */}
+          <div className="bg-gradient-to-r from-[#163A5F] to-[#1E4A78] rounded-2xl p-8 sm:p-10 text-white flex flex-col justify-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3">
+              Нужна помощь с кассой в СПб или ЛО?
+            </h2>
+            <p className="text-white/80 mb-6">
+              Бесплатная консультация по телефону. Выезд инженера в день обращения.
+              Работаем с 1995 года, многолетний опыт.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href={CITY_PHONE_HREF}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors"
               >
-                <ShoppingCart className="w-5 h-5" />
-                {buyButton.label}
+                <Phone className="w-5 h-5" />
+                {CITY_PHONE}
+              </a>
+              {buyButton && (
+                <Link
+                  href={buyButton.href}
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg"
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  {buyButton.label}
+                </Link>
+              )}
+              <Link
+                href="/katalog-kass"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
+              >
+                <LayoutGrid className="w-5 h-5" />
+                Каталог
               </Link>
-            )}
-            <Link
-              href="/katalog-kass"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20"
-            >
-              <LayoutGrid className="w-5 h-5" />
-              Каталог
-            </Link>
+            </div>
+            <div className="mt-6 flex items-center gap-2 text-sm text-white/60">
+              <MapPin className="w-4 h-4" />
+              <span>СПб, Пушкин, Гатчина · Выезд по всей ЛО</span>
+            </div>
           </div>
-          <div className="mt-6 flex items-center justify-center gap-2 text-sm text-white/60">
-            <MapPin className="w-4 h-4" />
-            <span>СПб, Пушкин, Гатчина · Выезд по всей ЛО</span>
-          </div>
+
+          {/* Правая часть — форма обратной связи */}
+          <FeedbackForm />
         </section>
       </main>
     </>
