@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { YandexMetrika } from "@/components/YandexMetrika";
 
 import { FaqWidget } from "@/components/FaqWidget";
+import { FloatingContact } from "@/components/FloatingContact";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { Navbar } from "@/components/Navbar";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -132,6 +133,7 @@ export default function RootLayout({
         <ScrollToTopButton />
 
         <FaqWidget />
+        <FloatingContact />
         <CookieConsent />
         <PromoCodeNotifier />
       </body>
