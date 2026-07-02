@@ -65,7 +65,7 @@ export function SeoServicePage({
   pricesTitle = 'Цены на услуги', prices = [],
   faq = [],
   breadcrumbs = [],
-  areaServed,
+  areaServed = [],
   hideCalculator = false,
   buyButton,
 }: SeoServicePageProps) {
