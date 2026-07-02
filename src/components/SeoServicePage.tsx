@@ -153,13 +153,22 @@ export function SeoServicePage({
                 {heroSubtitle}
               </p>
             </div>
-            <a
-              href={CITY_PHONE_HREF}
-              className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors text-sm whitespace-nowrap flex-shrink-0 w-full sm:w-auto self-stretch sm:self-end"
-            >
-              <Phone className="w-4 h-4" />
-              {CITY_PHONE}
-            </a>
+            <div className="flex items-center justify-center gap-2.5 flex-shrink-0">
+              <Link
+                href="/katalog-kass"
+                className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-white/15 hover:bg-white/25 text-white font-bold rounded-xl transition-colors text-sm whitespace-nowrap border border-white/20"
+              >
+                <LayoutGrid className="w-4 h-4" />
+                Каталог
+              </Link>
+              <a
+                href={CITY_PHONE_HREF}
+                className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-xl transition-colors text-sm whitespace-nowrap"
+              >
+                <Phone className="w-4 h-4" />
+                {CITY_PHONE}
+              </a>
+            </div>
           </div>
         </div>
       </div>
