@@ -6,9 +6,8 @@ import { YandexMetrika } from "@/components/YandexMetrika";
 
 import { FaqWidget } from "@/components/FaqWidget";
 import { FloatingContact } from "@/components/FloatingContact";
-import { FloatingFeedback } from "@/components/FloatingFeedback";
+import { NavbarWithFeedback } from "@/components/NavbarWithFeedback";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
-import { Navbar } from "@/components/Navbar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { CookieConsent } from "@/components/CookieConsent";
 import { PromoCodeNotifier } from "@/components/PromoCodeNotifier";
@@ -118,7 +117,7 @@ export default function RootLayout({
       >
         <JsonLd />
         <YandexMetrika />
-        <Navbar />
+        <NavbarWithFeedback />
         <div className="flex-1 flex flex-col">{children}</div>
         <SiteFooter />
         <noscript>
@@ -135,7 +134,6 @@ export default function RootLayout({
 
         <FaqWidget />
         <FloatingContact />
-        <FloatingFeedback />
         <CookieConsent />
         <PromoCodeNotifier />
       </body>

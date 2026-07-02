@@ -118,8 +118,16 @@ export function SiteFooter() {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
-            <p className="order-2 sm:order-1">© {new Date().getFullYear()} ООО «Теллур-Интех». Все права защищены.</p>
-            <p className="order-1 sm:order-2 text-center sm:text-right">Центр технического обслуживания кассового оборудования</p>
+            <p className="order-2 sm:order-1">© {new Date().getFullYear()} ООО «Теллур-Интех»</p>
+            <div className="order-1 sm:order-2 flex items-center gap-3">
+              <Link href="/privacy" className="hover:text-white/60 transition-colors">
+                Конфиденциальность
+              </Link>
+              <span className="text-white/20">·</span>
+              <Link href="/oferta" className="hover:text-white/60 transition-colors">
+                Оферта
+              </Link>
+            </div>
           </div>
         </div>
       </div>

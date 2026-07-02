@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Phone, Menu, X, ChevronRight } from 'lucide-react'
+import { Phone, Menu, X, ChevronRight, MessageSquareText } from 'lucide-react'
 
 const NAV_ITEMS = [
   { label: 'Главная', href: '/' },
@@ -23,7 +23,7 @@ const NAV_ITEMS = [
 const MAIN_PHONE = '+7 (812) 465-94-57'
 const MAIN_PHONE_HREF = 'tel:+78124659457'
 
-export function Navbar() {
+export function Navbar({ onOpenFeedback }: { onOpenFeedback?: () => void }) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -92,8 +92,20 @@ export function Navbar() {
               ))}
             </nav>
 
-            {/* Телефон CTA + гамбургер */}
+            {/* Телефон CTA + кнопка обратной связи + гамбургер */}
             <div className="flex items-center gap-2 justify-self-end">
+              {/* Мигающая кнопка 'Обратный звонок' (десктоп) */}
+              <button
+                type="button"
+                onClick={() => onOpenFeedback?.()}
+                className="relative hidden sm:inline-flex items-center gap-1.5 px-3 py-2 bg-[#F59E0B] hover:bg-[#D97706] text-white text-[13px] font-semibold rounded-lg transition-all duration-200"
+                aria-label="Обратный звонок"
+              >
+                <span className="absolute inset-0 rounded-lg bg-[#F59E0B] animate-ping opacity-30" />
+                <MessageSquareText className="w-4 h-4 relative z-10" />
+                <span className="relative z-10 hidden md:inline">Заявка</span>
+              </button>
+
               <a
                 href={MAIN_PHONE_HREF}
                 className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-[#163A5F] hover:bg-[#1E4A78] text-white text-[14px] font-semibold rounded-lg transition-all duration-200"
@@ -153,6 +165,15 @@ export function Navbar() {
               ))}
 
               <div className="pt-5 mt-5 border-t border-slate-100">
+                {/* Мигающая кнопка обратной связи (мобильная) */}
+                <button
+                  type="button"
+                  onClick={() => { onOpenFeedback?.(); setMenuOpen(false) }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-[#F59E0B] hover:bg-[#D97706] text-white text-[15px] font-semibold rounded-xl transition-colors min-h-[48px] mb-3"
+                >
+                  <MessageSquareText className="w-4 h-4" />
+                  Обратный звонок
+                </button>
                 <a
                   href={MAIN_PHONE_HREF}
                   className="flex items-center justify-center gap-2 px-4 py-3.5 bg-[#163A5F] hover:bg-[#1E4A78] text-white text-[15px] font-semibold rounded-xl transition-colors min-h-[48px]"
