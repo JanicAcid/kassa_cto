@@ -153,15 +153,12 @@ export interface FirmwareLicensePrices {
 // Сигма — 3 тарифа, оплачиваются отдельно на sigma.ru/tarify/
 export const sigmaTariffLink = 'https://sigma.ru/tarify/'
 
-// ВНИМАНИЕ: обновление ПО и лицензии НЕ входят в каталог/конфигуратор.
-// Эти услуги выполняются по договорённости — цена 0 (не показывается в калькуляторе).
-// Если нужна точная цена — менеджер назовёт после диагностики.
 export const firmwareLicensePrices: Record<KkmType, FirmwareLicensePrices> = {
-  mercury: { firmware: 0, license: 0 },
-  atol:    { firmware: 0, license: 0 },
-  sigma:   { firmware: 0, license: 0 },
-  shuttle: { firmware: 0, license: 0 },
-  pioneer: { firmware: 0, license: 0 },
-  aqsi:    { firmware: 0, license: 0 },
-  evotor:  { firmware: 0, license: 0 }
+  mercury: { firmware: 3000, license: 2900 },
+  atol:    { firmware: 3000, license: 4600 },
+  sigma:   { firmware: 3000, license: 4600 },
+  shuttle: { firmware: 3000, license: 4700 },
+  pioneer: { firmware: 3000, license: 2900 },
+  aqsi:    { firmware: 3000, license: 4600 },
+  evotor:  { firmware: 0, license: 0 }  // Эвотор — приложения покупаются отдельно
 }

@@ -113,7 +113,7 @@ export function StepExtra({
                     </div>
                     <div className="p-1.5 bg-amber-50 border border-amber-200 rounded">
                       <p className="text-xs text-amber-700">
-                        <strong>ФН на {fnPeriod} мес.</strong> — стоимость уточняется у менеджера, цена на ФН регулярно меняется
+                        <strong>ФН на {fnPeriod} мес.</strong> — {fnPeriod === '15' ? '14 200' : '21 000'} ₽
                       </p>
                     </div>
                   </div>
