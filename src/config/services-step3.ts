@@ -9,7 +9,7 @@ export const step3Services: StepService[] = [
     id: 'ecp_renewal',
     name: 'Продление электронной подписи (ЭЦП)',
     description: 'Продление сертификата ЭЦП на Рутокене (если до истечения остался хотя бы 1 день)',
-    price: 2000,
+    price: 0,
     hintKey: 'ecp_renewal',
     icon: '/services/ecp_renewal.webp'
   },
@@ -17,7 +17,7 @@ export const step3Services: StepService[] = [
     id: 'training',
     name: 'Обучение работе с маркировкой',
     description: 'Практическое занятие — сканирование, приём товара, возвраты',
-    price: 2000,
+    price: 1300,
     hintKey: 'training',
     icon: '/services/training.webp'
   },

@@ -242,9 +242,10 @@ export default function TellurServiceCalculator() {
       }
     })
 
-    // ФН — фискальный накопитель
+    // ФН — фискальный накопитель (из каталога: ФН-15=14200, ФН-36=21000)
     if (fnChecked) {
-      items.push({ name: `Фискальный накопитель (ФН) — ${fnPeriod === '15' ? '15' : '36'} мес. (вид: ${fnActivityType === 'general' ? 'общая торговля' : 'подакцизная продукция'}) — цена уточняется менеджером`, price: 0 })
+      const fnPrice = fnPeriod === '15' ? 14200 : 21000
+      items.push({ name: `Фискальный накопитель ФН-1.2 — ${fnPeriod === '15' ? '15' : '36'} мес. (вид: ${fnActivityType === 'general' ? 'общая торговля' : 'подакцизная продукция'})`, price: fnPrice })
     }
 
     // ОФД
@@ -257,25 +258,25 @@ export default function TellurServiceCalculator() {
     if (scannerChecked) items.push({ name: 'Сканер 2D для считывания кодов маркировки', price: scannerPrices[effectiveKkm] })
     if (firmwareChecked) items.push({ name: 'Обновление программного обеспечения кассы', price: fwPrices.firmware })
     if (licenseChecked) items.push({ name: 'Лицензия на ПО кассы', price: fwPrices.license })
-    if (evotorRestore) items.push({ name: 'Восстановление доступа к ЛК Эвотор', price: 500 })
+    if (evotorRestore) items.push({ name: 'Восстановление доступа к ЛК Эвотор', price: 0 })
 
     if (productCardCount > 0) {
       const p = getProductCardPrice(productCardCount)
       items.push({ name: `Создание карточек товаров (${productCardCount} шт.)`, price: p * productCardCount })
     }
 
-    // Договор обслуживания
+    // Договор обслуживания (из каталога: ТО месяц=850, ТО год=10200)
     if (serviceContractChecked) {
       if (serviceContractPeriod === 'month') {
-        items.push({ name: 'Договор обслуживания — помесячная оплата', price: 1000 })
+        items.push({ name: 'Тех.сопровождение на 1 месяц', price: 850 })
       } else {
-        items.push({ name: 'Договор обслуживания — подписка на 12 месяцев', price: 10000 })
+        items.push({ name: 'Тех.сопровождение на 1 год', price: 10200 })
       }
     }
 
-    // Сигма — помощь с оформлением тарифа и восстановлением доступа к кабинету
+    // Сигма — помощь с оформлением тарифа (нет в каталоге — бесплатно при заказе)
     if (effectiveKkm === 'sigma' && sigmaHelpChecked) {
-      items.push({ name: 'Оформление тарифа Сигма + восстановление доступа к кабинету', price: 500 })
+      items.push({ name: 'Оформление тарифа Сигма + восстановление доступа к кабинету', price: 0 })
     }
 
     return { items, total: items.reduce((sum, i) => sum + i.price, 0) }

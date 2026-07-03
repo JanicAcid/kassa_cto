@@ -123,17 +123,18 @@ export const kkmTypes: Record<string, KkmTypeConfig> = {
 export type KkmType = keyof typeof kkmTypes
 
 // ============================================================================
-// ЦЕНЫ НА СКАНЕРЫ
+// ЦЕНЫ НА СКАНЕРЫ — из CONFIGURATOR_OPTIONS (эталон)
+// 2D-сканер проводной = 4300 ₽
 // ============================================================================
 
 export const scannerPrices: Record<KkmType, number> = {
-  mercury: 4000,
-  atol: 4000,
-  sigma: 4000,
-  shuttle: 4000,
-  pioneer: 4000,
-  aqsi: 4000,
-  evotor: 4000
+  mercury: 4300,
+  atol: 4300,
+  sigma: 4300,
+  shuttle: 4300,
+  pioneer: 4300,
+  aqsi: 4300,
+  evotor: 4300
 }
 
 // ============================================================================
@@ -152,12 +153,15 @@ export interface FirmwareLicensePrices {
 // Сигма — 3 тарифа, оплачиваются отдельно на sigma.ru/tarify/
 export const sigmaTariffLink = 'https://sigma.ru/tarify/'
 
+// ВНИМАНИЕ: обновление ПО и лицензии НЕ входят в каталог/конфигуратор.
+// Эти услуги выполняются по договорённости — цена 0 (не показывается в калькуляторе).
+// Если нужна точная цена — менеджер назовёт после диагностики.
 export const firmwareLicensePrices: Record<KkmType, FirmwareLicensePrices> = {
-  mercury: { firmware: 3000, license: 2900 },
-  atol:    { firmware: 3000, license: 4600 },
-  sigma:   { firmware: 3000, license: 4600 },
-  shuttle: { firmware: 3000, license: 4700 },
-  pioneer: { firmware: 3000, license: 2900 },
-  aqsi:    { firmware: 3000, license: 4600 },
-  evotor:  { firmware: 0, license: 0 }  // Эвотор — приложения покупаются отдельно
+  mercury: { firmware: 0, license: 0 },
+  atol:    { firmware: 0, license: 0 },
+  sigma:   { firmware: 0, license: 0 },
+  shuttle: { firmware: 0, license: 0 },
+  pioneer: { firmware: 0, license: 0 },
+  aqsi:    { firmware: 0, license: 0 },
+  evotor:  { firmware: 0, license: 0 }
 }

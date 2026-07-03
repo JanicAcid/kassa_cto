@@ -16,7 +16,7 @@ export const step2Services: StepService[] = [
     id: 'fns_reregistration',
     name: 'Перерегистрация кассы в ФНС для маркировки и подакцизных товаров',
     description: 'Подготовка, подача и сопровождение заявления в ФНС — добавляем признаки маркировки и подакцизных товаров, переводим кассу на формат ФФД 1.2. Ошибка в заявлении = отказ налоговой = касса не работает',
-    price: 2000,
+    price: 3000,
     hintKey: 'fns_reregistration',
     icon: '/services/fns_reregistration.webp'
   },
@@ -24,7 +24,7 @@ export const step2Services: StepService[] = [
     id: 'marking_setup',
     name: 'Полная настройка маркировки под ключ',
     description: 'Комплексная настройка под ключ: подача заявления в ФНС (регистрация ККТ), смена формата ФФД, настройка ЭДО, Честного ЗНАКа, кассы и ТС ПИоТ в единую цепочку. Для Эвотора — дополнительно личный кабинет. Регистрация кассы в ФНС уже включена в стоимость.',
-    price: 6000,
+    price: 3000,
     hintKey: 'marking_setup',
     icon: '/services/marking_setup.webp'
   },
@@ -32,7 +32,7 @@ export const step2Services: StepService[] = [
     id: 'partial_marketing_setup',
     name: 'Частичная настройка маркировки (настройка дополнительных модулей)',
     description: 'Настройка отдельных компонентов для работы с маркировкой — дополнительные модули, связи между системами, которые не были настроены ранее',
-    price: 2000,
+    price: 0,
     hintKey: 'partial_marketing_setup',
     icon: '/services/partial_marketing.webp'
   }
