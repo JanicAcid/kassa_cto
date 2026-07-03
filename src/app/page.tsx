@@ -23,7 +23,7 @@ const CALCULATORS = [
     desc: 'Расчёт стоимости подключения маркировки товаров: Честный ЗНАК, ТС ПИоТ, ЭДО, ОФД, регистрация ККТ.',
     href: '/kalkulyatory/markirovka',
     active: true,
-    price: 'от 2 000 ₽',
+    price: 'от 1 500 ₽',
   },
   {
     title: 'Калькулятор 1С',
