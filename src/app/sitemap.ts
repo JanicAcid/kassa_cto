@@ -36,6 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/contacts`, changeFrequency: 'monthly' as const, priority: 0.6 },
     { url: `${baseUrl}/instructions/kak-podklyuchit-kabinet-chestnyznak`, changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/instructions/kakie-kassy-podhodyat-dlya-markirovki`, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${baseUrl}/instructions/povtornaya-pechat-data-matrix`, changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/privacy`, changeFrequency: 'yearly' as const, priority: 0.3 },
     { url: `${baseUrl}/oferta`, changeFrequency: 'yearly' as const, priority: 0.3 },
   ]
