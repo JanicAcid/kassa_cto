@@ -90,9 +90,7 @@ export function MarkingQuiz() {
 
   const handleAnswer = (value: string) => {
     setAnswers({ ...answers, [`step${step}`]: value })
-    if (step < STEPS.length - 1) {
-      setStep(step + 1)
-    }
+    setStep(step + 1)
   }
 
   const handleBack = () => {
