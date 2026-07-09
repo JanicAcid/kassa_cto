@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { KKT_CATALOG } from '@/config/kkt-catalog'
 import { MAX_PROFILE_URL } from '@/config/contacts'
+import { MarkingQuiz } from '@/components/MarkingQuiz'
 
 // ============================================================================
 // ТИПЫ
@@ -914,6 +915,17 @@ export default function DiagnostikaPage() {
           </div>
         </div>
       )}
+
+      {/* === КВИЗ — Бесплатная диагностика маркировки === */}
+      <div className="max-w-2xl mx-auto mt-12 mb-8">
+        <h2 className="text-xl font-bold text-[#163A5F] text-center mb-2">
+          Бесплатная диагностика маркировки
+        </h2>
+        <p className="text-sm text-slate-500 text-center mb-6">
+          Ответьте на 6 вопросов — получите план внедрения маркировки под ключ
+        </p>
+        <MarkingQuiz />
+      </div>
     </div>
   )
 }
