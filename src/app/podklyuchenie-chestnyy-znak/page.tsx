@@ -26,7 +26,7 @@ const PAGE_URL = `${SITE_URL}/podklyuchenie-chestnyy-znak`
 export const metadata: Metadata = {
   title: 'Подключение Честного ЗНАК в СПб | Регистрация, цена под ключ — Теллур-Интех',
   description:
-    'Подключение Честный ЗНАК в Санкт-Петербурге. Регистрация для ИП и ООО, настройка рабочего места, привязка кассы. Цена от 2 000 ₽. За 1 день. Бесплатная консультация.',
+    'Подключение Честный ЗНАК в Санкт-Петербурге. Регистрация для ИП и ООО, настройка рабочего места, привязка кассы. Цена от 1 500 ₽. За 1 день. Бесплатная консультация.',
   keywords: [
     'подключение честный знак',
     'регистрация честный знак',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Подключение Честного ЗНАК в СПб — Теллур-Интех',
     description:
-      'Регистрация и подключение Честного ЗНАК в Санкт-Петербурге для ИП и ООО. Цена от 2 000 ₽. Настройка под ключ за 1 день.',
+      'Регистрация и подключение Честного ЗНАК в Санкт-Петербурге для ИП и ООО. Цена от 1 500 ₽. Настройка под ключ за 1 день.',
     url: PAGE_URL,
     siteName: 'Теллур-Интех',
     locale: 'ru_RU',
@@ -72,7 +72,7 @@ const jsonLdService = {
   '@type': 'Service',
   name: 'Подключение Честного ЗНАК',
   description:
-    'Регистрация и подключение к государственной системе маркировки Честный ЗНАК в Санкт-Петербурге для ИП и ООО. Оформление УКЭП, настройка личного кабинета, привязка кассы, обучение. Цена от 2 000 ₽. За 1 день.',
+    'Регистрация и подключение к государственной системе маркировки Честный ЗНАК в Санкт-Петербурге для ИП и ООО. Оформление УКЭП, настройка личного кабинета, привязка кассы, обучение. Цена от 1 500 ₽. За 1 день.',
   provider: { '@id': `${SITE_URL}/#organization` },
   areaServed: {
     '@type': 'AdministrativeArea',
@@ -233,7 +233,7 @@ export default function ChestnyznakPage() {
           <p className="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
             Регистрация и полное подключение к государственной системе маркировки для ИП и ООО.
             Настройка рабочего места, привязка кассы, обучение сотрудников. Под ключ за 1 день.
-            Цена от 2 000 ₽. Бесплатная консультация.
+            Цена от 1 500 ₽. Бесплатная консультация.
           </p>
         </div>
 
@@ -333,7 +333,7 @@ export default function ChestnyznakPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-center">
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Регистрация</p>
-              <p className="text-2xl font-extrabold text-[#163A5F]">от 2 000 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">от 1 500 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Настройка кабинета, товарных групп и привязка кассы</p>
             </div>
             <div className="bg-white rounded-xl border-2 border-[#F59E0B]/40 shadow-sm p-4 text-center relative">

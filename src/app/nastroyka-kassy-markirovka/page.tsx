@@ -26,7 +26,7 @@ const PAGE_URL = `${SITE_URL}/nastroyka-kassy-markirovka`
 export const metadata: Metadata = {
   title: 'Настройка кассы для маркировки в СПб | Цена под ключ, за 1 день — Теллур-Интех',
   description:
-    'Настройка кассы для маркировки товаров в Санкт-Петербурге. Меркурий, Атол, Эвотор, Штрих-М. Цена от 2 000 ₽. Под ключ за 1 день, без ошибок. ФФД 1.2, Честный ЗНАК, ЭДО, ТС ПИоТ. Бесплатная консультация.',
+    'Настройка кассы для маркировки товаров в Санкт-Петербурге. Меркурий, Атол, Эвотор, Штрих-М. Цена от 1 500 ₽. Под ключ за 1 день, без ошибок. ФФД 1.2, Честный ЗНАК, ЭДО, ТС ПИоТ. Бесплатная консультация.',
   keywords: [
     'настройка кассы маркировка',
     'настройка кассы для маркировки спб',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Настройка кассы для маркировки в СПб — Теллур-Интех',
     description:
-      'Настройка кассы под ключ для маркировки товаров в Санкт-Петербурге. Меркурий, Атол, Эвотор, Штрих-М. Цена от 2 000 ₽. За 1 день, без ошибок.',
+      'Настройка кассы под ключ для маркировки товаров в Санкт-Петербурге. Меркурий, Атол, Эвотор, Штрих-М. Цена от 1 500 ₽. За 1 день, без ошибок.',
     url: PAGE_URL,
     siteName: 'Теллур-Интех',
     locale: 'ru_RU',
@@ -258,7 +258,7 @@ export default function NastroykaKassyPage() {
           <p className="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl mx-auto">
             Комплексная настройка кассового оборудования под ключ для работы с маркированными товарами.
             ЭДО, Честный ЗНАК, ТС ПИоТ, ФФД 1.2, ОФД — связываем все системы без ошибок за 1 день.
-            Цена от 2 000 ₽.
+            Цена от 1 500 ₽.
           </p>
         </div>
 
@@ -309,7 +309,7 @@ export default function NastroykaKassyPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 text-center">
               <p className="text-xs text-slate-400 uppercase tracking-wide font-medium mb-1">Базовая</p>
-              <p className="text-2xl font-extrabold text-[#163A5F]">от 2 000 ₽</p>
+              <p className="text-2xl font-extrabold text-[#163A5F]">от 1 500 ₽</p>
               <p className="text-xs text-slate-500 mt-2">Настройка одной из систем (ЭДО, Честный ЗНАК или ТС ПИоТ)</p>
             </div>
             <div className="bg-white rounded-xl border-2 border-[#F59E0B]/40 shadow-sm p-4 text-center relative">
