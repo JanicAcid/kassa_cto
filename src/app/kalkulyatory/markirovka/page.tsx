@@ -16,7 +16,6 @@ import {
   type KkmType
 } from '@/config/services'
 import { step2Services } from '@/config/services-step2'
-import { step3Services } from '@/config/services-step3'
 import { OFD_PROVIDERS } from '@/config/ofd'
 import { getProductCardPrice } from '@/config/product-cards'
 import type { Step, KkmCondition, ClientData, TotalCalc, HintButtonProps } from '@/components/calculator/types'
@@ -235,12 +234,7 @@ export default function TellurServiceCalculator() {
       }
     })
 
-    step3Services.forEach(s => {
-      if (step3Selections.includes(s.id)) {
-        if (s.id === 'training') items.push({ name: s.name, price: s.price * trainingHours })
-        else items.push({ name: s.name, price: s.price })
-      }
-    })
+    // step3Services убраны — калькулятор только про маркировку
 
     // ФН — фискальный накопитель (из каталога: ФН-15=14200, ФН-36=21000)
     if (fnChecked) {
@@ -260,19 +254,9 @@ export default function TellurServiceCalculator() {
     if (licenseChecked) items.push({ name: 'Лицензия на ПО кассы', price: fwPrices.license })
     if (evotorRestore) items.push({ name: 'Восстановление доступа к ЛК Эвотор', price: 0 })
 
-    if (productCardCount > 0) {
-      const p = getProductCardPrice(productCardCount)
-      items.push({ name: `Создание карточек товаров (${productCardCount} шт.)`, price: p * productCardCount })
-    }
+    // Карточки товаров убраны — калькулятор только про маркировку
 
-    // Договор обслуживания (из каталога: ТО месяц=850, ТО год=10200)
-    if (serviceContractChecked) {
-      if (serviceContractPeriod === 'month') {
-        items.push({ name: 'Тех.сопровождение на 1 месяц', price: 850 })
-      } else {
-        items.push({ name: 'Тех.сопровождение на 1 год', price: 10200 })
-      }
-    }
+    // Договор обслуживания убран — калькулятор только про маркировку
 
     // Сигма — помощь с оформлением тарифа (нет в каталоге — бесплатно при заказе)
     if (effectiveKkm === 'sigma' && sigmaHelpChecked) {
@@ -280,7 +264,7 @@ export default function TellurServiceCalculator() {
     }
 
     return { items, total: items.reduce((sum, i) => sum + i.price, 0) }
-  }, [step2Selections, step3Selections, scannerChecked, firmwareChecked, licenseChecked, evotorRestore, productCardCount, trainingHours, effectiveKkm, fwPrices, kkmCondition, ofdEffective, ofdPeriod, ofdProvider, fnChecked, fnPeriod, fnActivityType, evotorAppsSelected, sigmaHelpChecked, serviceContractChecked, serviceContractPeriod])
+  }, [step2Selections, scannerChecked, firmwareChecked, licenseChecked, evotorRestore, effectiveKkm, fwPrices, kkmCondition, ofdEffective, ofdPeriod, ofdProvider, fnChecked, fnPeriod, fnActivityType, evotorAppsSelected, sigmaHelpChecked])
 
   // Надёжный скролл наверх: работает на мобиле и ПК
   const smoothScrollToTop = useCallback(() => {
@@ -334,7 +318,7 @@ export default function TellurServiceCalculator() {
   const handlePrint = () => {
     const printContent = generateOrderHtml({
       effectiveKkmInfo, kkmCondition, kkmType, clientData, totalCalc,
-      step2Selections, step3Selections, scannerChecked, fnChecked, productCardCount, serviceContractChecked, evotorRestore, sigmaHelpChecked, unsureFnsRegistration,
+      step2Selections, scannerChecked, fnChecked, evotorRestore, sigmaHelpChecked, unsureFnsRegistration,
       includeChecklist: false,
       isConsultation
     })

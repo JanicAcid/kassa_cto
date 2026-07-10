@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/kkt-spb`, changeFrequency: 'weekly' as const, priority: 0.9 },
     { url: `${baseUrl}/kalkulyatory`, changeFrequency: 'weekly' as const, priority: 0.9 },
     { url: `${baseUrl}/kalkulyatory/markirovka`, changeFrequency: 'monthly' as const, priority: 0.9 },
+    { url: `${baseUrl}/kalkulyatory/ofd`, changeFrequency: 'monthly' as const, priority: 0.9 },
     { url: `${baseUrl}/instructions`, changeFrequency: 'weekly' as const, priority: 0.9 },
     { url: `${baseUrl}/faq`, changeFrequency: 'monthly' as const, priority: 0.8 },
     { url: `${baseUrl}/services`, changeFrequency: 'monthly' as const, priority: 0.8 },
