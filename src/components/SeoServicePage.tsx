@@ -290,6 +290,13 @@ export function SeoServicePage({
                   <span>{buyButton.label}</span>
                 </Link>
               )}
+              <Link
+                href="/diagnostika"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/15 hover:bg-white/25 text-white font-medium rounded-xl transition-colors border border-white/20 whitespace-nowrap"
+              >
+                <LayoutGrid className="w-5 h-5 shrink-0" />
+                <span>Диагностика</span>
+              </Link>
             </div>
             <div className="mt-6 flex items-center gap-2 text-sm text-white/60">
               <MapPin className="w-4 h-4" />
