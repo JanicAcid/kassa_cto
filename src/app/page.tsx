@@ -407,42 +407,6 @@ export default function HomePage() {
       </section>
 
       {/* ================================================================== */}
-      {/* КВИЗ — Бесплатная диагностика маркировки за 6 вопросов */}
-      {/* ================================================================== */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
-        <div className="grid lg:grid-cols-2 gap-6 items-center">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#163A5F] mb-3">
-              Бесплатная диагностика маркировки
-            </h2>
-            <p className="text-slate-600 mb-4">
-              Ответьте на 6 вопросов — и получите бесплатную консультацию и план
-              внедрения маркировки под ключ. Перезвоним за 15 минут.
-            </p>
-            <ul className="space-y-2 text-sm text-slate-600">
-              <li className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                Бесплатный аудит ваших процессов
-              </li>
-              <li className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                План внедрения под ключ
-              </li>
-              <li className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                Индивидуальные рекомендации
-              </li>
-              <li className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                Промокод САЙТ — спеццена
-              </li>
-            </ul>
-          </div>
-          <MarkingQuiz />
-        </div>
-      </section>
-
-      {/* ================================================================== */}
       {/* CTA BOTTOM */}
       {/* ================================================================== */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
