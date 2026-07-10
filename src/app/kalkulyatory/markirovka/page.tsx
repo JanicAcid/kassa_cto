@@ -236,11 +236,7 @@ export default function TellurServiceCalculator() {
 
     // step3Services убраны — калькулятор только про маркировку
 
-    // ФН — фискальный накопитель (из каталога: ФН-15=14200, ФН-36=21000)
-    if (fnChecked) {
-      const fnPrice = fnPeriod === '15' ? 14200 : 21000
-      items.push({ name: `Фискальный накопитель ФН-1.2 — ${fnPeriod === '15' ? '15' : '36'} мес. (вид: ${fnActivityType === 'general' ? 'общая торговля' : 'подакцизная продукция'})`, price: fnPrice })
-    }
+    // ФН убран — калькулятор только про настройку маркировки
 
     // ОФД
     if (ofdEffective) {
@@ -249,7 +245,7 @@ export default function TellurServiceCalculator() {
       items.push({ name: `${provider.name} — договор на ${ofdPeriod === '15' ? '15' : '36'} мес.`, price: periodInfo.price })
     }
 
-    if (scannerChecked) items.push({ name: 'Сканер 2D для считывания кодов маркировки', price: scannerPrices[effectiveKkm] })
+    // Сканер убран — калькулятор только про настройку маркировки
     if (firmwareChecked) items.push({ name: 'Обновление программного обеспечения кассы', price: fwPrices.firmware })
     if (licenseChecked) items.push({ name: 'Лицензия на ПО кассы', price: fwPrices.license })
     if (evotorRestore) items.push({ name: 'Восстановление доступа к ЛК Эвотор', price: 0 })
@@ -264,7 +260,7 @@ export default function TellurServiceCalculator() {
     }
 
     return { items, total: items.reduce((sum, i) => sum + i.price, 0) }
-  }, [step2Selections, scannerChecked, firmwareChecked, licenseChecked, evotorRestore, effectiveKkm, fwPrices, kkmCondition, ofdEffective, ofdPeriod, ofdProvider, fnChecked, fnPeriod, fnActivityType, evotorAppsSelected, sigmaHelpChecked])
+  }, [step2Selections, firmwareChecked, licenseChecked, evotorRestore, effectiveKkm, fwPrices, kkmCondition, ofdEffective, ofdPeriod, ofdProvider, evotorAppsSelected, sigmaHelpChecked])
 
   // Надёжный скролл наверх: работает на мобиле и ПК
   const smoothScrollToTop = useCallback(() => {
@@ -318,7 +314,7 @@ export default function TellurServiceCalculator() {
   const handlePrint = () => {
     const printContent = generateOrderHtml({
       effectiveKkmInfo, kkmCondition, kkmType, clientData, totalCalc,
-      step2Selections, scannerChecked, fnChecked, evotorRestore, sigmaHelpChecked, unsureFnsRegistration,
+      step2Selections, evotorRestore, sigmaHelpChecked, unsureFnsRegistration,
       includeChecklist: false,
       isConsultation
     })
