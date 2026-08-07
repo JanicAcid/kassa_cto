@@ -23,8 +23,8 @@ export const OFD_PROVIDERS: OfdProvider[] = [
     partner: true,
     icon: '/brands/ofd-takskom.png',
     periods: {
-      '15': { price: 6400, originalPrice: 6900 },
-      '36': { price: 11000, originalPrice: 12000 }
+      '15': { price: 4000, originalPrice: 4500 },
+      '36': { price: 9000, originalPrice: 9500 }
     }
   },
   {

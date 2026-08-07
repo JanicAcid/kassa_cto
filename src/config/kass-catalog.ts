@@ -578,8 +578,8 @@ export const CONFIGURATOR_OPTIONS: ConfiguratorOption[] = [
   { id: 'reg-fns', name: 'Регистрация ККТ в ФНС', desc: 'Подача заявления, фискализация', price: 3000, category: 'service', badge: 'Обязательно' },
   { id: 'fn-replace', name: 'Замена ФН', desc: 'Снятие старого, установка нового, перерегистрация', price: 2700, category: 'service' },
   // ─── Продление ОФД — все 4 провайдера из калькулятора, 2 периода ────────
-  { id: 'ofd-renew-takskom-15', name: 'Продление ОФД Такском на 15 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 6400, oldPrice: 6900, category: 'service', badge: 'Такском' },
-  { id: 'ofd-renew-takskom-36', name: 'Продление ОФД Такском на 36 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 11000, oldPrice: 12000, category: 'service', badge: 'Такском' },
+  { id: 'ofd-renew-takskom-15', name: 'Продление ОФД Такском на 15 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 4000, oldPrice: 4500, category: 'service', badge: 'Такском' },
+  { id: 'ofd-renew-takskom-36', name: 'Продление ОФД Такском на 36 месяцев', desc: 'ОФД Такском — официальный партнёр', price: 9000, oldPrice: 9500, category: 'service', badge: 'Такском' },
   { id: 'ofd-renew-platform-15', name: 'Продление Платформа ОФД на 15 месяцев', desc: 'Платформа ОФД', price: 4000, oldPrice: 4500, category: 'service', badge: 'Платформа' },
   { id: 'ofd-renew-platform-36', name: 'Продление Платформа ОФД на 36 месяцев', desc: 'Платформа ОФД', price: 8500, oldPrice: 9500, category: 'service', badge: 'Платформа' },
   { id: 'ofd-renew-first-15', name: 'Продление ПЕРВЫЙ ОФД на 15 месяцев', desc: 'ПЕРВЫЙ ОФД', price: 3100, oldPrice: 3600, category: 'service', badge: 'Первый' },
