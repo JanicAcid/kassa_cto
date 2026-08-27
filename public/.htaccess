@@ -8,11 +8,9 @@
 RewriteEngine On
 
 # ─── Переносы страниц (301) ─────────────────────────────────────────────────
-# Старая страница /zamena-fn (удалена) → 410 Gone для ботов, 301 для пользователей
-# Боты (Yandex/Google) получат 410 → удалят URL из индекса за 1-2 дня
-# Пользователи получат 301 → попадут на /zamena-fn-15-mesyacev
-RewriteCond %{HTTP_USER_AGENT} (Yandex|Googlebot|Googlebot-Image|Bingbot|Slurp|DuckDuckBot|Baiduspider|facebot|ia_archiver|Applebot|SemrushBot|AhrefsBot|MJ12bot|DotBot|PetalBot) [NC]
-RewriteRule ^zamena-fn/?$ - [G,L]
+# Старая страница /zamena-fn → 301 на /zamena-fn-15-mesyacev (для всех)
+# ВАЖНО: раньше был 410 для ботов — это убрало URL из Яндекса.
+# Возвращаем 301 — Яндекс склеит URL и перенесёт вес на новую страницу.
 RewriteRule ^zamena-fn/?$ /zamena-fn-15-mesyacev [R=301,L]
 
 # Удалённые гео-страницы (выборг/тихвин — далеко, не обслуживаем)
